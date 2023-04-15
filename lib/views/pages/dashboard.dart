@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:upai_app/views/pages/Filtr.dart';
 import 'package:upai_app/views/pages/hotKesh.dart';
 import 'package:upai_app/widgets/UserAvatar.dart';
 import 'package:upai_app/widgets/appBar.dart';
@@ -15,6 +16,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  bool leftRight = true;
+
   List<Widget> listN = [
     Stack(
       fit: StackFit.passthrough,
@@ -230,33 +233,44 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AllAppBar(),
+      //appBar: AllAppBar(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListTile(
-              trailing: GestureDetector(
-                onTap: () {},
-                child: Container(
+            SizedBox(
+              height: 30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Container(
+                  width: 330,
+                  height: 40,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: AppColors.red1,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Text(
-                      '1520 сом',
-                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    border: Border.all(
+                      width: 1,
+                      color: Color(0xFF225196),
                     ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                        hintText: "Я ищу...",
+                        prefixIcon: Icon(Icons.search),
+                        border: InputBorder.none),
                   ),
                 ),
-              ),
-              title: Text(
-                'User name',
-                style: TextStyle(color: Colors.black, fontSize: 16),
-              ),
-              leading: UserAvatar(),
+                SizedBox(
+                    child: IconButton(
+                  icon: Icon(Icons.filter_alt_outlined,
+                      color: AppColors.blue1, size: 28),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const Filtr()));
+                  },
+                ))
+              ],
             ),
             SizedBox(height: 26),
             CarouselSlider(
@@ -271,7 +285,7 @@ class _DashboardState extends State<Dashboard> {
                 height: 160,
                 viewportFraction: 1,
                 autoPlay: true,
-                autoPlayInterval: Duration(seconds: 3),
+                autoPlayInterval: Duration(seconds: 5),
               ),
             ),
             SizedBox(height: 8),
@@ -281,25 +295,19 @@ class _DashboardState extends State<Dashboard> {
                 Container(
                   width: 14,
                   height: 1,
-                  color:
-                      slideIndex == 0 ? AppColors.red1 :
-                      Color(0xFFC4C4C4),
+                  color: slideIndex == 0 ? AppColors.red1 : Color(0xFFC4C4C4),
                 ),
                 SizedBox(width: 9),
                 Container(
                   width: 14,
                   height: 1,
-                  color:
-                      slideIndex == 1 ? AppColors.red1 :
-                      Color(0xFFC4C4C4),
+                  color: slideIndex == 1 ? AppColors.red1 : Color(0xFFC4C4C4),
                 ),
                 SizedBox(width: 9),
                 Container(
                   width: 14,
                   height: 1,
-                  color:
-                      slideIndex == 2 ? AppColors.red1 :
-                      Color(0xFFC4C4C4),
+                  color: slideIndex == 2 ? AppColors.red1 : Color(0xFFC4C4C4),
                 ),
               ],
             ),
@@ -324,104 +332,193 @@ class _DashboardState extends State<Dashboard> {
                     CategoryName[index], 'assets/img/category/cat$index.png'),
               ),
             ),
-            ListTile(
-              leading: Text(
-                'Горящие кешбеки',
-                style: TextStyle(color: Color(0xFF313131), fontSize: 16),
-              ),
-              title: Image.asset(
-                'assets/img/hotKeshIcon.png',
-                width: 20,
-                height: 20,
-                alignment: Alignment.topLeft,
-              ),
-              trailing: Text(
-                'Всё',
-                style: TextStyle(color: Color(0xFF313131), fontSize: 12),
-              ),
+            // ListTile(
+            //   leading: Text(
+            //     'Рекомендуемые',
+            //     style: TextStyle(color: Color(0xFF313131), fontSize: 16),
+            //   ),
+            //   title: Image.asset(
+            //     'assets/img/hotKeshIcon.png',
+            //     width: 20,
+            //     height: 20,
+            //     alignment: Alignment.topLeft,
+            //   ),
+            //   trailing: Text(
+            //     'Всё',
+            //     style: TextStyle(color: Color(0xFF313131), fontSize: 12),
+            //   ),
+            // ),
+            // // Padding(
+            // //   padding: const EdgeInsets.only(left: 14.0),
+            // //   child: Container(
+            // //     height: 150,
+            // //     child: ListView(
+            // //       scrollDirection: Axis.horizontal,
+            // //       children: [
+            // //         HotKesh(0, 5, 193, 'Бир Эки бургер', 'Fast food', 25),
+            // //         SizedBox(width: 10),
+            // //         HotKesh(1, 3, 27, 'Enter kg', 'Электро техника', 16)
+            // //       ],
+            // //     ),
+            // //   ),
+            // // ),
+            // ListTile(
+            //   leading: Text(
+            //     'Новинки',
+            //     style: TextStyle(color: Color(0xFF313131), fontSize: 16),
+            //   ),
+            //   title: Image.asset(
+            //     'assets/img/newIcon.png',
+            //     width: 20,
+            //     height: 20,
+            //     alignment: Alignment.topLeft,
+            //   ),
+            //   trailing: Text(
+            //     'Всё',
+            //     style: TextStyle(color: Color(0xFF8D8D8D), fontSize: 12),
+            //   ),
+            // ),
+            // // Padding(
+            // //   padding: const EdgeInsets.only(left: 14.0),
+            // //   child: Container(
+            // //     height: 150,
+            // //     child: ListView(
+            // //       scrollDirection: Axis.horizontal,
+            // //       children: [
+            // //         HotKesh(2, 4, 193, 'Baby Store', 'Для детей', 14),
+            // //         SizedBox(width: 10),
+            // //         HotKesh(3, 5, 27, 'Cinematika', 'Кино и театр', 24)
+            // //       ],
+            // //     ),
+            // //   ),
+            // // ),
+            // ListTile(
+            //   leading: Text(
+            //     'Товары',
+            //     style: TextStyle(color: Color(0xFF313131), fontSize: 16),
+            //   ),
+            //   trailing: Text(
+            //     'Всё',
+            //     style: TextStyle(color: Color(0xFF8D8D8D), fontSize: 12),
+            //   ),
+            // ),
+            // // Padding(
+            // //   padding: const EdgeInsets.only(left: 14.0),
+            // //   child: Container(
+            // //     height: 115,
+            // //     child: ListView(
+            // //       scrollDirection: Axis.horizontal,
+            // //       children: [
+            // //         Magazine(0, 4.5, 'Эльдорадо', 'электро техника'),
+            // //         SizedBox(width: 10),
+            // //         Magazine(1, 4, 'LC waikiki', 'Одежда и обувь'),
+            // //         SizedBox(width: 10),
+            // //         Magazine(2, 5, 'Derimod', 'Одежда и обувь'),
+            // //       ],
+            // //     ),
+            // //   ),
+            // // ),
+            SizedBox(
+              height: 47,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 14.0),
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Container(
-                height: 150,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    HotKesh(0, 5, 193, 'Бир Эки бургер', 'Fast food', 25),
-                    SizedBox(width: 10),
-                    HotKesh(1, 3, 27, 'Enter kg', 'Электро техника', 16)
-                  ],
+                height: 35,
+                decoration: BoxDecoration(
+                  color: Color(0xFFEBEBEB),
+                  borderRadius: BorderRadius.circular(4),
                 ),
-              ),
-            ),
-            ListTile(
-              leading: Text(
-                'Новинки',
-                style: TextStyle(color: Color(0xFF313131), fontSize: 16),
-              ),
-              title: Image.asset(
-                'assets/img/newIcon.png',
-                width: 20,
-                height: 20,
-                alignment: Alignment.topLeft,
-              ),
-              trailing: Text(
-                'Всё',
-                style: TextStyle(color: Color(0xFF8D8D8D), fontSize: 12),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 14.0),
-              child: Container(
-                height: 150,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
+                child: Row(
                   children: [
-                    HotKesh(2, 4, 193, 'Baby Store', 'Для детей', 14),
-                    SizedBox(width: 10),
-                    HotKesh(3, 5, 27, 'Cinematika', 'Кино и театр', 24)
-                  ],
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Text(
-                'Магазины',
-                style: TextStyle(color: Color(0xFF313131), fontSize: 16),
-              ),
-              trailing: Text(
-                'Всё',
-                style: TextStyle(color: Color(0xFF8D8D8D), fontSize: 12),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 14.0),
-              child: Container(
-                height: 115,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    Magazine(0, 4.5, 'Эльдорадо', 'электро техника'),
-                    SizedBox(width: 10),
-                    Magazine(1, 4, 'LC waikiki', 'Одежда и обувь'),
-                    SizedBox(width: 10),
-                    Magazine(2, 5, 'Derimod', 'Одежда и обувь'),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            leftRight = true;
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: leftRight ? AppColors.red1 : null),
+                          child: Center(
+                            child: Text(
+                              'Рекомендуемые',
+                              style: TextStyle(
+                                  color:
+                                      leftRight ? Colors.white : Colors.black,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            leftRight = false;
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: leftRight ? null : AppColors.red1),
+                          child: Center(
+                            child: Text(
+                              'Новые',
+                              style: TextStyle(
+                                  color:
+                                      leftRight ? Colors.black : Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
             ),
             SizedBox(
-              height: 47,
-            )
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 14.0),
+              child: Container(
+                height: 150,
+                child: Wrap(
+                  // scrollDirection: Axis.horizontal,
+                  children: leftRight
+                      ? [
+                          HotKesh(0, 5, 193, 'Бир Эки бургер', 'Fast food', 25),
+                          SizedBox(width: 10),
+                          HotKesh(1, 3, 27, 'Enter kg', 'Электро техника', 16),
+                          SizedBox(width: 10),
+                          HotKesh(0, 5, 193, 'Бир Эки бургер', 'Fast food', 25),
+                          SizedBox(width: 10),
+                          HotKesh(1, 3, 27, 'Enter kg', 'Электро техника', 16)
+                        ]
+                      : [
+                          HotKesh(2, 4, 193, 'Baby Store', 'Для детей', 14),
+                          SizedBox(width: 10),
+                          HotKesh(3, 5, 27, 'Cinematika', 'Кино и театр', 24)
+                        ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget Magazine(int image,double rat,String name,String cat){
+  Widget Magazine(int image, double rat, String name, String cat) {
     return Container(
-      padding: EdgeInsets.only(left: 5,right: 5,top: 13,bottom: 17),
+      padding: EdgeInsets.only(left: 5, right: 5, top: 13, bottom: 17),
       decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
@@ -437,7 +534,11 @@ class _DashboardState extends State<Dashboard> {
         width: 100,
         child: Column(
           children: [
-            Image.asset('assets/img/magazine/mag$image.png',width: 90,height: 30,),
+            Image.asset(
+              'assets/img/magazine/mag$image.png',
+              width: 90,
+              height: 30,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -445,22 +546,26 @@ class _DashboardState extends State<Dashboard> {
                     initialRating: rat,
                     itemSize: 12,
                     itemBuilder: (context, _) => Icon(
-                      Icons.star,
-                      color: AppColors.mainRed,
-                    ),
-                    onRatingUpdate: (rating) {
-                    }),
+                          Icons.star,
+                          color: AppColors.mainRed,
+                        ),
+                    onRatingUpdate: (rating) {}),
                 SizedBox(width: 2.5),
                 Text(
                   '$rat',
-                  style:
-                  TextStyle(color: AppColors.mainRed, fontSize: 12),
+                  style: TextStyle(color: AppColors.mainRed, fontSize: 12),
                 ),
               ],
             ),
             SizedBox(height: 9),
-            Text(name,style: TextStyle(color: Colors.black,fontSize: 12),),
-            Text(cat,style: TextStyle(color: Colors.black,fontSize: 10),)
+            Text(
+              name,
+              style: TextStyle(color: Colors.black, fontSize: 12),
+            ),
+            Text(
+              cat,
+              style: TextStyle(color: Colors.black, fontSize: 10),
+            )
           ],
         ),
       ),
@@ -510,14 +615,15 @@ class _DashboardState extends State<Dashboard> {
   Widget HotKesh(
       int image, double rat, int otzyv, String name, String cat, int kesh) {
     return GestureDetector(
-      onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder:(context)=>HotKeshPage())),
+      onTap: () => Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => HotKeshPage())),
       child: Container(
-        width: 200,
+        width: 190,
         child: Column(
           children: [
             Container(
               width: 200,
-              height: 85,
+              height: 120,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(

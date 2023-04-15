@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:upai_app/provider/selectTabProvider.dart';
 import 'package:upai_app/views/pages/favorite.dart';
+import 'package:upai_app/views/pages/messeg.dart';
 import 'package:upai_app/views/pages/notifications.dart';
 import 'package:upai_app/views/pages/dashboard.dart';
 import 'package:upai_app/views/pages/history.dart';
@@ -17,15 +18,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   final List<Widget> screens = [
     Dashboard(),
     Favorite(),
-    history(),
+    Messej(),
     Profile(),
   ];
   final PageStorageBucket bucket = PageStorageBucket();
-
 
   @override
   Widget build(BuildContext context) {
@@ -47,21 +46,29 @@ class _HomeState extends State<Home> {
               MaterialButton(
                 minWidth: 40,
                 onPressed: () {
-                  Provider.of<SelectTabProvider>(context,listen: false).toggleSelect(Dashboard(),0); // if user taps on this dashboard tab will be active
+                  Provider.of<SelectTabProvider>(context, listen: false)
+                      .toggleSelect(Dashboard(),
+                          0); // if user taps on this dashboard tab will be active
                 },
                 child: Icon(
                   Icons.home_outlined,
-                  color: Provider.of<SelectTabProvider>(context).currentTab == 0 ? AppColors.red1 :AppColors.blue1,
+                  color: Provider.of<SelectTabProvider>(context).currentTab == 0
+                      ? AppColors.red1
+                      : AppColors.blue1,
                 ),
               ),
               MaterialButton(
                 minWidth: 40,
                 onPressed: () {
-                  Provider.of<SelectTabProvider>(context,listen: false).toggleSelect(history(),2); // if user taps on this dashboard tab will be active
+                  Provider.of<SelectTabProvider>(context, listen: false)
+                      .toggleSelect(Messej(),
+                          2); // if user taps on this dashboard tab will be active
                 },
                 child: Icon(
-                  Icons.access_time_outlined,
-                  color: Provider.of<SelectTabProvider>(context).currentTab == 2 ? AppColors.red1 :AppColors.blue1,
+                  Icons.message_outlined,
+                  color: Provider.of<SelectTabProvider>(context).currentTab == 2
+                      ? AppColors.red1
+                      : AppColors.blue1,
                 ),
               ),
               SizedBox(),
@@ -69,28 +76,33 @@ class _HomeState extends State<Home> {
               MaterialButton(
                 minWidth: 40,
                 onPressed: () {
-                  Provider.of<SelectTabProvider>(context,listen: false).toggleSelect(Favorite(),1); // if user taps on this dashboard tab will be active
+                  Provider.of<SelectTabProvider>(context, listen: false)
+                      .toggleSelect(Favorite(),
+                          1); // if user taps on this dashboard tab will be active
                 },
                 child: Icon(
                   Icons.favorite_border_outlined,
-                  color: Provider.of<SelectTabProvider>(context).currentTab == 1 ? Color(0xFFFF6B00) : Color(0xFF225196),
+                  color: Provider.of<SelectTabProvider>(context).currentTab == 1
+                      ? Color(0xFFFF6B00)
+                      : Color(0xFF225196),
                 ),
               ),
               MaterialButton(
                 minWidth: 40,
                 onPressed: () {
-                  Provider.of<SelectTabProvider>(context,listen: false).toggleSelect(Profile(),3); // if user taps on this dashboard tab will be active
+                  Provider.of<SelectTabProvider>(context, listen: false)
+                      .toggleSelect(Profile(),
+                          3); // if user taps on this dashboard tab will be active
                 },
                 child: Icon(
                   Icons.perm_identity_outlined,
-                  color: Provider.of<SelectTabProvider>(context).currentTab == 3 ? AppColors.red1 :AppColors.blue1,
+                  color: Provider.of<SelectTabProvider>(context).currentTab == 3
+                      ? AppColors.red1
+                      : AppColors.blue1,
                 ),
               ),
 
               // Right Tab bar icons
-
-
-
             ],
           ),
         ),
