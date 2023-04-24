@@ -8,6 +8,7 @@ import 'package:upai_app/views/pages/profile/referal.dart';
 import 'package:upai_app/widgets/appBar.dart';
 
 import '../../../shared/app_colors.dart';
+import '../../auth/sing_in/sing_in_screen.dart';
 import 'faq.dart';
 
 class Profile extends StatefulWidget {
@@ -129,7 +130,7 @@ class _ProfileState extends State<Profile> {
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 20)),
                               Text(
-                                'покупок',
+                                'Объявлений',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 10),
                               )
@@ -172,7 +173,7 @@ class _ProfileState extends State<Profile> {
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 20)),
                                 Text(
-                                  'общая сумма покупок',
+                                  'общая сумма оплаты',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 10),
@@ -234,7 +235,7 @@ class _ProfileState extends State<Profile> {
             // dense: true,
             contentPadding: EdgeInsets.symmetric(horizontal: 0),
             leading: Text(
-              'Мои покупки',
+              'Мои объявления',
               style: TextStyle(color: Color(0xFF313131), fontSize: 16),
             ),
             trailing: Text(
@@ -242,11 +243,11 @@ class _ProfileState extends State<Profile> {
               style: TextStyle(color: Color(0xFF8D8D8D), fontSize: 12),
             ),
           ),
-          PokupkiContainer(0, '15.10.20', 'Эльдорадо', '12 990', '649'),
+          PokupkiContainer(0, '15.10.20', 'Эльдорадо', '1 200', '649'),
           SizedBox(height: 10),
           PokupkiContainer(2, '10.10.20', 'Derimod', '4 500', '278'),
           SizedBox(height: 10),
-          PokupkiContainer(3, '15.10.20', 'Magazin', '1990', '180'),
+          PokupkiContainer(3, '15.10.20', 'Magazin', '1 990', '180'),
           SizedBox(height: 33),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 96),
@@ -273,9 +274,17 @@ class _ProfileState extends State<Profile> {
           Divider(height: 1,color: Color(0xFFEBEBEB)),
           CatFun(4, 'Бизнес профиль',BussinesProf()),
           Divider(height: 1,color: Color(0xFFEBEBEB)),
-          CatFun(5, 'Поделиться приложением',FAQ()),
+          ListTile(
+            leading: Image.asset('assets/img/prof/catIcon5.png',width: 16,height: 16),
+            title: Text('Поделиться приложением',style: TextStyle(color: Color(0xFF313131),fontSize: 16,fontWeight: FontWeight.w400),),
+          ),
           Divider(height: 1,color: Color(0xFFEBEBEB)),
-          CatFun(6, 'Выход',FAQ()),
+        ListTile(
+          onTap: ()=>Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => SingInScreen())),
+          leading: Image.asset('assets/img/prof/catIcon6.png',width: 16,height: 16),
+          title: Text('Выход',style: TextStyle(color: Color(0xFF313131),fontSize: 16,fontWeight: FontWeight.w400),),
+        ),
           SizedBox(height: 99),
         ],
       ),

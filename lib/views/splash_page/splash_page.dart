@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:upai_app/views/auth/sing_in/sing_in_screen.dart';
+import 'package:upai_app/views/home/home_screen.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
     Future.delayed(Duration(seconds: 3), () {
       Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => SingInScreen()));
+          .pushReplacement(MaterialPageRoute(builder: (_) => Home()));
     });
   }
   @override

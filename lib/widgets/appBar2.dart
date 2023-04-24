@@ -14,15 +14,7 @@ class AllAppBar2 extends StatelessWidget implements PreferredSizeWidget {
       ),
       elevation: 0,
       backgroundColor: Colors.white,
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: Icon(
-            Icons.search,
-            color:AppColors.blue1,
-          ),
-        ),
-      ],
+
     );
   }
 }

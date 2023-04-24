@@ -1,12 +1,15 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:upai_app/views/auth/sing_up/sing_up_screen.dart';
 import 'package:upai_app/views/home/home_screen.dart';
 
+import '../../../provider/selectCatProvider.dart';
+import '../../../provider/selectTabProvider.dart';
 import '../../../shared/app_text_styles.dart';
+import '../server/service.dart';
 
 class SingInScreen extends StatefulWidget {
   const SingInScreen({Key? key}) : super(key: key);
@@ -16,26 +19,15 @@ class SingInScreen extends StatefulWidget {
 }
 
 class _SingInScreenState extends State<SingInScreen> {
-
-
-  late TextEditingController phoneController;
-  late TextEditingController passwordController;
-  late bool passwordObscured;
-
-
-  @override
-  void initState() {
-    phoneController = TextEditingController();
-    passwordController = TextEditingController();
-    passwordObscured = true;
-    super.initState();
-  }
-
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  bool showPassword = false;
+  bool circular=false;
 
   phoneField() {
-    return  Container(
+    return Container(
       width: 300,
-      height: 45,
+      height: 55,
       decoration: BoxDecoration(
         border: Border.all(
           width: 1,
@@ -44,7 +36,8 @@ class _SingInScreenState extends State<SingInScreen> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextField(
-        keyboardType: TextInputType.phone,
+        controller: email,
+        keyboardType: TextInputType.emailAddress,
         style: TextStyle(
           color: Color(0xFF225196),
           fontSize: 16,
@@ -53,22 +46,39 @@ class _SingInScreenState extends State<SingInScreen> {
           hintStyle: TextStyle(
             color: Color(0xFF225196).withOpacity(0.5),
           ),
-          hintText: 'Номер',
+          hintText: 'Email',
           border: InputBorder.none,
           prefixIcon: Padding(
-            padding: const EdgeInsets.only(
-                left: 18, top: 11, right: 13, bottom: 12),
-            child: Image.asset('assets/img/iconPhone.png'),
-          ),
+              padding: const EdgeInsets.only(
+                  left: 18, top: 11, right: 13, bottom: 12),
+              child: Icon(
+                Icons.email_outlined,
+                color: Color(0xFF225196),
+                size: 19,
+              )),
         ),
       ),
     );
   }
+
+  void showToast(String msgError) => Fluttertoast.showToast(
+      msg: msgError,
+      fontSize: 18,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.green,
+      textColor: Colors.white);
+
+  void cancelToast(String msgError) => Fluttertoast.showToast(
+      msg: msgError,
+      fontSize: 18,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.red,
+      textColor: Colors.white);
 
   passwordField() {
     return Container(
       width: 300,
-      height: 45,
+      height: 55,
       decoration: BoxDecoration(
         border: Border.all(
           width: 1,
@@ -76,38 +86,51 @@ class _SingInScreenState extends State<SingInScreen> {
         ),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: TextField(
-        obscureText: true,
-        obscuringCharacter: '*',
-        style: TextStyle(
-          color: Color(0xFF225196),
-          fontSize: 16,
-        ),
-        decoration: InputDecoration(
-          hintStyle: TextStyle(
-            color: Color(0xFF225196).withOpacity(0.5),
+      child: Row(
+        children: [
+          Container(
+            width: 250,
+            child: TextField(
+              controller: password,
+              obscureText: showPassword,
+              obscuringCharacter: '*',
+              style: TextStyle(
+                color: Color(0xFF225196),
+                fontSize: 16,
+              ),
+              decoration: InputDecoration(
+                hintStyle: TextStyle(
+                  color: Color(0xFF225196).withOpacity(0.5),
+                ),
+                hintText: 'Пароль',
+                border: InputBorder.none,
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 18, top: 16, right: 13, bottom: 17),
+                  child: Image.asset('assets/img/iconPassword.png'),
+                ),
+              ),
+            ),
           ),
-          hintText: 'Пароль',
-          border: InputBorder.none,
-          prefixIcon: Padding(
-            padding: const EdgeInsets.only(
-                left: 18, top: 11, right: 13, bottom: 12),
-            child: Image.asset('assets/img/iconPassword.png'),
-          ),
-        ),
+          IconButton(
+            onPressed: () {
+              showPassword = !showPassword;
+              setState(() {});
+            },
+            icon: showPassword
+                ? Icon(
+                    Icons.remove_red_eye_outlined,
+                    color: Color(0xFF225196),
+                  )
+                : Icon(
+                    Icons.remove_red_eye_rounded,
+                    color: Color(0xFF225196),
+                  ),
+          )
+        ],
       ),
     );
   }
-
-  @override
-  void dispose() {
-    phoneController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +208,6 @@ class _SingInScreenState extends State<SingInScreen> {
                 height: 23,
               ),
               phoneField(),
-
               SizedBox(
                 height: 15,
               ),
@@ -193,50 +215,52 @@ class _SingInScreenState extends State<SingInScreen> {
               SizedBox(
                 height: 20,
               ),
+              InkWell(
+                onTap: () async {
+                  circular=true;
+                  setState(() {
 
+                  });
+                  String ans =
+                      await AuthClient().postSingIn(email.text, password.text);
+                  if (ans == 'true'){
+                    circular=false;
+                    setState(() {
 
+                    });
+                    showToast('Вход выполнен!');
+                    Provider.of<SelectCatProvider>(context,listen: false).setEmail(email.text);
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (_) => Home()));}
+                  else if (ans == 'password') {
+                    circular=false;
+                    setState(() {
 
+                    });
+                    cancelToast('Неправильный пароль!');
+                  } else {
+                    circular=false;
+                    setState(() {
 
-
-
-
-
-
-
-
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context)
-                      .pushReplacement(MaterialPageRoute(builder: (_) => Home()));
+                    });
+                    cancelToast('Email не зарегистрирован!');
+                  }
                 },
-                child: Container(
+                child: Ink(
                   width: 163,
                   height: 45,
                   decoration: BoxDecoration(
                       color: Color(0xFF225196),
                       borderRadius: BorderRadius.circular(30)),
                   child: Center(
-                      child: Text(
-                        'Войти',
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      )),
+                      child: circular ? CircularProgressIndicator():Text(
+                    'Войти',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  )),
                 ),
               ),
               const SizedBox(height: 15),
               SizedBox(height: 80.h),
-
-
-
-
-
-
-
-
-
-
-
-
-
               SizedBox(
                 height: 15,
               ),
@@ -246,11 +270,13 @@ class _SingInScreenState extends State<SingInScreen> {
                     'Не можете войти?',
                     style: TextStyle(color: Color(0xFF225196), fontSize: 12),
                   )),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               GestureDetector(
                   onTap: () {
-                    Navigator.of(context)
-                        .pushReplacement(MaterialPageRoute(builder: (_) => SingUpScreen()));
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (_) => SingUpScreen()));
                   },
                   child: Text(
                     'Зарегистрироваться',

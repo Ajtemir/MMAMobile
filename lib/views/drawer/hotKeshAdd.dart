@@ -1,11 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:upai_app/provider/selectCatProvider.dart';
+import 'package:upai_app/views/auth/server/service.dart';
 import 'package:upai_app/views/category/selectCategoty.dart';
 import 'package:upai_app/widgets/appBar.dart';
 import 'package:upai_app/widgets/appBar2.dart';
+import '../../provider/selectTabProvider.dart';
 import '../../shared/app_colors.dart';
+import 'package:image_picker/image_picker.dart';
+import '../pages/dashboard.dart';
 import 'utils.dart';
 
 class HotKeshAdd extends StatefulWidget {
@@ -16,13 +23,151 @@ class HotKeshAdd extends StatefulWidget {
 }
 
 class _HotKeshAddState extends State<HotKeshAdd> {
+
+  late String emailGet;
+  @override
+  void initState() {
+    // TODO: implement initState
+    emailGet=Provider.of<SelectCatProvider>(context,
+        listen: false)
+        .email;
+    print(emailGet);
+    super.initState();
+  }
+
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime selectedDate1 = DateTime.now();
   DateTime selectedDate2 = DateTime.now();
-  String hintText =
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequa...';
+
+  String hintText = 'Введите описания';
+
+  List<XFile> imageFile = [];
+  late XFile imageFileCamera;
+  final ImagePicker _picker = ImagePicker();
+
+  TextEditingController price = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController description = TextEditingController();
+
+  Widget bottomSheet() {
+    return Container(
+      height: 100.0,
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
+        children: <Widget>[
+          Text(
+            "Выберите фото",
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            InkWell(
+              onTap: () {
+                print('Camera');
+                takePhotoCamera();
+                print(imageFileCamera.path);
+              },
+              child: Ink(
+                width: 100,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: AppColors.customButton,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Column(
+                  children: [
+                    Icon(Icons.camera),
+                    SizedBox(height: 10),
+                    Text("Камера")
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(width: 20),
+            InkWell(
+              onTap: () {
+                print('Galery');
+                takePhotoGalery();
+                print(imageFile[0].path);
+              },
+              child: Ink(
+                width: 100,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: AppColors.customButton,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Column(
+                  children: [
+                    Icon(Icons.image),
+                    SizedBox(height: 10),
+                    Text("Гелерея")
+                  ],
+                ),
+              ),
+            ),
+
+            /*IconButton(onPressed: (){
+              takePhoto(ImageSource.camera);
+            }, icon: Icon(Icons.camera),
+            ),*/
+
+            /*Expanded(
+              child: ElevatedButton.icon(
+
+                icon: Icon(Icons.camera),
+                onPressed: () {
+                  takePhoto(ImageSource.camera);
+                },
+                label: Text(''),
+              ),
+            ),*/
+            /*IconButton(onPressed: (){takePhoto(ImageSource.gallery);}, icon: Icon(Icons.image),),*/
+            /*Expanded(
+              child: ElevatedButton.icon(
+                icon: Icon(Icons.image),
+                onPressed: () {
+                  takePhoto(ImageSource.gallery);
+                },
+                label: Text(''),
+              ),
+            ),*/
+          ])
+        ],
+      ),
+    );
+  }
+
+  void takePhotoGalery() async {
+    /*final pickedFile = await _picker.getImage(
+      source: source
+    );*/
+    final List<XFile> images = await _picker.pickMultiImage();
+    setState(() {
+      imageFile.addAll(images);
+    });
+  }
+
+  void takePhotoCamera() async {
+    /*final pickedFile = await _picker.getImage(
+      source: source
+    );*/
+    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+    setState(() {
+      imageFile.add(photo!);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,7 +255,7 @@ class _HotKeshAddState extends State<HotKeshAdd> {
           SizedBox(height: 30),
           Padding(
             padding: const EdgeInsets.only(left: 39.0),
-            child: Text('Загрузите фото (450х250)',
+            child: Text('Загрузите фото',
                 style: TextStyle(
                     color: Color(0xFF515151),
                     fontSize: 16,
@@ -122,8 +267,40 @@ class _HotKeshAddState extends State<HotKeshAdd> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (imageFile.length > 0)
+                  Container(
+                    height: 80,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      separatorBuilder: (context, _) => SizedBox(width: 5),
+                      itemCount: imageFile.length,
+                      itemBuilder: (context, index) => Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: AppColors.blue,
+                            ),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: FileImage(File(imageFile[index].path)),
+                            )),
+                      ),
+                    ),
+                  ),
+                SizedBox(
+                  height: 20,
+                ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: ((builder) => bottomSheet()),
+                    );
+                  },
                   child: Container(
                     width: 80,
                     height: 80,
@@ -199,6 +376,7 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: TextField(
+                    controller: name,
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Название объявления',
@@ -227,9 +405,10 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: TextField(
+                    controller: description,
                     decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: hintText,
+                        hintText: 'Введите описание',
                         hintStyle: TextStyle(
                           color: Color(0xFFA6A6A6),
                           fontSize: 16,
@@ -255,6 +434,7 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: TextField(
+                    controller: price,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                         border: InputBorder.none,
@@ -335,6 +515,9 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                 ),
                 SizedBox(height: 7),
                 TableCalendar(
+                  headerStyle: HeaderStyle(formatButtonVisible: false),
+                  // rangeSelectionMode: RangeSelectionMode,
+
                   // today's date
                   focusedDay: _focusedDay,
                   // earliest possible date
@@ -352,15 +535,15 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                   daysOfWeekHeight: 40.0,
                   // height between the date rows, default is 52.0
                   rowHeight: 60.0,
-                  selectedDayPredicate: (day) {
+                  /*selectedDayPredicate: (day) {
                     // Use `selectedDayPredicate` to determine which day is currently selected.
                     // If this returns true, then `day` will be marked as selected.
 
                     // Using `isSameDay` is recommended to disregard
                     // the time-part of compared DateTime objects.
                     return isSameDay(_selectedDay, day);
-                  },
-                  onDaySelected: (selectedDay, focusedDay) {
+                  },*/
+                  /*onDaySelected: (selectedDay, focusedDay) {
                     if (!isSameDay(_selectedDay, selectedDay)) {
                       // Call `setState()` when updating the selected day
                       setState(() {
@@ -368,19 +551,19 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                         _focusedDay = focusedDay;
                       });
                     }
-                  },
-                  onFormatChanged: (format) {
+                  },*/
+                  /*onFormatChanged: (format) {
                     if (_calendarFormat != format) {
                       // Call `setState()` when updating calendar format
                       setState(() {
                         _calendarFormat = format;
                       });
                     }
-                  },
-                  onPageChanged: (focusedDay) {
+                  },*/
+                  /*onPageChanged: (focusedDay) {
                     // No need to call `setState()` here
                     _focusedDay = focusedDay;
-                  },
+                  },*/
                 ),
                 SizedBox(height: 20),
                 Row(
@@ -446,18 +629,50 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                       ),
                     ),
                     SizedBox(width: 10),
-                    Container(
-                      width: 125,
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFFF6B00),
-                        borderRadius: BorderRadius.circular(10),
+                    InkWell(
+                      onTap: () async {
+                        String descriptionText =
+                            name.text + 'name' + description.text;
+                        var json = {
+                          "description": descriptionText,
+                          "price": price.text,
+                          "categoryId": 1,
+                          "userEmail": emailGet
+                        };
+                        int ans = await AuthClient().postProductAdd(json);
+                        if (ans!=0) {
+                          // bool ans2=await AuthClient().postProductPhotoAdd(imageFile[0].path);
+                            Fluttertoast.showToast(
+                                msg: 'Успешно добавлено!',
+                                fontSize: 18,
+                                gravity: ToastGravity.BOTTOM,
+                                backgroundColor: Colors.green,
+                                textColor: Colors.white);
+                            Provider.of<SelectTabProvider>(context,
+                                    listen: false)
+                                .toggleSelect(Dashboard(), 0);
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: 'Вышла ошибка!',
+                              fontSize: 18,
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white);
+                        }
+                      },
+                      child: Ink(
+                        width: 125,
+                        height: 45,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFFF6B00),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                            child: Text(
+                          'Отправить',
+                          style: TextStyle(color: Colors.white, fontSize: 14),
+                        )),
                       ),
-                      child: Center(
-                          child: Text(
-                        'Отправить',
-                        style: TextStyle(color: Colors.white, fontSize: 14),
-                      )),
                     ),
                   ],
                 ),

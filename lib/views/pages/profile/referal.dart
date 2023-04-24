@@ -453,7 +453,7 @@ class _ReferalState extends State<Referal> {
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                     ),
-                    hintText: 'www.upai.kg/refral/2d67d764c24226794...'
+                    hintText: 'www.marketmall.kg/refral/2d67d764c24226794...'
                 ),
               )
           ),

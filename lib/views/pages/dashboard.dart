@@ -8,6 +8,8 @@ import 'package:upai_app/views/pages/hotKesh.dart';
 import 'package:upai_app/widgets/UserAvatar.dart';
 import 'package:upai_app/widgets/appBar.dart';
 
+import '../../fetches/products_fetch.dart';
+import '../../model/productModel.dart';
 import '../../shared/app_colors.dart';
 
 class Dashboard extends StatefulWidget {
@@ -16,6 +18,15 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+
+  late Future<ListProductsModel> futureProducts;
+
+
+  @override
+  void initState() {
+    super.initState();
+    futureProducts = fetchProducts();
+  }
   bool leftRight = true;
 
   List<Widget> listN = [
@@ -233,44 +244,47 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: AllAppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      appBar: AllAppBar(),
+      body: ListView(
+
           children: [
             SizedBox(
               height: 30,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Container(
-                  width: 330,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 1,
-                      color: Color(0xFF225196),
+            Padding(
+              padding: EdgeInsets.only(left: 14),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
+                    width: 330,
+                    height: 55,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 1,
+                        color: Color(0xFF225196),
+                      ),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    borderRadius: BorderRadius.circular(10),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          hintText: "Я ищу...",
+                          hintStyle: TextStyle(color: Color(0xFF225196)),
+                          prefixIcon: Icon(Icons.search,color: AppColors.blue1,),
+                          border: InputBorder.none),
+                    ),
                   ),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        hintText: "Я ищу...",
-                        prefixIcon: Icon(Icons.search),
-                        border: InputBorder.none),
-                  ),
-                ),
-                SizedBox(
-                    child: IconButton(
-                  icon: Icon(Icons.filter_alt_outlined,
-                      color: AppColors.blue1, size: 28),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const Filtr()));
-                  },
-                ))
-              ],
+                  SizedBox(
+                      child: IconButton(
+                    icon: Icon(Icons.filter_alt_outlined,
+                        color: AppColors.blue1, size: 28),
+                    onPressed: () {
+                      /*Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => const Filtr()));*/
+                    },
+                  ))
+                ],
+              ),
             ),
             SizedBox(height: 26),
             CarouselSlider(
@@ -486,6 +500,12 @@ class _DashboardState extends State<Dashboard> {
             SizedBox(
               height: 20,
             ),
+       /* FutureBuilder<ListProductsModel>(
+            future: futureProducts,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                var items=snapshot.data!.data!.length;
+                return*/
             Padding(
               padding: const EdgeInsets.only(left: 14.0),
               child: Container(
@@ -498,9 +518,14 @@ class _DashboardState extends State<Dashboard> {
                           SizedBox(width: 10),
                           HotKesh(1, 3, 27, 'Enter kg', 'Электро техника', 16),
                           SizedBox(width: 10),
-                          HotKesh(0, 5, 193, 'Бир Эки бургер', 'Fast food', 25),
+                          HotKeshSecond('/images/1025f602-1814-422a-9b05-be25b5377389.png', 5, 193, 'Сатылат', 'Fast food', 25),
                           SizedBox(width: 10),
-                          HotKesh(1, 3, 27, 'Enter kg', 'Электро техника', 16)
+                          HotKeshSecond('/images/9492e584-e0bc-4d98-a06b-b55d60afd380.jpg', 3, 27, 'Телефон', 'Электро техника', 16),
+                          SizedBox(width: 10),
+                          HotKeshSecond('/images/3949ff22-45a3-4251-95d4-1dc2d43f289e.jpg', 2, 42, 'Продается', 'Электро техника', 16),
+                    // for (var i=0;i<items;i++)
+                    //   HotKeshSecond(snapshot.data!.data![6].images![0], 3, 27, snapshot.data!.data![6].description!, 'Электро техника', 16),
+
                         ]
                       : [
                           HotKesh(2, 4, 193, 'Baby Store', 'Для детей', 14),
@@ -510,8 +535,8 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
             ),
+            SizedBox(height: 400)
           ],
-        ),
       ),
     );
   }
@@ -615,14 +640,13 @@ class _DashboardState extends State<Dashboard> {
   Widget HotKesh(
       int image, double rat, int otzyv, String name, String cat, int kesh) {
     return GestureDetector(
-      onTap: () => Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => HotKeshPage())),
+      onTap: () {},/*=> Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => HotKeshPage())),*/
       child: Container(
-        width: 190,
+        width: 170,
         child: Column(
           children: [
             Container(
-              width: 200,
               height: 120,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -685,9 +709,98 @@ class _DashboardState extends State<Dashboard> {
                     )
                   ],
                 ),
-                SizedBox(width: 22),
+                SizedBox(width: 5),
                 Container(
-                  width: 25,
+                  width: 20,
+                  child: Text(
+                    'до $kesh%',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: AppColors.green, fontSize: 10),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget HotKeshSecond(
+      String image, double rat, int otzyv, String name, String cat, int kesh) {
+    return GestureDetector(
+      onTap: () => Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => HotKeshPage())),
+      child: Container(
+        width: 170,
+        child: Column(
+          children: [
+            Container(
+              height: 120,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                      width: 2.5, color: Color(0xFF929292).withOpacity(0.37)),
+                  boxShadow: [
+                    BoxShadow(
+                        blurRadius: 7,
+                        offset: Offset(0, 6),
+                        color: Color(0x33000000))
+                  ],
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage('http://192.168.225.236$image'))),
+            ),
+            SizedBox(height: 12),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        RatingBar.builder(
+                            initialRating: rat,
+                            itemSize: 12,
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: AppColors.mainRed,
+                            ),
+                            onRatingUpdate: (rating) {
+                              setState(() {
+                                rat = rating;
+                              });
+                            }),
+                        SizedBox(width: 2.5),
+                        Text(
+                          '$rat',
+                          style:
+                          TextStyle(color: AppColors.mainRed, fontSize: 12),
+                        ),
+                        SizedBox(width: 2),
+                        Text(
+                          '($otzyv отзыва)',
+                          style:
+                          TextStyle(color: Color(0xFF313131), fontSize: 10),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      name,
+                      style: TextStyle(color: Color(0xFF313131), fontSize: 12),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      cat,
+                      style: TextStyle(color: Color(0xFF8D8D8D), fontSize: 10),
+                    )
+                  ],
+                ),
+                SizedBox(width: 5),
+                Container(
+                  width: 20,
                   child: Text(
                     'до $kesh%',
                     textAlign: TextAlign.center,
