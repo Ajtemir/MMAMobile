@@ -23,14 +23,12 @@ class HotKeshAdd extends StatefulWidget {
 }
 
 class _HotKeshAddState extends State<HotKeshAdd> {
-
   late String emailGet;
+
   @override
   void initState() {
     // TODO: implement initState
-    emailGet=Provider.of<SelectCatProvider>(context,
-        listen: false)
-        .email;
+    emailGet = Provider.of<SelectCatProvider>(context, listen: false).email;
     print(emailGet);
     super.initState();
   }
@@ -253,15 +251,36 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                     fontWeight: FontWeight.w400)),
           ),
           SizedBox(height: 30),
-          Padding(
+          ListTile(
+            contentPadding: EdgeInsets.only(left: 35,right: 20,bottom: 0),
+            leading: Text(
+              'Загрузите фото',
+              style: TextStyle(
+                  color: Color(0xFF515151),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400),
+            ),
+            trailing: IconButton(
+              onPressed: (){
+                imageFile=[];
+                setState(() {
+
+                });
+              },
+                icon: Icon(
+              Icons.delete_outline,
+              color: Colors.orange,
+            )),
+          ),
+          /*Padding(
             padding: const EdgeInsets.only(left: 39.0),
             child: Text('Загрузите фото',
                 style: TextStyle(
                     color: Color(0xFF515151),
                     fontSize: 16,
                     fontWeight: FontWeight.w400)),
-          ),
-          SizedBox(height: 7),
+          ),*/
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
@@ -329,17 +348,14 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => SelectCategory())),
                   child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 19),
+                      padding: EdgeInsets.only(left: 19,top: 13),
                       width: double.infinity,
                       height: 45,
                       decoration: BoxDecoration(
                         border: Border.all(width: 1, color: AppColors.blue),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                      child:
                           Provider.of<SelectCatProvider>(context).category == ''
                               ? Text('Выберите категорию',
                                   style: TextStyle(
@@ -354,9 +370,7 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                                     color: AppColors.blue,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400,
-                                  ))
-                        ],
-                      )),
+                                  ))),
                 ),
                 SizedBox(height: 20),
                 Padding(
@@ -378,6 +392,8 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                   child: TextField(
                     controller: name,
                     decoration: InputDecoration(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                         border: InputBorder.none,
                         hintText: 'Название объявления',
                         hintStyle: TextStyle(
@@ -407,6 +423,8 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                   child: TextField(
                     controller: description,
                     decoration: InputDecoration(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                         border: InputBorder.none,
                         hintText: 'Введите описание',
                         hintStyle: TextStyle(
@@ -437,6 +455,8 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                     controller: price,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                         border: InputBorder.none,
                         hintText: 'Введите цену',
                         hintStyle: TextStyle(
@@ -446,66 +466,9 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                         )),
                   ),
                 ),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.only(left: 19.0),
-                  child: Text('Скидка (не обязательно)',
-                      style: TextStyle(
-                          color: Color(0xFF515151),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400)),
-                ),
-                SizedBox(height: 7),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 19),
-                  height: 45,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: AppColors.blue),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: TextField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Введите % скидка',
-                        hintStyle: TextStyle(
-                          color: Color(0xFFA6A6A6),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        )),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.only(left: 19.0),
-                  child: Text('Контакты',
-                      style: TextStyle(
-                          color: Color(0xFF515151),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400)),
-                ),
-                SizedBox(height: 7),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 19),
-                  height: 45,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: AppColors.blue),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: TextField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Введите телефон номер',
-                        hintStyle: TextStyle(
-                          color: Color(0xFFA6A6A6),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        )),
-                  ),
-                ),
+
                 SizedBox(height: 30),
-                Padding(
+                /*Padding(
                   padding: const EdgeInsets.only(left: 19.0),
                   child: Text('Время и дата',
                       style: TextStyle(
@@ -535,15 +498,15 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                   daysOfWeekHeight: 40.0,
                   // height between the date rows, default is 52.0
                   rowHeight: 60.0,
-                  /*selectedDayPredicate: (day) {
+                  */ /*selectedDayPredicate: (day) {
                     // Use `selectedDayPredicate` to determine which day is currently selected.
                     // If this returns true, then `day` will be marked as selected.
 
                     // Using `isSameDay` is recommended to disregard
                     // the time-part of compared DateTime objects.
                     return isSameDay(_selectedDay, day);
-                  },*/
-                  /*onDaySelected: (selectedDay, focusedDay) {
+                  },*/ /*
+                  */ /*onDaySelected: (selectedDay, focusedDay) {
                     if (!isSameDay(_selectedDay, selectedDay)) {
                       // Call `setState()` when updating the selected day
                       setState(() {
@@ -551,19 +514,19 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                         _focusedDay = focusedDay;
                       });
                     }
-                  },*/
-                  /*onFormatChanged: (format) {
+                  },*/ /*
+                  */ /*onFormatChanged: (format) {
                     if (_calendarFormat != format) {
                       // Call `setState()` when updating calendar format
                       setState(() {
                         _calendarFormat = format;
                       });
                     }
-                  },*/
-                  /*onPageChanged: (focusedDay) {
+                  },*/ /*
+                  */ /*onPageChanged: (focusedDay) {
                     // No need to call `setState()` here
                     _focusedDay = focusedDay;
-                  },*/
+                  },*/ /*
                 ),
                 SizedBox(height: 20),
                 Row(
@@ -609,26 +572,10 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                     ),
                   ],
                 ),
-                SizedBox(height: 49),
+                SizedBox(height: 49),*/
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    GestureDetector(
-                      child: Container(
-                        width: 125,
-                        height: 45,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border:
-                                Border.all(width: 1, color: Color(0xFFFF6B00))),
-                        child: Center(
-                          child: Text('Отменить',
-                              style: TextStyle(
-                                  color: Color(0xFFFF6B00), fontSize: 14)),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10),
                     InkWell(
                       onTap: () async {
                         String descriptionText =
@@ -636,12 +583,16 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                         var json = {
                           "description": descriptionText,
                           "price": price.text,
-                          "categoryId": 1,
+                          "categoryId": Provider.of<SelectCatProvider>(context,listen: false)
+                              .categoryId,
                           "userEmail": emailGet
                         };
                         int ans = await AuthClient().postProductAdd(json);
-                        if (ans!=0) {
-                          // bool ans2=await AuthClient().postProductPhotoAdd(imageFile[0].path);
+                        if (ans != 0) {
+                          print(imageFile[0].path);
+                          bool ans2 = await AuthClient()
+                              .postProductPhotoAdd(imageFile, ans);
+                          if (ans2) {
                             Fluttertoast.showToast(
                                 msg: 'Успешно добавлено!',
                                 fontSize: 18,
@@ -651,9 +602,17 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                             Provider.of<SelectTabProvider>(context,
                                     listen: false)
                                 .toggleSelect(Dashboard(), 0);
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: 'Вышла ошибка!',
+                                fontSize: 18,
+                                gravity: ToastGravity.BOTTOM,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white);
+                          }
                         } else {
                           Fluttertoast.showToast(
-                              msg: 'Вышла ошибка!',
+                              msg: 'Error!',
                               fontSize: 18,
                               gravity: ToastGravity.BOTTOM,
                               backgroundColor: Colors.red,

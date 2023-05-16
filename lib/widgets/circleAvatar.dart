@@ -66,7 +66,7 @@ class _CircleAvatarState extends State<CircleAvatar> {
               top: 0,
               right: 72,
               child: GestureDetector(
-                onTap: (){Navigator.of(context).push(MaterialPageRoute(builder:(context)=>UserEditing()));},
+                // onTap: (){Navigator.of(context).push(MaterialPageRoute(builder:(context)=>UserEditing()));},
                 child: Container(
                   padding: EdgeInsets.all(9),
                   decoration: BoxDecoration(

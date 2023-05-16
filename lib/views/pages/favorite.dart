@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:upai_app/views/pages/hotKesh.dart';
 import 'package:upai_app/widgets/appBar.dart';
 
+import '../../fetches/favorite_products_fetch.dart';
+import '../../fetches/products_fetch.dart';
+import '../../model/productModel.dart';
+import '../../provider/selectCatProvider.dart';
 import '../../shared/app_colors.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -15,37 +20,98 @@ import 'package:upai_app/views/pages/hotKesh.dart';
 import 'package:upai_app/widgets/UserAvatar.dart';
 import 'package:upai_app/widgets/appBar.dart';
 
+import '../auth/server/service.dart';
+import '../category/aboutMagaz.dart';
+
 class Favorite extends StatefulWidget {
   @override
   _FavoriteState createState() => _FavoriteState();
 }
 
 class _FavoriteState extends State<Favorite> {
-  bool leftRight = true;
+  late Future<ListProductsModel> futureProducts;
+  late String emailGet;
+
+  @override
+  void initState() {
+    emailGet=Provider.of<SelectCatProvider>(context,
+        listen: false)
+        .email;
+    // TODO: implement initState
+    super.initState();
+    futureProducts = fetchProductsFavorite(emailGet);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AllAppBar(),
         backgroundColor: Colors.white,
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SizedBox(height: 10),
-            ListTile(
-                leading: Text('Избранное',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400)),
-                trailing: TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    'Удалить',
-                    style: TextStyle(color: AppColors.red1, fontSize: 15),
-                  ),
-                )),
-          ]),
+        body: RefreshIndicator(
+          onRefresh: () async{
+            setState(() {
+
+            });
+          },
+          child: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              children: [
+                SizedBox(height: 10),
+                ListTile(
+                  leading: Text('Избранное',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w400)),
+                  /*trailing: TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'Удалить',
+                      style: TextStyle(color: AppColors.red1, fontSize: 15),
+                    ),
+                  )*/
+                ),
+                FutureBuilder<ListProductsModel>(
+                  future: fetchProductsFavorite(emailGet),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      var items=snapshot.data!.data!.length;
+                      return
+                        Padding(
+                          padding: const EdgeInsets.only(left: 14.0),
+                          child: Wrap(
+                            runSpacing: 20,
+                            spacing: 10,
+                            // scrollDirection: Axis.horizontal,
+                            children:
+                                [
+                              /*HotKesh(0, 5, 193, 'Бир Эки бургер', 'Fast food', 25),
+                          SizedBox(width: 10),
+                          HotKesh(1, 3, 27, 'Enter kg', 'Электро техника', 16),
+                          SizedBox(width: 10),
+                          HotKeshSecond('/images/1025f602-1814-422a-9b05-be25b5377389.png', 5, 193, 'Сатылат', 'Fast food', 25),
+                          SizedBox(width: 10),
+                          HotKeshSecond('/images/9492e584-e0bc-4d98-a06b-b55d60afd380.jpg', 3, 27, 'Телефон', 'Электро техника', 16),
+                          SizedBox(width: 10),
+                          HotKeshSecond('/images/3949ff22-45a3-4251-95d4-1dc2d43f289e.jpg', 2, 42, 'Продается', 'Электро техника', 16),*/
+                              for (var i=0;i<items;i++)
+                                HotKeshSecond(snapshot.data!.data![i].images!.length>0 ? snapshot.data!.data![i].images![0] : null, 3, snapshot.data!.data![i].description!, snapshot.data!.data![i].price.toString(),((snapshot.data!.data![i].id!).toString()),emailGet),
+
+                            ]
+
+                              /*HotKesh(2, 4, 193, 'Baby Store', 'Для детей', 14),
+                          SizedBox(width: 10),
+                          HotKesh(3, 5, 27, 'Cinematika', 'Кино и театр', 24)*/
+
+                          ),
+                        );}else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+
+                    // By default, show a loading spinner.
+                    return Center(child: const CircularProgressIndicator());
+                  },),
+              ]),
         )
         //       Expanded(
         //         child: Padding(
@@ -80,6 +146,87 @@ class _FavoriteState extends State<Favorite> {
         //   ),
         // ),
         );
+  }
+  Widget HotKeshSecond(
+      String? image, double rat,  String name, String cat,String productId,String email) {
+    List<String> nameAndDescription=[name.split('name').first,name.split('name').last];
+    return InkWell(
+      onTap: () => Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => AboutMagaz(productId: productId,email: email,checkUserPage: false,))),
+      child: Ink(
+        width: 170,
+        child: Column(
+          children: [
+            Container(
+              height: 120,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                      width: 2.5, color: Color(0xFF929292).withOpacity(0.37)),
+                  boxShadow: [
+                    BoxShadow(
+                        blurRadius: 7,
+                        offset: Offset(0, 6),
+                        color: Color(0x33000000))
+                  ],
+                  image:image!=null ? DecorationImage(
+                      fit: BoxFit.cover,
+                      image:  NetworkImage('http://${AuthClient().ip}/$image')  )
+                      : DecorationImage(
+                      fit: BoxFit.cover,
+                      image:  AssetImage('assets/img/hotKesh/kesh0.jpg') )
+              ),
+            ),
+            SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /*Row(
+                      children: [
+                        RatingBar.builder(
+                            initialRating: rat,
+                            itemSize: 12,
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: AppColors.mainRed,
+                            ),
+                            onRatingUpdate: (rating) {
+                              setState(() {
+                                rat = rating;
+                              });
+                            }),
+                        SizedBox(width: 2.5),
+                        Text(
+                          '$rat',
+                          style:
+                          TextStyle(color: AppColors.mainRed, fontSize: 12),
+                        ),
+                      ],
+                    ),*/
+                    SizedBox(height: 5),
+                    Text(
+                      nameAndDescription[0],
+                      style: TextStyle(color: Color(0xFF313131), fontSize: 16),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      cat=='null'?"Договорная": cat.split('.').first+' сом',
+                      style: TextStyle(color: Colors.orange, fontSize: 14),
+                    )
+                  ],
+                ),
+
+
+              ],
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
 

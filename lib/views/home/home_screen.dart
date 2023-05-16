@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:upai_app/provider/selectTabProvider.dart';
+import 'package:upai_app/views/drawer/hotKeshAdd.dart';
 import 'package:upai_app/views/pages/favorite.dart';
 import 'package:upai_app/views/pages/messeg.dart';
 import 'package:upai_app/views/pages/notifications.dart';
@@ -33,8 +34,8 @@ class _HomeState extends State<Home> {
         child: Provider.of<SelectTabProvider>(context).currentScreen,
         bucket: bucket,
       ),
-      floatingActionButton: FloatWidget(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
+
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
         // notchMargin: 10,
@@ -61,18 +62,16 @@ class _HomeState extends State<Home> {
                 minWidth: 40,
                 onPressed: () {
                   Provider.of<SelectTabProvider>(context, listen: false)
-                      .toggleSelect(Messej(),
+                      .toggleSelect(HotKeshAdd(),
                           2); // if user taps on this dashboard tab will be active
                 },
                 child: Icon(
-                  Icons.message_outlined,
+                  Icons.add_to_photos_outlined,
                   color: Provider.of<SelectTabProvider>(context).currentTab == 2
                       ? AppColors.red1
                       : AppColors.blue1,
                 ),
               ),
-              SizedBox(),
-              SizedBox(),
               MaterialButton(
                 minWidth: 40,
                 onPressed: () {

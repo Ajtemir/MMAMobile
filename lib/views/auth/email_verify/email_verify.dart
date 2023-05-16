@@ -124,14 +124,19 @@ class _EmailVerifyState extends State<EmailVerify> {
                     height: 15,
                   ),
                   GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                            SingInScreen()), (Route<dynamic> route) => false);
+                      },
                       child: Text(
-                        'Не можете войти?',
+                        'Хотите войти?',
                         style: TextStyle(color: Color(0xFF225196), fontSize: 12),
                       )),
                   SizedBox(height: 20,),
                   InkWell(
                       onTap: () {
+                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                            SingUpScreen()), (Route<dynamic> route) => false);
                       },
                       child: Text(
                         'Зарегистрироваться',

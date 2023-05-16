@@ -221,7 +221,7 @@ class _CategoryState extends State<Category> {
   Widget SlideContainer(
       int image, double rat, int otzyv, String name,int kesh) {
     return GestureDetector(
-      onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder:(context)=>AboutMagaz())),
+      onTap: (){},/*=>Navigator.of(context).push(MaterialPageRoute(builder:(context)=>AboutMagaz())),*/
       child: Container(
         width: 150,
         child: Column(

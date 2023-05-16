@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:upai_app/fetches/categories_fetch.dart';
 import 'package:upai_app/provider/selectCatProvider.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 
+import '../../model/categoriesModel.dart';
+import '../auth/server/service.dart';
 import 'filter.dart';
 
 class SelectCategory extends StatefulWidget {
@@ -41,19 +44,37 @@ class _SelectCategoryState extends State<SelectCategory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AllAppBar2(),
-      body: ListView.separated(
-        padding: EdgeInsets.symmetric(horizontal: 14),
-        separatorBuilder: (context, _) => SizedBox(height: 10),
-        itemCount: CategoryName.length,
-        itemBuilder: (context, index) => Category(
-            CategoryName[index], 'assets/img/category/cat$index.png'),
-      ),
+      body:
+      FutureBuilder<CategoriesModel>(
+        future: fetchCategories(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var items=snapshot.data!.data!.length;
+            var path=snapshot.data!;
+            return
+
+            ListView.separated(
+              padding: EdgeInsets.symmetric(horizontal: 14),
+              separatorBuilder: (context, _) => SizedBox(height: 10),
+              itemCount: items,
+              itemBuilder: (context, index) => Category(
+                  path.data![index].name!, path.data![index].path!,path.data![index].id.toString()),
+            );
+          }else if (snapshot.hasError) {
+            return Text('${snapshot.error}');;
+          }
+
+          // By default, show a loading spinner.
+          return Center(child:  CircularProgressIndicator());
+        },),
+
+
     );
   }
-  Widget Category(String name, String image) {
+  Widget Category(String name, String image,String catId) {
     return GestureDetector(
       onTap: (){
-        Provider.of<SelectCatProvider>(context,listen: false).toggleSelect(name);
+        Provider.of<SelectCatProvider>(context,listen: false).toggleSelect(name,catId);
         Navigator.pop(context);
         },
       child: Container(
@@ -75,8 +96,8 @@ class _SelectCategoryState extends State<SelectCategory> {
                   borderRadius: BorderRadius.circular(10)),
               child: Padding(
                 padding: const EdgeInsets.all(22),
-                child: Image.asset(
-                  image,
+                child: Image.network(
+                  'http://${AuthClient().ip}/$image',
                   height: 22,
                   width: 22,
                 ),

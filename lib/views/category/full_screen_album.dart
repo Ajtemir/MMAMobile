@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
+import '../auth/server/service.dart';
+
 class FullScreenAlbum extends StatefulWidget {
-  final int startIndex;
-  FullScreenAlbum(this.startIndex);
+  final List<String> images;
+  FullScreenAlbum(this.images);
   @override
   _FullScreenAlbumState createState() => _FullScreenAlbumState();
 }
@@ -12,7 +14,7 @@ class _FullScreenAlbumState extends State<FullScreenAlbum> {
 
   @override
   Widget build(BuildContext context) {
-    PageController controller=PageController(initialPage: widget.startIndex);
+    PageController controller=PageController(initialPage: 0,);
     return Scaffold(
       backgroundColor: Colors.black26,
       appBar: AppBar(
@@ -36,12 +38,16 @@ class _FullScreenAlbumState extends State<FullScreenAlbum> {
         itemBuilder: (context, index) {
           return Container(
             child: PhotoView(
+              minScale: PhotoViewComputedScale.contained,
+                maxScale: PhotoViewComputedScale.covered*2,
+
+              disableGestures: false,
               imageProvider:
-              AssetImage('assets/img/category_page/galery/$index.png')
+              NetworkImage('http://${AuthClient().ip}/${widget.images[index]}')
             ),
           );
         },
-        itemCount: 3,
+        itemCount: widget.images.length,
       ),
     );
   }

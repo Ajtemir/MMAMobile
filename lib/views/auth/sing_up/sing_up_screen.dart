@@ -47,7 +47,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
               SizedBox(
                 height: 34,
               ),
-              Text(
+              /*Text(
                 'Войти через социальные сети',
                 style: TextStyle(
                   fontSize: 18,
@@ -100,7 +100,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                     ),
                   ),
                 ],
-              ),
+              ),*/
               SizedBox(
                 height: 23,
               ),

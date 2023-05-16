@@ -24,7 +24,7 @@ class ListProductsModel {
 class ProductsModel {
   int? id;
   String? description;
-  int? price;
+  double? price;
   int? categoryId;
   String? userId;
   String? sellerEmail;

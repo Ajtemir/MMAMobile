@@ -150,7 +150,7 @@ class _SingInScreenState extends State<SingInScreen> {
               SizedBox(
                 height: 34,
               ),
-              Text(
+              /*Text(
                 'Войти через социальные сети',
                 style: TextStyle(
                   fontSize: 18,
@@ -203,7 +203,7 @@ class _SingInScreenState extends State<SingInScreen> {
                     ),
                   ),
                 ],
-              ),
+              ),*/
               SizedBox(
                 height: 23,
               ),
