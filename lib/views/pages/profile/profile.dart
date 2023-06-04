@@ -33,6 +33,8 @@ class _ProfileState extends State<Profile> {
   late Future<UserDataModel> futureUserData;
   late String emailGet;
   late String imageProfile;
+  late String name;
+  late String phone;
 
   @override
   void initState() {
@@ -92,7 +94,9 @@ class _ProfileState extends State<Profile> {
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           var path=snapshot.data!;
-                          imageProfile='http://${AuthClient().ip}/${path.avatar}';
+                          imageProfile='http://${AuthClient.ip}/${path.avatar}';
+                          name=path.username!;
+                          phone=path.phone!;
                           return
                             Positioned(
                                 top: 0,
@@ -100,7 +104,7 @@ class _ProfileState extends State<Profile> {
                                 child: path.avatar!=null? CircleAvatar(
 
                                   radius: 53,
-                                  backgroundImage: NetworkImage('http://${AuthClient().ip}/${path.avatar}')
+                                  backgroundImage: NetworkImage('http://${AuthClient.ip}/${path.avatar}')
                                 ) : CircleAvatar(
                                   backgroundColor: Colors.white,
                                   radius: 53,
@@ -140,7 +144,7 @@ class _ProfileState extends State<Profile> {
                       child: GestureDetector(
                         onTap: (){
 
-                          Navigator.of(context).push(MaterialPageRoute(builder:(context)=>UserEditing(image: imageProfile!=null? imageProfile:'',email: emailGet,)));
+                          Navigator.of(context).push(MaterialPageRoute(builder:(context)=>UserEditing(image: imageProfile!=null? imageProfile:'',email: emailGet,name: name,number: phone)));
                           },
                         child: Container(
                           padding: EdgeInsets.all(9),
@@ -503,10 +507,11 @@ class _ProfileState extends State<Profile> {
     List<String> nameAndDescription=[name.split('name').first,name.split('name').last];
     return InkWell(
       onTap: () => Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => AboutMagaz(productId: productId,email: email,checkUserPage: true,))),
+          .push(MaterialPageRoute(builder: (context) => AboutMagaz(productId: productId,email: email,checkUserPage: false,))),
       child: Ink(
         width: 170,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               height: 120,
@@ -522,21 +527,14 @@ class _ProfileState extends State<Profile> {
                   ],
                   image:image!=null ? DecorationImage(
                       fit: BoxFit.cover,
-                      image:  NetworkImage('http://${AuthClient().ip}/$image')  )
+                      image:  NetworkImage('http://${AuthClient.ip}/$image')  )
                       : DecorationImage(
                       fit: BoxFit.cover,
                       image:  AssetImage('assets/img/hotKesh/kesh0.jpg') )
               ),
             ),
             SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    /*Row(
+            /*Row(
                       children: [
                         RatingBar.builder(
                             initialRating: rat,
@@ -558,22 +556,24 @@ class _ProfileState extends State<Profile> {
                         ),
                       ],
                     ),*/
-                    SizedBox(height: 5),
-                    Text(
-                      nameAndDescription[0],
-                      style: TextStyle(color: Color(0xFF313131), fontSize: 16),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      cat=='null'?"Договорная": cat.split('.').first+' сом',
-                      style: TextStyle(color: Colors.orange, fontSize: 14),
-                    )
-                  ],
-                ),
+            SizedBox(height: 5),
+            Container(
 
-
-              ],
+              child: Text(
+                nameAndDescription[0],
+                style: TextStyle(color: Color(0xFF313131), fontSize: 16),
+                overflow: TextOverflow.clip,
+              ),
+            ),
+            SizedBox(height: 5),
+            Text(
+              cat=='null'?"Договорная": cat.split('.').first+' сом',
+              style: TextStyle(color: Colors.orange, fontSize: 14),
             )
+
+
+
+
           ],
         ),
       ),

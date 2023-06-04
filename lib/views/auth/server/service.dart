@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 
 class AuthClient{
   var client = http.Client();
-  var ip='192.168.115.236';
+  static var ip='192.168.164.236';
 
   Future<dynamic> getProducts() async {
     var uri = Uri(
@@ -35,6 +35,27 @@ class AuthClient{
       port: 80,
       path: 'Products/Index',
       queryParameters: {'categoryId':id}
+    );
+
+    var response = await client.get(uri);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print(response.body);
+      return response.body;
+    } else {
+      //throw exception and catch it in UI
+      print('error not found');
+      print(response.statusCode);
+      print(response.body);
+    }
+  }
+
+  Future<dynamic> getSearchProducts(String search) async {
+    var uri = Uri(
+        scheme: 'http',
+        host: ip,
+        port: 80,
+        path: 'Products/Search',
+        queryParameters: {'param':search}
     );
 
     var response = await client.get(uri);

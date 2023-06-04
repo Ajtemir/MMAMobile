@@ -15,7 +15,9 @@ import '../../../shared/app_colors.dart';
 class UserEditing extends StatefulWidget {
   final String image;
   final String email;
-  const UserEditing({Key? key,required this.image,required this.email}) : super(key: key);
+  final String name;
+  final String number;
+  const UserEditing({Key? key,required this.image,required this.email,required this.name,required this.number}) : super(key: key);
 
   @override
   _UserEditingState createState() => _UserEditingState();
@@ -25,6 +27,7 @@ class _UserEditingState extends State<UserEditing> {
   TextEditingController userName=TextEditingController();
   TextEditingController phoneNumber=TextEditingController();
   TextEditingController email=TextEditingController();
+
 
   late XFile? imageFile;
   final ImagePicker _picker = ImagePicker();
@@ -148,9 +151,10 @@ class _UserEditingState extends State<UserEditing> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
+    userName.text=widget.name;
+    phoneNumber.text=widget.number;
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
@@ -267,15 +271,10 @@ class _UserEditingState extends State<UserEditing> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: TextField(
+
               controller: userName,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: 'User name',
-                hintStyle: TextStyle(
-                  color: Color(0xFFA6A6A6),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                )
               ),
             ),
           ),
@@ -292,12 +291,6 @@ class _UserEditingState extends State<UserEditing> {
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Phone number',
-                  hintStyle: TextStyle(
-                    color: Color(0xFFA6A6A6),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  )
               ),
             ),
           ),

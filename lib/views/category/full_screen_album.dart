@@ -43,7 +43,7 @@ class _FullScreenAlbumState extends State<FullScreenAlbum> {
 
               disableGestures: false,
               imageProvider:
-              NetworkImage('http://${AuthClient().ip}/${widget.images[index]}')
+              NetworkImage('http://${AuthClient.ip}/${widget.images[index]}')
             ),
           );
         },

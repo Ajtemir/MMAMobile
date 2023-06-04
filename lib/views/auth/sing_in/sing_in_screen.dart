@@ -21,6 +21,7 @@ class SingInScreen extends StatefulWidget {
 class _SingInScreenState extends State<SingInScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController ip=TextEditingController();
   bool showPassword = false;
   bool circular=false;
 
@@ -53,6 +54,41 @@ class _SingInScreenState extends State<SingInScreen> {
                   left: 18, top: 11, right: 13, bottom: 12),
               child: Icon(
                 Icons.email_outlined,
+                color: Color(0xFF225196),
+                size: 19,
+              )),
+        ),
+      ),
+    );
+  }
+  ipField() {
+    return Container(
+      width: 300,
+      height: 55,
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: 1,
+          color: Color(0xFF225196),
+        ),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: TextField(
+        controller: ip,
+        style: TextStyle(
+          color: Color(0xFF225196),
+          fontSize: 16,
+        ),
+        decoration: InputDecoration(
+          hintStyle: TextStyle(
+            color: Color(0xFF225196).withOpacity(0.5),
+          ),
+          hintText: 'IP adress',
+          border: InputBorder.none,
+          prefixIcon: Padding(
+              padding: const EdgeInsets.only(
+                  left: 18, top: 11, right: 13, bottom: 12),
+              child: Icon(
+                Icons.settings,
                 color: Color(0xFF225196),
                 size: 19,
               )),
@@ -215,8 +251,13 @@ class _SingInScreenState extends State<SingInScreen> {
               SizedBox(
                 height: 20,
               ),
+              ipField(),
+              SizedBox(
+                height: 20,
+              ),
               InkWell(
                 onTap: () async {
+                  AuthClient.ip=ip.text;
                   circular=true;
                   setState(() {
 

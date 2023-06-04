@@ -97,7 +97,7 @@ class _SelectCategoryState extends State<SelectCategory> {
               child: Padding(
                 padding: const EdgeInsets.all(22),
                 child: Image.network(
-                  'http://${AuthClient().ip}/$image',
+                  'http://${AuthClient.ip}/$image',
                   height: 22,
                   width: 22,
                 ),

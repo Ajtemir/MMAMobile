@@ -64,8 +64,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                   Row(
                     children: [
                       Container(
-                        width: 142,
-                        height: 142,
+                        width: 122,
+                        height: 122,
                         padding: EdgeInsets.all(9),
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
@@ -90,7 +90,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                           child: CircleAvatar(
 
                               radius: 53,
-                              backgroundImage: NetworkImage('http://${AuthClient().ip}/${path.images![0]}')
+                              backgroundImage: NetworkImage('http://${AuthClient.ip}/${path.images![0]}')
                           )
                         ),
                       ),
@@ -98,12 +98,16 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            nameAndDescription[0],
-                            style: TextStyle(
-                              color: Color(0xFF313131),
-                              fontSize: 24,
-                              fontWeight: FontWeight.w400,
+                          Container(
+                            width: 150,
+                            child: Text(
+                              nameAndDescription[0],
+                              style: TextStyle(
+                                color: Color(0xFF313131),
+                                fontSize: 20,
+                                overflow: TextOverflow.clip,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
                           SizedBox(height: 17),
@@ -127,12 +131,16 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                 ),
                               ),
                               SizedBox(width: 12),
-                              Text(
-                                path.sellerEmail ?? '',
-                                style: TextStyle(
-                                    color: Color(0xFF535353),
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
+                              Container(
+                                width: 150,
+                                child: Text(
+                                  path.sellerEmail ?? '',
+                                  overflow: TextOverflow.clip,
+                                  style: TextStyle(
+                                      color: Color(0xFF535353),
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400),
+                                ),
                               )
                             ],
                           ),
@@ -188,6 +196,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                     ),
                   ),
                   SizedBox(height: 30),
+                  if(!(widget.email== path.sellerEmail))
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 60.0),
                     child: InkWell(
@@ -298,7 +307,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                 borderRadius: BorderRadius.circular(10),
                                 image: DecorationImage(
                                     fit: BoxFit.cover,
-                                    image: NetworkImage('http://${AuthClient().ip}/${path.images![index]}'))),
+                                    image: NetworkImage('http://${AuthClient.ip}/${path.images![index]}'))),
                           ),
                         );
                       },
@@ -316,7 +325,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 
                   SizedBox(height: 20),
-                  if(!widget.checkUserPage)
+                  if(!widget.checkUserPage && !(widget.email== path.sellerEmail))
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 90.0),
                     child: InkWell(

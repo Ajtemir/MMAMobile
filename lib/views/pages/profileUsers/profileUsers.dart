@@ -88,7 +88,7 @@ class _ProfileUserState extends State<ProfileUser> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         var path=snapshot.data!;
-                        imageProfile='http://${AuthClient().ip}/${path.avatar}';
+                        imageProfile='http://${AuthClient.ip}/${path.avatar}';
                         return
                           Positioned(
                               top: 0,
@@ -96,7 +96,7 @@ class _ProfileUserState extends State<ProfileUser> {
                               child: path.avatar!=null? CircleAvatar(
 
                                 radius: 53,
-                                backgroundImage: NetworkImage('http://${AuthClient().ip}/${path.avatar}')
+                                backgroundImage: NetworkImage('http://${AuthClient.ip}/${path.avatar}')
                               ) : CircleAvatar(
                                 backgroundColor: Colors.white,
                                 radius: 53,
@@ -159,7 +159,7 @@ class _ProfileUserState extends State<ProfileUser> {
 
           SizedBox(height: 15),
           Container(
-            height: 80,
+            height: 100,
             decoration: BoxDecoration(
               color: Color(0xFF313131),
               borderRadius: BorderRadius.circular(10),
@@ -247,12 +247,12 @@ class _ProfileUserState extends State<ProfileUser> {
                                   return
 
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Text(path.email.toString(),
                                             style: TextStyle(
-                                                color: Colors.white, fontSize: 20)),
+                                                color: Colors.white, fontSize: 16)),
                                         SizedBox(height: 6),
                                         Text(path.phone!=null ? path.phone.toString():'...',
                                             style: TextStyle(
@@ -480,10 +480,11 @@ class _ProfileUserState extends State<ProfileUser> {
     List<String> nameAndDescription=[name.split('name').first,name.split('name').last];
     return InkWell(
       onTap: () => Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => AboutMagaz(productId: productId,email: email,checkUserPage: true,))),
+          .push(MaterialPageRoute(builder: (context) => AboutMagaz(productId: productId,email: email,checkUserPage: false,))),
       child: Ink(
         width: 170,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               height: 120,
@@ -499,21 +500,14 @@ class _ProfileUserState extends State<ProfileUser> {
                   ],
                   image:image!=null ? DecorationImage(
                       fit: BoxFit.cover,
-                      image:  NetworkImage('http://${AuthClient().ip}/$image')  )
+                      image:  NetworkImage('http://${AuthClient.ip}/$image')  )
                       : DecorationImage(
                       fit: BoxFit.cover,
                       image:  AssetImage('assets/img/hotKesh/kesh0.jpg') )
               ),
             ),
             SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    /*Row(
+            /*Row(
                       children: [
                         RatingBar.builder(
                             initialRating: rat,
@@ -535,22 +529,24 @@ class _ProfileUserState extends State<ProfileUser> {
                         ),
                       ],
                     ),*/
-                    SizedBox(height: 5),
-                    Text(
-                      nameAndDescription[0],
-                      style: TextStyle(color: Color(0xFF313131), fontSize: 16),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      cat=='null'?"Договорная": cat.split('.').first+' сом',
-                      style: TextStyle(color: Colors.orange, fontSize: 14),
-                    )
-                  ],
-                ),
+            SizedBox(height: 5),
+            Container(
 
-
-              ],
+              child: Text(
+                nameAndDescription[0],
+                style: TextStyle(color: Color(0xFF313131), fontSize: 16),
+                overflow: TextOverflow.clip,
+              ),
+            ),
+            SizedBox(height: 5),
+            Text(
+              cat=='null'?"Договорная": cat.split('.').first+' сом',
+              style: TextStyle(color: Colors.orange, fontSize: 14),
             )
+
+
+
+
           ],
         ),
       ),
