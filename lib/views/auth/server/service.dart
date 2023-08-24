@@ -33,8 +33,8 @@ class AuthClient{
       scheme: 'http',
       host: ip,
       port: 80,
-      path: 'Products/Index',
-      queryParameters: {'categoryId':id}
+      path: 'Products/getProductsByCategoryId',
+      queryParameters: {'categoryId': id}
     );
 
     var response = await client.get(uri);
