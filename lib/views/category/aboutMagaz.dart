@@ -88,7 +88,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                     color: Color(0x26000000))
                               ]),
                           child: CircleAvatar(
-
                               radius: 53,
                               backgroundImage:
                               NetworkImage('http://${AuthClient.ip}/${(path.images!.isEmpty ? 'images/default.png' : path.images?[0]) ?? 'images/default.png'}'),
