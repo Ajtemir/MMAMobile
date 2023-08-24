@@ -19,9 +19,9 @@ class SingInScreen extends StatefulWidget {
 }
 
 class _SingInScreenState extends State<SingInScreen> {
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
-  TextEditingController ip=TextEditingController();
+  TextEditingController email = TextEditingController(text: "first@example.com");
+  TextEditingController password = TextEditingController(text: "password");
+  TextEditingController ip=TextEditingController(text: "localhost");
   bool showPassword = false;
   bool circular=false;
 

@@ -20,7 +20,8 @@ class AboutProductModel {
         this.sellerEmail,
         this.images});
 
-  AboutProductModel.fromJson(Map<String, dynamic> json) {
+  AboutProductModel.fromJson(Map<String, dynamic> jsonBody) {
+    var json = jsonBody['data'];
     isFavorite = json['isFavorite'];
     favoriteCount = json['favoriteCount'];
     id = json['id'];
