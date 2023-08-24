@@ -386,7 +386,12 @@ class AuthClient{
     print(response.statusCode);
     if (response.statusCode == 201 || response.statusCode == 200) {
       print(response.statusCode);
-      return int.parse(response.body);
+
+      var data = jsonDecode(response.body);
+      var inner = data['data'];
+      var id = inner['id'];
+      var type = id.runtimeType;
+      return id;
     } else {
       print('error not found');
       print(response.body);
