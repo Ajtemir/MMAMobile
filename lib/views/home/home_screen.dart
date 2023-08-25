@@ -12,6 +12,7 @@ import 'package:upai_app/views/pages/profile/profile.dart';
 import 'package:upai_app/widgets/floatingAction.dart';
 
 import '../../shared/app_colors.dart';
+import '../pages/map/globalMap.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -96,6 +97,20 @@ class _HomeState extends State<Home> {
                 child: Icon(
                   Icons.perm_identity_outlined,
                   color: Provider.of<SelectTabProvider>(context).currentTab == 3
+                      ? AppColors.red1
+                      : AppColors.blue1,
+                ),
+              ),
+              MaterialButton(
+                minWidth: 40,
+                onPressed: () {
+                  Provider.of<SelectTabProvider>(context, listen: false)
+                      .toggleSelect(GlobalMap(),
+                      4); // if user taps on this dashboard tab will be active
+                },
+                child: Icon(
+                  Icons.map_rounded,
+                  color: Provider.of<SelectTabProvider>(context).currentTab == 4
                       ? AppColors.red1
                       : AppColors.blue1,
                 ),

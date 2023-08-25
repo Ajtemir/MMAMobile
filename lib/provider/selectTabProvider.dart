@@ -15,7 +15,7 @@ class SelectTabProvider extends ChangeNotifier{
   int currentTab=0;
   Widget currentScreen = Dashboard();
   void toggleSelect(Widget newWidget,int tab){
-    if(tab==4){
+    if(tab==5){
       backList.add(currentScreen);
       tabList.add(currentTab);
     }
