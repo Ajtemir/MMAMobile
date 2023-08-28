@@ -579,12 +579,12 @@ class _DashboardState extends State<Dashboard> {
                           SizedBox(width: 10),
                           HotKeshSecond('/images/3949ff22-45a3-4251-95d4-1dc2d43f289e.jpg', 2, 42, 'Продается', 'Электро техника', 16),*/
                     for (var i=0;i<items;i++)
-                      HotKeshSecond(snapshot.data!.data![i].images!.length>0 ? snapshot.data!.data![i].images![0] : null, 3, snapshot.data!.data![i].description!, snapshot.data!.data![i].price.toString(),((snapshot.data!.data![i].id!).toString()),emailGet),
+                      HotKeshSecond(snapshot.data!.data![i].images!.length>0 ? snapshot.data!.data![i].images![0] : null, 3, snapshot.data!.data![i].description!, snapshot.data!.data![i].price.toString(),((snapshot.data!.data![i].id!).toString()),emailGet, snapshot.data!.data![i].collectiveInfo),
 
                         ]
                       : [
                     for (var i=items-1;i>=0;i--)
-                      HotKeshSecond(snapshot.data!.data![i].images!.length>0 ? snapshot.data!.data![i].images![0] : null, 3, snapshot.data!.data![i].description!, snapshot.data!.data![i].price.toString(),((snapshot.data!.data![i].id!).toString()),emailGet),
+                      HotKeshSecond(snapshot.data!.data![i].images!.length>0 ? snapshot.data!.data![i].images![0] : null, 3, snapshot.data!.data![i].description!, snapshot.data!.data![i].price.toString(),((snapshot.data!.data![i].id!).toString()),emailGet, snapshot.data!.data![i].collectiveInfo),
                           /*HotKesh(2, 4, 193, 'Baby Store', 'Для детей', 14),
                           SizedBox(width: 10),
                           HotKesh(3, 5, 27, 'Cinematika', 'Кино и театр', 24)*/
@@ -793,7 +793,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget HotKeshSecond(
-      String? image, double rat,  String name, String cat,String productId,String email) {
+      String? image, double rat,  String name, String cat,String productId,String email, [CollectiveInfo? args]) {
     List<String> nameAndDescription=[name.split('name').first,name.split('name').last];
     return InkWell(
       onTap: () => Navigator.of(context)
@@ -857,9 +857,28 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     SizedBox(height: 5),
                     Text(
-                      cat=='null'?"Договорная": cat.split('.').first+' сом',
+                      cat=='null'?"Договорная цена": cat.split('.').first+' сом',
                       style: TextStyle(color: Colors.orange, fontSize: 14),
+                    ),
+                    args == null
+                        ? const SizedBox(
+                      height: 0,
                     )
+                        : Column(
+                      children: [
+                        Text(
+                          "сейчас ${args.currentBuyerCount}/${args.minBuyerCount} нужно",
+                          style: const TextStyle(color: Colors.blue, fontSize: 16),
+                          overflow: TextOverflow.clip,
+                          textAlign: TextAlign.start,
+                        ),
+                        Text(
+                          "коллективная цена:${args.collectivePrice}",
+                          style: const TextStyle(color: Colors.red, fontSize: 16),
+                          overflow: TextOverflow.clip,
+                        ),
+                      ],
+                    ),
 
 
 
@@ -870,3 +889,23 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 }
+
+
+class ProductReadViewModel{
+  late int minBuyerAmount;
+  late int currentBuyerAmount;
+  late double collectivePrice;
+
+  static Widget collectiveWidget(ProductReadViewModel? model) {
+    return model == null
+        ? const SizedBox(
+            height: 0,
+          )
+        : Text(
+          "${model.currentBuyerAmount} / ${model.minBuyerAmount} ${model.collectivePrice} сом",
+          style: const TextStyle(color: Color(0xFF313131), fontSize: 16),
+          overflow: TextOverflow.clip,
+        );
+  }
+}
+
