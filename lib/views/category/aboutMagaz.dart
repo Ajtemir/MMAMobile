@@ -25,7 +25,7 @@ class AboutMagaz extends StatefulWidget {
 
 class _AboutMagazState extends State<AboutMagaz> {
   bool isFavorite=false;
-  bool isCollective = false;
+  bool? isSetCollective;
   String comment =
       '''Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua tempor incididunt ut labore et dolore ''';
   List<String> userComment = [
@@ -58,6 +58,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
             List<String> nameAndDescription=[snapshot.data!.description!.split('name').first,snapshot.data!.description!.split('name').last];
             var path=snapshot.data!;
             isFavorite=path.isFavorite!;
+            isSetCollective = path.isSetCollective;
             return
               ListView(
                 padding: EdgeInsets.symmetric(horizontal: 14),
@@ -281,30 +282,48 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                     ),
                   ),
                 const SizedBox(height: 5,),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 60.0),
-                  child: Ink(
-                      height: 45,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color(0xFFFF6B00),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                              flex: 1,
-                              child: isFavorite ? Icon(Icons.arrow_upward_outlined,color: Colors.white):Icon(Icons.arrow_upward_outlined,color: Colors.white,)
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Text(
-                              isFavorite ? '' : 'Добавить в избранное',
-                              style: TextStyle(color: Colors.white, fontSize: 15),
+                isSetCollective == null
+                    ? const SizedBox(height: 0,)
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 60.0),
+                        child: InkWell(
+                          onTap: () {
+                            var _isSetCollective = !isSetCollective!;
+                              setState(() {
+                                isSetCollective = _isSetCollective;
+                              });
+                          },
+                          child: Ink(
+                            height: 45,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Color(0xFFFF6B00),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    flex: 1,
+                                    child: isSetCollective!
+                                        ? const Icon(Icons.arrow_downward_outlined,
+                                            color: Colors.white,
+                                        )
+                                        : const Icon(
+                                            Icons.arrow_upward_outlined,
+                                            color: Colors.white,
+                                          )),
+                                Expanded(
+                                  flex: 3,
+                                  child: Text(
+                                    isSetCollective! ? 'Убрать' : 'Добавить',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),),
-                ),
+                        ),
+                      ),
                 SizedBox(height: 60),
                   Text(
                     'Галерея',

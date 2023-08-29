@@ -1,3 +1,5 @@
+import 'package:upai_app/model/productModel.dart';
+
 class AboutProductModel {
   bool? isFavorite;
   int? favoriteCount;
@@ -8,17 +10,22 @@ class AboutProductModel {
   String? userId;
   String? sellerEmail;
   List<String>? images;
+  CollectiveInfo? collectiveInfo;
+  bool? isSetCollective;
 
-  AboutProductModel(
-      {this.isFavorite,
-        this.favoriteCount,
-        this.id,
-        this.description,
-        this.price,
-        this.categoryId,
-        this.userId,
-        this.sellerEmail,
-        this.images});
+  AboutProductModel({
+    this.isFavorite,
+    this.favoriteCount,
+    this.id,
+    this.description,
+    this.price,
+    this.categoryId,
+    this.userId,
+    this.sellerEmail,
+    this.images,
+    this.collectiveInfo,
+    this.isSetCollective,
+  });
 
   AboutProductModel.fromJson(Map<String, dynamic> jsonBody) {
     var json = jsonBody['data'];
@@ -31,6 +38,8 @@ class AboutProductModel {
     userId = json['userId'];
     sellerEmail = json['sellerEmail'];
     images = json['images'].cast<String>();
+    collectiveInfo = json['collectiveInfo'] == null ? null : CollectiveInfo.fromJson(json['collectiveInfo']);
+    isSetCollective = json['isSetCollective'];
   }
 
   Map<String, dynamic> toJson() {

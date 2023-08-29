@@ -74,28 +74,7 @@ class CollectiveInfo {
   final int currentBuyerCount;
   final int collectivePrice;
   CollectiveInfo(this.minBuyerCount, this.currentBuyerCount, this.collectivePrice);
-  static CollectiveInfo fromJson(Map<String, dynamic> json) {
-    return CollectiveInfo(json['minBuyerCount'], json['currentBuyerCount'], json['discountedPrice']);
-  }
-  // static Widget collectiveWidget(CollectiveInfo? model) {
-  //   return model == null
-  //   ? const SizedBox(
-  //     height: 0,
-  //   )
-  //   : Column(
-  //     children: [
-  //       Text(
-  //       "сейчас ${model.currentBuyerCount}/${model.minBuyerCount} нужно",
-  //         style: const TextStyle(color: Colors.blue, fontSize: 16),
-  //         overflow: TextOverflow.clip,
-  //         textAlign: TextAlign.start,
-  //       ),
-  //       Text(
-  //         "коллективная цена:${model.collectivePrice}",
-  //         style: const TextStyle(color: Colors.red, fontSize: 16),
-  //         overflow: TextOverflow.clip,
-  //       ),
-  //     ],
-  //   );
-  // }
+  static CollectiveInfo fromJson(Map<String, dynamic> json) =>
+      CollectiveInfo(json['minBuyerCount'], json['currentBuyerCount'], json['discountedPrice']);
+
 }
