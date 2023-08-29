@@ -287,11 +287,20 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                     : Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 60.0),
                         child: InkWell(
-                          onTap: () {
-                            var _isSetCollective = !isSetCollective!;
+                          onTap: () async {
+                            try{
+                              if(isSetCollective!){
+                                await AuthClient().removeCollective(path.id!, widget.email);
+                              }
+                              else{
+                                await AuthClient().addCollective(path.id!, widget.email);
+                              }
                               setState(() {
-                                isSetCollective = _isSetCollective;
+
                               });
+                            } on Exception catch (err) {
+                              print(err);
+                            }
                           },
                           child: Ink(
                             height: 45,
@@ -304,10 +313,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                 Expanded(
                                     flex: 1,
                                     child: isSetCollective!
-                                        ? const Icon(Icons.arrow_downward_outlined,
+                                        ? Icon(Icons.arrow_downward_outlined,
                                             color: Colors.white,
                                         )
-                                        : const Icon(
+                                        :  Icon(
                                             Icons.arrow_upward_outlined,
                                             color: Colors.white,
                                           )),
@@ -316,6 +325,30 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                   child: Text(
                                     isSetCollective! ? 'Убрать' : 'Добавить',
                                     style: TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Text(
+                                    '${path.collectiveInfo!.currentBuyerCount} / ${path.collectiveInfo!.minBuyerCount}',
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Text(
+                                    '${path.collectiveInfo!.collectivePrice} сом',
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Text(
+                                    'Конец ${path.collectiveInfo!.endDate.}',
+                                    style: const TextStyle(
                                         color: Colors.white, fontSize: 15),
                                   ),
                                 ),

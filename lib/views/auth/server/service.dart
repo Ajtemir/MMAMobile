@@ -482,8 +482,47 @@ class AuthClient{
     }
   }
 
+  Future addCollective(int productId, String buyerEmail) async {
+    var uri = Uri(
+      scheme: 'http',
+      host: ip,
+      port: 80,
+      path: 'CollectiveTrade/AddCollectiveProduct',
+    );
+    Map<String, dynamic> obj = {
+      'productId': productId,
+      'buyerEmail': buyerEmail,
+    };
 
+    var json = jsonEncode(obj);
+    var response = await client.post(
+      uri,
+      body: json,
+      headers: {"Content-Type": "application/json", "Accept": "*/*"},
+    );
+    if(response.statusCode != 200) {
+      throw Exception("Не удалось добавить в список коллективной покупки");
+    }
+  }
 
-
-
+  Future removeCollective(int productId, String buyerEmail) async {
+    var uri = Uri(
+      scheme: 'http',
+      host: ip,
+      port: 80,
+      path: 'CollectiveTrade/RemoveCollectiveProduct',
+    );
+    Map<String, dynamic> data = {
+      'productId': productId,
+      'buyerEmail': buyerEmail,
+    };
+    var response = await client.delete(
+      uri,
+      body:jsonEncode(data),
+      headers: {"Content-Type": "application/json", "Accept": "*/*"},
+    );
+    if(response.statusCode != 200) {
+      throw Exception("Не удалось удалить в список коллективной покупки");
+    }
+  }
 }
