@@ -12,6 +12,7 @@ class AboutProductModel {
   List<String>? images;
   CollectiveInfo? collectiveInfo;
   bool? isSetCollective;
+  late bool isSeller;
 
   AboutProductModel({
     this.isFavorite,
@@ -25,6 +26,7 @@ class AboutProductModel {
     this.images,
     this.collectiveInfo,
     this.isSetCollective,
+    required this.isSeller,
   });
 
   AboutProductModel.fromJson(Map<String, dynamic> jsonBody) {
@@ -40,6 +42,7 @@ class AboutProductModel {
     images = json['images'].cast<String>();
     collectiveInfo = json['collectiveInfo'] == null ? null : CollectiveInfo.fromJson(json['collectiveInfo']);
     isSetCollective = json['isSetCollective'];
+    isSeller = json['isSeller'];
   }
 
   Map<String, dynamic> toJson() {

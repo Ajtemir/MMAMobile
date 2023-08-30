@@ -525,4 +525,70 @@ class AuthClient{
       throw Exception("Не удалось удалить в список коллективной покупки");
     }
   }
+
+
+  Future makeCollective(MakeCollectiveArgument argument) async {
+    var uri = Uri(
+      scheme: 'http',
+      host: ip,
+      port: 80,
+      path: 'CollectiveTrade/MakeProductCollective',
+    );
+    // Map<String, dynamic> data = argument.toMap();
+    var response = await client.post(
+      uri,
+      body: jsonEncode(argument),
+      headers: {"Content-Type": "application/json", "Accept": "*/*"},
+    );
+    if(response.statusCode != 200) {
+      throw Exception("Не удалось добавить в список товаров коллективной покупки");
+    }
+  }
+
+  Future unmakeCollective(MakeCollectiveArgument argument) async {
+    var uri = Uri(
+      scheme: 'http',
+      host: ip,
+      port: 80,
+      path: 'CollectiveTrade/MakeProductCollective',
+    );
+    // Map<String, dynamic> data = argument.toMap();
+    var response = await client.delete(
+      uri,
+      body: jsonEncode(argument),
+      headers: {"Content-Type": "application/json", "Accept": "*/*"},
+    );
+    if(response.statusCode != 200) {
+      throw Exception("Не удалось убрать из список товаров коллективной покупки");
+    }
+  }
+}
+
+class MakeCollectiveArgument{
+  final int productId;
+  final String  sellerEmail;
+  final double collectivePrice;
+  final int buyerAmount;
+  final DateTime startDate;
+  final DateTime endDate;
+
+  MakeCollectiveArgument(this.productId, this.sellerEmail, this.collectivePrice, this.buyerAmount, this.startDate, this.endDate);
+  Map<String, dynamic> toMap() {
+    return {
+      'productId': productId,
+      'sellerEmail': sellerEmail,
+      'collectivePrice': collectivePrice,
+      'buyerAmount': buyerAmount,
+      'startDate': startDate,
+      'endDate': endDate
+    };
+  }
+}
+
+
+
+class UnmakeCollectiveArgument{
+  final int productId;
+
+  UnmakeCollectiveArgument(this.productId);
 }

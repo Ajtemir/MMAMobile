@@ -26,6 +26,8 @@ class AboutMagaz extends StatefulWidget {
 class _AboutMagazState extends State<AboutMagaz> {
   bool isFavorite=false;
   bool? isSetCollective;
+  late bool isSeller;
+  late bool? isMadeCollectiveOrDefaultNotSeller;
   String comment =
       '''Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua tempor incididunt ut labore et dolore ''';
   List<String> userComment = [
@@ -59,6 +61,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
             var path=snapshot.data!;
             isFavorite=path.isFavorite!;
             isSetCollective = path.isSetCollective;
+            isSeller = path.isSeller;
+            isMadeCollectiveOrDefaultNotSeller = isSeller
+                ? path.collectiveInfo != null
+                : null;
             return
               ListView(
                 padding: EdgeInsets.symmetric(horizontal: 14),
@@ -347,7 +353,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                 Expanded(
                                   flex: 3,
                                   child: Text(
-                                    'Конец ${path.collectiveInfo!.endDate.}',
+                                    'Конец ${path.collectiveInfo!.endDate}',
                                     style: const TextStyle(
                                         color: Colors.white, fontSize: 15),
                                   ),
@@ -357,6 +363,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                           ),
                         ),
                       ),
+                  isMadeCollectiveOrDefaultNotSeller == null
+                      ? const SizedBox(height: 0,)
+                      : MakingCollective(productId: path.id!, isMadeCollective: isMadeCollectiveOrDefaultNotSeller!),
                 SizedBox(height: 60),
                   Text(
                     'Галерея',
@@ -465,3 +474,84 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
     );
   }
 }
+
+class MakingCollective extends StatefulWidget {
+  final int productId;
+  final bool isMadeCollective;
+  const MakingCollective({Key? key, required this.productId, required this.isMadeCollective}) : super(key: key);
+
+
+  @override
+  State<MakingCollective> createState() => _MakingCollectiveState();
+}
+
+class _MakingCollectiveState extends State<MakingCollective> {
+  late bool isMadeCollective;
+
+  @override
+  void initState() {
+    super.initState();
+    isMadeCollective = widget.isMadeCollective;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 60.0),
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            if(isMadeCollective){
+
+            }else{
+
+            }
+          });
+          isMadeCollective = !isMadeCollective;
+        },
+        child: Ink(
+          height: 45,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Color(0xFFFF6B00),
+          ),
+          child: Row(
+            children: [
+              const Expanded(
+                flex: 1,
+                child: Icon(Icons.add_card_sharp),
+              ),
+              Expanded(
+                flex: 3,
+                child: Text( isMadeCollective
+                    ? 'Убрать обьявление с групповой скидки'
+                    : 'Выставить обьявление на групповую скидку',
+                  style: const TextStyle(color: Colors.white, fontSize: 15),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class FormBottomModal extends StatefulWidget {
+  const FormBottomModal({Key? key}) : super(key: key);
+
+
+  @override
+  State<FormBottomModal> createState() => _FormBottomModalState();
+}
+
+class _FormBottomModalState extends State<FormBottomModal> {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
+
+
