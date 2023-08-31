@@ -1,7 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
+import 'package:upai_app/DTOs/make_collective_post.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 
 import '../../fetches/about_product_fetch.dart';
@@ -11,6 +14,8 @@ import '../auth/server/service.dart';
 import '../pages/profileUsers/profileUsers.dart';
 import 'custom_navigation.dart';
 import 'full_screen_album.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:upai_app/DTOs/seller_email_and_product_id.dart';
 
 class AboutMagaz extends StatefulWidget {
   final String productId;
@@ -365,7 +370,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                       ),
                   isMadeCollectiveOrDefaultNotSeller == null
                       ? const SizedBox(height: 0,)
-                      : MakingCollective(productId: path.id!, isMadeCollective: isMadeCollectiveOrDefaultNotSeller!),
+                      : MakingCollective(productId: path.id!, isMadeCollective: isMadeCollectiveOrDefaultNotSeller!, sellerEmail: widget.email,),
                 SizedBox(height: 60),
                   Text(
                     'Галерея',
@@ -478,7 +483,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 class MakingCollective extends StatefulWidget {
   final int productId;
   final bool isMadeCollective;
-  const MakingCollective({Key? key, required this.productId, required this.isMadeCollective}) : super(key: key);
+  final String sellerEmail;
+  const MakingCollective({Key? key, required this.productId, required this.isMadeCollective, required this.sellerEmail}) : super(key: key);
 
 
   @override
@@ -487,6 +493,9 @@ class MakingCollective extends StatefulWidget {
 
 class _MakingCollectiveState extends State<MakingCollective> {
   late bool isMadeCollective;
+  void _update() {
+    setState(() => isMadeCollective = !isMadeCollective);
+  }
 
   @override
   void initState() {
@@ -500,14 +509,19 @@ class _MakingCollectiveState extends State<MakingCollective> {
       padding: const EdgeInsets.symmetric(horizontal: 60.0),
       child: InkWell(
         onTap: () {
-          setState(() {
+          setState(()   {
             if(isMadeCollective){
-
+              AuthClient().unmakeCollective(UnmakeCollectiveArgument(widget.productId)).then((value) => _update());
             }else{
-
+               showMaterialModalBottomSheet(
+                context: context,
+                builder: (context) => SingleChildScrollView(
+                  controller: ModalScrollController.of(context),
+                  child: FormBottomModal(dto: SellerEmailAndProductId(widget.productId, widget.sellerEmail, _update)),
+                ),
+              );
             }
           });
-          isMadeCollective = !isMadeCollective;
         },
         child: Ink(
           height: 45,
@@ -538,20 +552,141 @@ class _MakingCollectiveState extends State<MakingCollective> {
 }
 
 
-class FormBottomModal extends StatefulWidget {
-  const FormBottomModal({Key? key}) : super(key: key);
 
+class FormBottomModal extends StatefulWidget {
+  const FormBottomModal({Key? key, required this.dto}) : super(key: key);
+  final SellerEmailAndProductId dto;
 
   @override
   State<FormBottomModal> createState() => _FormBottomModalState();
 }
 
 class _FormBottomModalState extends State<FormBottomModal> {
+  final _formKey = GlobalKey<FormBuilderState>();
+  late SellerEmailAndProductId _dto;
+  @override
+  void initState() {
+    super.initState();
+    _dto = widget.dto;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return FormBuilder(
+      key: _formKey,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 10,
+          ),
+          FormBuilderDateTimePicker(
+            validator: (value) {
+              if (value == null) {
+                return 'Please enter start Date';
+              }
+              return null;
+            },
+            currentDate: DateTime.now(),
+            inputType: InputType.both,
+            format: DateFormat("yyyy-MM-dd hh:mm"),
+            initialDate: DateTime.now(),
+            decoration: InputDecoration(
+              labelText: "Дата начала",
+              border: OutlineInputBorder(),
+            ),
+            name: 'startDate',
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          FormBuilderDateTimePicker(
+            validator: (value) {
+              if (value == null) {
+                return 'Please enter end Date';
+              }
+              return null;
+            },
+            inputType: InputType.both,
+            format: DateFormat("yyyy-MM-dd hh:mm"),
+            initialDate: DateTime.now(),
+            decoration: InputDecoration(
+              labelText: "Дата конца",
+              border: OutlineInputBorder(),
+            ),
+            name: 'endDate',
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          FormBuilderSlider(
+            min: 0,
+            max: 100,
+            name: 'collectivePrice',
+            enabled: true,
+            initialValue: 50,
+            decoration: const InputDecoration(labelText: 'Коллективная цена', border: OutlineInputBorder()),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          FormBuilderTextField(
+            validator: (value) {
+              if (value == null || int.parse(value) < 2) {
+                return 'Please enter min 2';
+              }
+              return null;
+            },
+            decoration: InputDecoration(
+                labelText: "Минимальное количество покупателей",
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(2)))),
+            keyboardType: TextInputType.number,
+
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+            name: 'minBuyerCount',
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          MaterialButton(
+            color: Theme.of(context).colorScheme.secondary,
+            onPressed: () async {
+              if(_formKey.currentState!.saveAndValidate()){
+                var keyValuePairs = _formKey.currentState?.value;
+                if(keyValuePairs != null){
+                  var data = MakingCollectiveProduct(
+                    startDate: keyValuePairs['startDate'],
+                    endDate: keyValuePairs['endDate'],
+                    collectivePrice: keyValuePairs['collectivePrice'].toDouble(),
+                    minBuyerCount: int.parse(keyValuePairs['minBuyerCount']),
+                    email: _dto.sellerEmail,
+                    productId: _dto.productId,
+                  );
+                  try{
+                    await AuthClient().makeCollective(data);
+                    _dto.update();
+                    Navigator.pop(context);
+                  }
+                  catch(err){
+                    print(err.toString());
+                  }
+
+                }
+              }
+
+
+
+            },
+            child: const Text('Опубликовать скидку'),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+        ],
+      ),
+    );
   }
 }
-
-
 

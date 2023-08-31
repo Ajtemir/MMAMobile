@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../DTOs/make_collective_post.dart';
+
 class AuthClient{
   var client = http.Client();
   static var ip='192.168.164.236';
@@ -527,17 +529,18 @@ class AuthClient{
   }
 
 
-  Future makeCollective(MakeCollectiveArgument argument) async {
+  Future makeCollective(MakingCollectiveProduct argument) async {
     var uri = Uri(
       scheme: 'http',
       host: ip,
       port: 80,
       path: 'CollectiveTrade/MakeProductCollective',
     );
+    var json = jsonEncode(argument.toMap());
     // Map<String, dynamic> data = argument.toMap();
     var response = await client.post(
       uri,
-      body: jsonEncode(argument),
+      body: json,
       headers: {"Content-Type": "application/json", "Accept": "*/*"},
     );
     if(response.statusCode != 200) {
@@ -545,17 +548,17 @@ class AuthClient{
     }
   }
 
-  Future unmakeCollective(MakeCollectiveArgument argument) async {
+  Future unmakeCollective(UnmakeCollectiveArgument argument) async {
     var uri = Uri(
       scheme: 'http',
       host: ip,
       port: 80,
-      path: 'CollectiveTrade/MakeProductCollective',
+      path: 'CollectiveTrade/UnmakeProductCollective',
     );
     // Map<String, dynamic> data = argument.toMap();
     var response = await client.delete(
       uri,
-      body: jsonEncode(argument),
+      body: jsonEncode(argument.toMap()),
       headers: {"Content-Type": "application/json", "Accept": "*/*"},
     );
     if(response.statusCode != 200) {
@@ -564,26 +567,26 @@ class AuthClient{
   }
 }
 
-class MakeCollectiveArgument{
-  final int productId;
-  final String  sellerEmail;
-  final double collectivePrice;
-  final int buyerAmount;
-  final DateTime startDate;
-  final DateTime endDate;
-
-  MakeCollectiveArgument(this.productId, this.sellerEmail, this.collectivePrice, this.buyerAmount, this.startDate, this.endDate);
-  Map<String, dynamic> toMap() {
-    return {
-      'productId': productId,
-      'sellerEmail': sellerEmail,
-      'collectivePrice': collectivePrice,
-      'buyerAmount': buyerAmount,
-      'startDate': startDate,
-      'endDate': endDate
-    };
-  }
-}
+// class MakeCollectiveArgument{
+//   final int productId;
+//   final String  sellerEmail;
+//   final double collectivePrice;
+//   final int buyerAmount;
+//   final DateTime startDate;
+//   final DateTime endDate;
+//
+//   MakeCollectiveArgument(this.productId, this.sellerEmail, this.collectivePrice, this.buyerAmount, this.startDate, this.endDate);
+//   Map<String, dynamic> toMap() {
+//     return {
+//       'productId': productId,
+//       'sellerEmail': sellerEmail,
+//       'collectivePrice': collectivePrice,
+//       'buyerAmount': buyerAmount,
+//       'startDate': startDate,
+//       'endDate': endDate
+//     };
+//   }
+// }
 
 
 
@@ -591,4 +594,10 @@ class UnmakeCollectiveArgument{
   final int productId;
 
   UnmakeCollectiveArgument(this.productId);
+
+  Map<String, dynamic> toMap(){
+    return {
+      'productId': productId,
+    };
+  }
 }
