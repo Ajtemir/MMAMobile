@@ -5,10 +5,13 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:upai_app/DTOs/make_collective_post.dart';
+import 'package:upai_app/DTOs/submit_collective_argument.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 
+import '../../DTOs/unmake_collective_product.dart';
 import '../../fetches/about_product_fetch.dart';
 import '../../model/aboutProductModel.dart';
+import '../../model/productModel.dart';
 import '../../shared/app_colors.dart';
 import '../auth/server/service.dart';
 import '../pages/profileUsers/profileUsers.dart';
@@ -370,7 +373,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                       ),
                   isMadeCollectiveOrDefaultNotSeller == null
                       ? const SizedBox(height: 0,)
-                      : MakingCollective(productId: path.id!, isMadeCollective: isMadeCollectiveOrDefaultNotSeller!, sellerEmail: widget.email,),
+                      : MakingCollective(productId: path.id!, isMadeCollective: isMadeCollectiveOrDefaultNotSeller!, sellerEmail: widget.email,collectiveInfo: path.collectiveInfo),
                 SizedBox(height: 60),
                   Text(
                     'Галерея',
@@ -484,7 +487,8 @@ class MakingCollective extends StatefulWidget {
   final int productId;
   final bool isMadeCollective;
   final String sellerEmail;
-  const MakingCollective({Key? key, required this.productId, required this.isMadeCollective, required this.sellerEmail}) : super(key: key);
+  final CollectiveInfo? collectiveInfo;
+  const MakingCollective({Key? key, required this.productId, required this.isMadeCollective, required this.sellerEmail, this.collectiveInfo}) : super(key: key);
 
 
   @override
@@ -493,6 +497,7 @@ class MakingCollective extends StatefulWidget {
 
 class _MakingCollectiveState extends State<MakingCollective> {
   late bool isMadeCollective;
+
   void _update() {
     setState(() => isMadeCollective = !isMadeCollective);
   }
@@ -505,6 +510,12 @@ class _MakingCollectiveState extends State<MakingCollective> {
 
   @override
   Widget build(BuildContext context) {
+    return Column(children: <Widget>[_makingCollective(), const SizedBox(height: 5,),_submitDeal(),],);
+  }
+
+
+
+  Widget _makingCollective(){
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 60.0),
       child: InkWell(
@@ -548,6 +559,82 @@ class _MakingCollectiveState extends State<MakingCollective> {
         ),
       ),
     );
+  }
+
+  Widget _submitDeal() {
+    bool isSubmittable = widget.collectiveInfo!.currentBuyerCount >= widget.collectiveInfo!.minBuyerCount;
+    return isMadeCollective
+        ? Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 60.0),
+      child: InkWell(
+        onTap: () async {
+          if(isSubmittable){
+            try{
+              await AuthClient().submitCollective(SubmitCollectiveArgument(widget.productId));
+              _update();
+              setState(() {
+
+              });
+            }
+            catch(err){
+              print(err);
+            }
+
+          }
+        },
+        child: Ink(
+          height: 45,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: isSubmittable ? Color(0xFFFF6B00) : Colors.black12,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                  flex: 1,
+                  child:  Icon(Icons.add_business_rounded,
+                    color: Colors.white,
+                  )
+              ),
+              Expanded(
+                flex: 3,
+                child: Text(
+                  'Начало ${widget.collectiveInfo!.startDate}',
+                  style: TextStyle(
+                      color: Colors.white, fontSize: 15),
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Text(
+                  '${widget.collectiveInfo!.currentBuyerCount} / ${widget.collectiveInfo!.minBuyerCount}',
+                  style: const TextStyle(
+                      color: Colors.white, fontSize: 15),
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Text(
+                  '${widget.collectiveInfo!.collectivePrice} сом',
+                  style: const TextStyle(
+                      color: Colors.white, fontSize: 15),
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Text(
+                  'Конец ${widget.collectiveInfo!.endDate}',
+                  style: const TextStyle(
+                      color: Colors.white, fontSize: 15),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    )
+
+        : SizedBox();
   }
 }
 

@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:upai_app/DTOs/submit_collective_argument.dart';
 
 import '../../../DTOs/make_collective_post.dart';
+import '../../../DTOs/unmake_collective_product.dart';
 
 class AuthClient{
   var client = http.Client();
@@ -565,39 +567,25 @@ class AuthClient{
       throw Exception("Не удалось убрать из список товаров коллективной покупки");
     }
   }
-}
 
-// class MakeCollectiveArgument{
-//   final int productId;
-//   final String  sellerEmail;
-//   final double collectivePrice;
-//   final int buyerAmount;
-//   final DateTime startDate;
-//   final DateTime endDate;
-//
-//   MakeCollectiveArgument(this.productId, this.sellerEmail, this.collectivePrice, this.buyerAmount, this.startDate, this.endDate);
-//   Map<String, dynamic> toMap() {
-//     return {
-//       'productId': productId,
-//       'sellerEmail': sellerEmail,
-//       'collectivePrice': collectivePrice,
-//       'buyerAmount': buyerAmount,
-//       'startDate': startDate,
-//       'endDate': endDate
-//     };
-//   }
-// }
-
-
-
-class UnmakeCollectiveArgument{
-  final int productId;
-
-  UnmakeCollectiveArgument(this.productId);
-
-  Map<String, dynamic> toMap(){
-    return {
-      'productId': productId,
-    };
+  Future submitCollective(SubmitCollectiveArgument argument) async {
+    var uri = Uri(
+      scheme: 'http',
+      host: ip,
+      port: 80,
+      path: 'CollectiveTrade/SubmitDeal',
+    );
+    var response = await client.post(
+      uri,
+      body: argument.toJson(),
+      headers: {"Content-Type": "application/json", "Accept": "*/*"},
+    );
+    if(response.statusCode != 200) {
+      throw Exception(jsonDecode(response.body));
+    }
   }
+
+
 }
+
+
