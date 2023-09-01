@@ -562,9 +562,11 @@ class _MakingCollectiveState extends State<MakingCollective> {
   }
 
   Widget _submitDeal() {
+    if(!isMadeCollective){
+    return SizedBox();
+    }
     bool isSubmittable = widget.collectiveInfo!.currentBuyerCount >= widget.collectiveInfo!.minBuyerCount;
-    return isMadeCollective
-        ? Padding(
+    return  Padding(
       padding: const EdgeInsets.symmetric(horizontal: 60.0),
       child: InkWell(
         onTap: () async {
@@ -615,6 +617,14 @@ class _MakingCollectiveState extends State<MakingCollective> {
               Expanded(
                 flex: 3,
                 child: Text(
+                  isSubmittable ? 'Подтвердить' : 'Нет нужного количества',
+                  style: const TextStyle(
+                      color: Colors.white, fontSize: 15),
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Text(
                   '${widget.collectiveInfo!.collectivePrice} сом',
                   style: const TextStyle(
                       color: Colors.white, fontSize: 15),
@@ -634,7 +644,7 @@ class _MakingCollectiveState extends State<MakingCollective> {
       ),
     )
 
-        : SizedBox();
+        ;
   }
 }
 
