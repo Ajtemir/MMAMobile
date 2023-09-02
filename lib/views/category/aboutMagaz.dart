@@ -36,7 +36,8 @@ class _AboutMagazState extends State<AboutMagaz> {
   bool? isSetCollective;
   late bool isSeller;
   late bool? isMadeCollectiveOrDefaultNotSeller;
-  void _update(){
+  late AboutProductModel productInfo;
+  void _productParentSetState(){
     setState(() {
 
     });
@@ -71,7 +72,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
           if (snapshot.hasData) {
 
             List<String> nameAndDescription=[snapshot.data!.description!.split('name').first,snapshot.data!.description!.split('name').last];
-            var path=snapshot.data!;
+            AboutProductModel path=snapshot.data!;
+            productInfo = path;
             isFavorite=path.isFavorite!;
             isSetCollective = path.isSetCollective;
             isSeller = path.isSeller;
@@ -378,7 +380,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                       ),
                   isMadeCollectiveOrDefaultNotSeller == null
                       ? const SizedBox(height: 0,)
-                      : MakingCollective(productId: path.id!, isMadeCollective: isMadeCollectiveOrDefaultNotSeller!, sellerEmail: widget.email,collectiveInfo: path.collectiveInfo, update:_update),
+                      : Column(children: <Widget>[_makingCollective(isMadeCollectiveOrDefaultNotSeller!), const SizedBox(height: 5,),_submitDeal(isMadeCollectiveOrDefaultNotSeller!),],),
                 SizedBox(height: 60),
                   Text(
                     'Галерея',
@@ -486,57 +488,21 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
       ),
     );
   }
-}
 
-class MakingCollective extends StatefulWidget {
-  final int productId;
-  final bool isMadeCollective;
-  final String sellerEmail;
-  final CollectiveInfo? collectiveInfo;
-  final Function update;
-  const MakingCollective({Key? key, required this.productId, required this.isMadeCollective, required this.sellerEmail, this.collectiveInfo, required this.update}) : super(key: key);
-
-
-  @override
-  State<MakingCollective> createState() => _MakingCollectiveState();
-}
-
-class _MakingCollectiveState extends State<MakingCollective> {
-  late bool isMadeCollective;
-
-  void _update() {
-    setState(() => isMadeCollective = !isMadeCollective);
-    widget.update();
-
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    isMadeCollective = widget.isMadeCollective;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(children: <Widget>[_makingCollective(), const SizedBox(height: 5,),_submitDeal(),],);
-  }
-
-
-
-  Widget _makingCollective(){
+  Widget _makingCollective(bool isMadeCollective){
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 60.0),
       child: InkWell(
         onTap: () {
           setState(()   {
             if(isMadeCollective){
-              AuthClient().unmakeCollective(UnmakeCollectiveArgument(widget.productId)).then((value) => _update());
+              AuthClient().unmakeCollective(UnmakeCollectiveArgument(productInfo.id!)).then((value) => _productParentSetState());
             }else{
-               showMaterialModalBottomSheet(
+              showMaterialModalBottomSheet(
                 context: context,
                 builder: (context) => SingleChildScrollView(
                   controller: ModalScrollController.of(context),
-                  child: FormBottomModal(dto: SellerEmailAndProductId(widget.productId, widget.sellerEmail, _update)),
+                  child: FormBottomModal(dto: SellerEmailAndProductId(productInfo.id!, productInfo.sellerEmail!, _productParentSetState)),
                 ),
               );
             }
@@ -569,92 +535,91 @@ class _MakingCollectiveState extends State<MakingCollective> {
     );
   }
 
-  Widget _submitDeal() {
-    if(!isMadeCollective){
-    return SizedBox();
-    }
-    bool isSubmittable = widget.collectiveInfo!.currentBuyerCount >= widget.collectiveInfo!.minBuyerCount;
-    return  Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60.0),
-      child: InkWell(
-        onTap: () async {
-          if(isSubmittable){
-            try{
-              await AuthClient().submitCollective(SubmitCollectiveArgument(widget.productId));
-              _update();
-              // setState(() {
-              //
-              // });
-            }
-            catch(err){
-              print(err);
-            }
+  Widget _submitDeal(bool isMadeCollective) {
+    if(isMadeCollective){
+      bool isSubmittable = productInfo.collectiveInfo!.currentBuyerCount >= productInfo.collectiveInfo!.minBuyerCount;
+      return  Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 60.0),
+        child: InkWell(
+          onTap: () async {
+            if(isSubmittable){
+              try{
+                await AuthClient().submitCollective(SubmitCollectiveArgument(productInfo.id!));
+                setState(() {
 
-          }
-        },
-        child: Ink(
-          height: 45,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: isSubmittable ? Color(0xFFFF6B00) : Colors.black12,
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                  flex: 1,
-                  child:  Icon(Icons.add_business_rounded,
-                    color: Colors.white,
-                  )
-              ),
-              Expanded(
-                flex: 3,
-                child: Text(
-                  'Начало ${widget.collectiveInfo!.startDate}',
-                  style: TextStyle(
-                      color: Colors.white, fontSize: 15),
+                });
+              }
+              catch(err){
+                print(err);
+              }
+
+            }
+          },
+          child: Ink(
+            height: 45,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: isSubmittable ? Color(0xFFFF6B00) : Colors.black12,
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                    flex: 1,
+                    child:  Icon(Icons.add_business_rounded,
+                      color: Colors.white,
+                    )
                 ),
-              ),
-              Expanded(
-                flex: 3,
-                child: Text(
-                  '${widget.collectiveInfo!.currentBuyerCount} / ${widget.collectiveInfo!.minBuyerCount}',
-                  style: const TextStyle(
-                      color: Colors.white, fontSize: 15),
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    'Начало ${productInfo.collectiveInfo!.startDate}',
+                    style: TextStyle(
+                        color: Colors.white, fontSize: 15),
+                  ),
                 ),
-              ),
-              Expanded(
-                flex: 3,
-                child: Text(
-                  isSubmittable ? 'Подтвердить' : 'Нет нужного количества',
-                  style: const TextStyle(
-                      color: Colors.white, fontSize: 15),
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    '${productInfo.collectiveInfo!.currentBuyerCount} / ${productInfo.collectiveInfo!.minBuyerCount}',
+                    style: const TextStyle(
+                        color: Colors.white, fontSize: 15),
+                  ),
                 ),
-              ),
-              Expanded(
-                flex: 3,
-                child: Text(
-                  '${widget.collectiveInfo!.collectivePrice} сом',
-                  style: const TextStyle(
-                      color: Colors.white, fontSize: 15),
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    isSubmittable ? 'Подтвердить' : 'Нет нужного количества',
+                    style: const TextStyle(
+                        color: Colors.white, fontSize: 15),
+                  ),
                 ),
-              ),
-              Expanded(
-                flex: 3,
-                child: Text(
-                  'Конец ${widget.collectiveInfo!.endDate}',
-                  style: const TextStyle(
-                      color: Colors.white, fontSize: 15),
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    '${productInfo.collectiveInfo!.collectivePrice} сом',
+                    style: const TextStyle(
+                        color: Colors.white, fontSize: 15),
+                  ),
                 ),
-              ),
-            ],
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    'Конец ${productInfo.collectiveInfo!.endDate}',
+                    style: const TextStyle(
+                        color: Colors.white, fontSize: 15),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    )
+      );
+    }
+    return const SizedBox();
 
-        ;
   }
 }
+
 
 
 
