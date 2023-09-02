@@ -390,7 +390,7 @@ class _DashboardState extends State<Dashboard> {
                           separatorBuilder: (context, _) => SizedBox(width: 0),
                           itemCount: items,
                           itemBuilder: (context, index) => Category(path.data![index].id.toString(),
-                              path.data![index].name!, path.data![index].path!),
+                              path.data![index].name!, path.data![index].path ?? 'images/default.jpg'),
                         ),
                       );
                   }else if (snapshot.hasError) {
