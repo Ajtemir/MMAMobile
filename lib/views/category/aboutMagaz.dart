@@ -36,6 +36,11 @@ class _AboutMagazState extends State<AboutMagaz> {
   bool? isSetCollective;
   late bool isSeller;
   late bool? isMadeCollectiveOrDefaultNotSeller;
+  void _update(){
+    setState(() {
+
+    });
+  }
   String comment =
       '''Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua tempor incididunt ut labore et dolore ''';
   List<String> userComment = [
@@ -373,7 +378,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                       ),
                   isMadeCollectiveOrDefaultNotSeller == null
                       ? const SizedBox(height: 0,)
-                      : MakingCollective(productId: path.id!, isMadeCollective: isMadeCollectiveOrDefaultNotSeller!, sellerEmail: widget.email,collectiveInfo: path.collectiveInfo),
+                      : MakingCollective(productId: path.id!, isMadeCollective: isMadeCollectiveOrDefaultNotSeller!, sellerEmail: widget.email,collectiveInfo: path.collectiveInfo, update:_update),
                 SizedBox(height: 60),
                   Text(
                     'Галерея',
@@ -488,7 +493,8 @@ class MakingCollective extends StatefulWidget {
   final bool isMadeCollective;
   final String sellerEmail;
   final CollectiveInfo? collectiveInfo;
-  const MakingCollective({Key? key, required this.productId, required this.isMadeCollective, required this.sellerEmail, this.collectiveInfo}) : super(key: key);
+  final Function update;
+  const MakingCollective({Key? key, required this.productId, required this.isMadeCollective, required this.sellerEmail, this.collectiveInfo, required this.update}) : super(key: key);
 
 
   @override
@@ -500,6 +506,8 @@ class _MakingCollectiveState extends State<MakingCollective> {
 
   void _update() {
     setState(() => isMadeCollective = !isMadeCollective);
+    widget.update();
+
   }
 
   @override
@@ -574,9 +582,9 @@ class _MakingCollectiveState extends State<MakingCollective> {
             try{
               await AuthClient().submitCollective(SubmitCollectiveArgument(widget.productId));
               _update();
-              setState(() {
-
-              });
+              // setState(() {
+              //
+              // });
             }
             catch(err){
               print(err);
@@ -763,8 +771,9 @@ class _FormBottomModalState extends State<FormBottomModal> {
                   );
                   try{
                     await AuthClient().makeCollective(data);
-                    _dto.update();
                     Navigator.pop(context);
+
+                    _dto.update();
                   }
                   catch(err){
                     print(err.toString());
