@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
 import 'package:upai_app/views/auth/server/service.dart';
 
 import '../profileUsers/profileUsers.dart';
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class GlobalMap extends StatefulWidget {
   const GlobalMap({Key? key}) : super(key: key);
@@ -54,48 +57,7 @@ class _GlobalMapState extends State<GlobalMap> {
         return Text('${snapshot.error}');
       }
       else if(snapshot.hasData) {
-        return FlutterMap(
-        options: MapOptions(
-          center: LatLng(42.85511022984554, 74.60023220919794),
-          zoom: 15.2,
-        ),
-        nonRotatedChildren: [
-          RichAttributionWidget(
-            attributions: [
-              TextSourceAttribution(
-                'OpenStreetMap contributors',
-                onTap: () {},
-              ),
-            ],
-          ),
-        ],
-        children: [
-          TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            userAgentPackageName: 'com.example.app',
-          ),
-          MarkerLayer(
-            markers: snapshot.data!.map((e) => Marker(point: e.latLng, builder: (context) {
-              return GestureDetector(
-                onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) =>  e.isMarket ? const Center(child: Text("Market"),) : ProfileUser(emailUser:e.email),
-                      ),
-                    );
-                },
-                child: Icon(Icons.home, color: e.isMarket ? Colors.red : Colors.blue,),
-              );
-            })).toList(),
-            // [
-            //   Marker(
-            //     point: LatLng(42.86526601364874, 74.57076567819526),
-            //     builder: (context) => const FlutterLogo(),
-            //   ),
-            // ],
-          ),
-        ],
-      );
+        return MyApp();
       }
       return const Center(
         child: CircularProgressIndicator(),
@@ -103,6 +65,41 @@ class _GlobalMapState extends State<GlobalMap> {
     });
   }
 }
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Completer<GoogleMapController> _controller = Completer();
+
+  static const LatLng _center = const LatLng(45.521563, -122.677433);
+
+  void _onMapCreated(GoogleMapController controller) {
+    _controller.complete(controller);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Maps Sample App'),
+          backgroundColor: Colors.green[700],
+        ),
+        body: GoogleMap(
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: CameraPosition(
+            target: _center,
+            zoom: 11.0,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 
 class ViewModel{
   final LatLng latLng;
