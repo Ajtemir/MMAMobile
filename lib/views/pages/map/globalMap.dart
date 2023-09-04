@@ -28,7 +28,7 @@ class _GlobalMapState extends State<GlobalMap> {
   void initState() {
   }
 
-  Future<List<ViewModel>> _fetch() async {
+  Future<List<ShopViewModel>> _fetch() async {
     var response = await http.Client().get(Uri(
       host: AuthClient.ip,
       scheme: 'http',
@@ -36,14 +36,15 @@ class _GlobalMapState extends State<GlobalMap> {
       path: 'Shops/GetShopsAndMarkets',
     ));
     var data = jsonDecode(response.body)['data'];
-    List<ViewModel> result = data.map<ViewModel>((x) {
+    List<ShopViewModel> result = data.map<ShopViewModel>((x) {
        var lat = x['latitude'];
        var long = x['longitude'];
        var isMarket = x['isMarket'];
        var id = x['id'];
        var email = x['email'];
+       var shopType = x['shopType'];
        var latLng = LatLng(lat, long);
-      return ViewModel(latLng, id, isMarket, email);
+      return ShopViewModel(latLng, id, isMarket, email, shopType);
     }).toList();
     return result;
   }
@@ -51,7 +52,7 @@ class _GlobalMapState extends State<GlobalMap> {
   @override
   Widget build(BuildContext context) {
 
-    return FutureBuilder<List<ViewModel>>(future: _fetch(), builder: (ctx, snapshot) {
+    return FutureBuilder<List<ShopViewModel>>(future: _fetch(), builder: (ctx, snapshot) {
       if(snapshot.hasError){
         return Text('${snapshot.error}');
       }
@@ -66,7 +67,7 @@ class _GlobalMapState extends State<GlobalMap> {
 }
 
 class MapSample extends StatefulWidget {
-  final List<ViewModel> shops;
+  final List<ShopViewModel> shops;
   const MapSample({Key? key, required this.shops}) : super(key: key);
 
   @override
@@ -74,6 +75,7 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
+  late List<ShopViewModel> _shops;
   final Completer<GoogleMapController> _controller = Completer();
   static const CameraPosition _london = CameraPosition(
     target: LatLng(42.865513497725765, 74.57141543616046),
@@ -84,6 +86,12 @@ class MapSampleState extends State<MapSample> {
   );
   MapType _currentMapType = MapType.normal;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _shops = widget.shops;
+  }
   void _onMapType() {
     setState(() {
       _currentMapType = _currentMapType == MapType.normal
@@ -114,6 +122,23 @@ class MapSampleState extends State<MapSample> {
             // ),
             mapType: _currentMapType,
             initialCameraPosition: _london,
+            markers: _shops
+                .map(
+                  (e) =>  Marker(
+                    markerId: MarkerId(e.id.toString() + e.isMarket.toString()),
+                    position: e.latLng,
+                    icon:  BitmapDescriptor.defaultMarkerWithHue(e.getIconColor()),
+                    infoWindow: InfoWindow(title: e.getName(), ),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>  e.isMarket ? const Center(child: Text("Market"),) : ProfileUser(emailUser:e.email),
+                        ),
+                      );
+                    },
+                  ),
+                )
+                .toSet(),
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
               // Future.delayed(
@@ -127,26 +152,26 @@ class MapSampleState extends State<MapSample> {
             },
             // minMaxZoomPreference: MinMaxZoomPreference(20, 30),
             polygons: {
-              Polygon(
-                consumeTapEvents: true,
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => Text("dfgsd"),
-                    ),
-                  );
-                },
-                points: [
-                  LatLng(42.865657000085584, 74.57177484108497),
-                  LatLng(42.86552570110141, 74.57183223460117),
-                  LatLng(42.86551040411421, 74.57175918830782),
-                  LatLng(42.86563915363811, 74.57170353398907),
-                ],
-                polygonId: const PolygonId('1'),
-                geodesic: false,
-                fillColor: Colors.white,
-                strokeColor: Colors.red,
-              ),
+              // Polygon(
+              //   consumeTapEvents: true,
+              //   onTap: () {
+              //     Navigator.of(context).push(
+              //       MaterialPageRoute(
+              //         builder: (context) => Text("dfgsd"),
+              //       ),
+              //     );
+              //   },
+              //   points: [
+              //     LatLng(42.865657000085584, 74.57177484108497),
+              //     LatLng(42.86552570110141, 74.57183223460117),
+              //     LatLng(42.86551040411421, 74.57175918830782),
+              //     LatLng(42.86563915363811, 74.57170353398907),
+              //   ],
+              //   polygonId: const PolygonId('1'),
+              //   geodesic: false,
+              //   fillColor: Colors.white,
+              //   strokeColor: Colors.red,
+              // ),
             },
           ),
           Padding(
@@ -166,11 +191,47 @@ class MapSampleState extends State<MapSample> {
 }
 
 
-class ViewModel{
+class ShopViewModel{
   final LatLng latLng;
   final int id;
   final bool isMarket;
   final String email;
+  final int shopType;
 
-  ViewModel(this.latLng, this.id, this.isMarket, this.email);
+  ShopViewModel(this.latLng, this.id, this.isMarket, this.email, this.shopType);
+
+  String getName(){
+    switch(shopType){
+      case ShopType.online:
+        return "Онлайн магазин";
+      case ShopType.fixed:
+        return "Бутик";
+      case ShopType.free:
+        return "Стихийная торговля";
+      case ShopType.market:
+        return "Базар/ТЦ";
+    }
+    throw Exception('Не найден тип');
+  }
+
+  double getIconColor(){
+    switch(shopType){
+      case ShopType.online:
+        return BitmapDescriptor.hueMagenta;
+      case ShopType.fixed:
+        return BitmapDescriptor.hueBlue;
+      case ShopType.free:
+        return BitmapDescriptor.hueGreen;
+      case ShopType.market:
+        return BitmapDescriptor.hueOrange;
+    }
+    throw Exception('Не найден тип');
+  }
+}
+
+class ShopType{
+  static const online = 1;
+  static const fixed = 2;
+  static const free = 3;
+  static const market = 4;
 }
