@@ -10,6 +10,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import 'marketMap.dart';
+
 class GlobalMap extends StatefulWidget {
   const GlobalMap({Key? key}) : super(key: key);
 
@@ -78,11 +80,8 @@ class MapSampleState extends State<MapSample> {
   late List<ShopViewModel> _shops;
   final Completer<GoogleMapController> _controller = Completer();
   static const CameraPosition _london = CameraPosition(
-    target: LatLng(42.865513497725765, 74.57141543616046),
-    bearing: 180,
-    tilt: -12,
-    // target: LatLng(42.865513497725765, 72),
-    zoom: 20,
+    target: LatLng(42.86461810693966, 74.57107949918931),
+    zoom: 18,
   );
   MapType _currentMapType = MapType.normal;
 
@@ -114,25 +113,19 @@ class MapSampleState extends State<MapSample> {
               print(cameraPosition.zoom);
               print(cameraPosition.target);
             },
-            // cameraTargetBounds: CameraTargetBounds(
-            //   LatLngBounds(
-            //     northeast: LatLng(42.86571142264788, 74.57179907838137),
-            //     southwest: LatLng(42.86532128045534, 74.57091493803752),
-            //   ),
-            // ),
             mapType: _currentMapType,
             initialCameraPosition: _london,
             markers: _shops
                 .map(
                   (e) =>  Marker(
-                    markerId: MarkerId(e.id.toString() + e.isMarket.toString()),
+                    markerId: MarkerId(e.getMarkerId()),
                     position: e.latLng,
                     icon:  BitmapDescriptor.defaultMarkerWithHue(e.getIconColor()),
                     infoWindow: InfoWindow(title: e.getName(), ),
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) =>  e.isMarket ? const Center(child: Text("Market"),) : ProfileUser(emailUser:e.email),
+                          builder: (context) =>  e.isMarket ? MarketMap(marketId: e.id,) : ProfileUser(emailUser:e.email),
                         ),
                       );
                     },
@@ -141,37 +134,6 @@ class MapSampleState extends State<MapSample> {
                 .toSet(),
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
-              // Future.delayed(
-              //     const Duration(milliseconds: 200),
-              //     () => controller.animateCamera(CameraUpdate.newLatLngBounds(
-              //         LatLngBounds(
-              //           southwest: const LatLng(42.86529, 74.57090),
-              //           northeast: const LatLng(42.86571, 74.57182),
-              //         ),
-              //         1)));
-            },
-            // minMaxZoomPreference: MinMaxZoomPreference(20, 30),
-            polygons: {
-              // Polygon(
-              //   consumeTapEvents: true,
-              //   onTap: () {
-              //     Navigator.of(context).push(
-              //       MaterialPageRoute(
-              //         builder: (context) => Text("dfgsd"),
-              //       ),
-              //     );
-              //   },
-              //   points: [
-              //     LatLng(42.865657000085584, 74.57177484108497),
-              //     LatLng(42.86552570110141, 74.57183223460117),
-              //     LatLng(42.86551040411421, 74.57175918830782),
-              //     LatLng(42.86563915363811, 74.57170353398907),
-              //   ],
-              //   polygonId: const PolygonId('1'),
-              //   geodesic: false,
-              //   fillColor: Colors.white,
-              //   strokeColor: Colors.red,
-              // ),
             },
           ),
           Padding(
@@ -227,6 +189,10 @@ class ShopViewModel{
     }
     throw Exception('Не найден тип');
   }
+
+  String getMarkerId() => id.toString() + isMarket.toString();
+
+  MarkerId getMarketIdObj() => MarkerId(getMarkerId());
 }
 
 class ShopType{
