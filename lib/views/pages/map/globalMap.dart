@@ -125,7 +125,7 @@ class MapSampleState extends State<MapSample> {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) =>  e.isMarket ? MarketMap(marketId: e.id,) : ProfileUser(emailUser:e.email),
+                          builder: (context) =>  e.isMarket ? MarketMap(marketId: e.id,marketPoint: e.latLng) : ProfileUser(emailUser:e.email),
                         ),
                       );
                     },
