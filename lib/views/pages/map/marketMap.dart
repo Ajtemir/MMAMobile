@@ -36,13 +36,14 @@ class _MarketMapState extends State<MarketMap> {
     var data = jsonDecode(response.body)['data'];
     List<MarketShopDto> result = data.map<MarketShopDto>((x) {
       var id = x['id'];
+      var sellerEmail = x['sellerEmail'];
       var pointsData = x['points'];
       var points = pointsData.map<LatLng>((p){
         var lat = p['latitude'];
         var long = p['longitude'];
         return LatLng(lat, long);
       }).toList();
-      return MarketShopDto(id, points);
+      return MarketShopDto(id, points, sellerEmail);
     }).toList();
     return result;
   }
@@ -75,7 +76,7 @@ class _MarketMapState extends State<MarketMap> {
                   strokeWidth: 1,
                   onTap: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => Center(child: Text(e.id.toString())),
+                      MaterialPageRoute(builder: (context) => ProfileUser(emailUser:e.sellerEmail),
                       ),
                     );
                   },
@@ -142,7 +143,8 @@ class _MarketMapState extends State<MarketMap> {
 class MarketShopDto{
   final int id;
   final List<LatLng> points;
+  final String sellerEmail;
 
-  MarketShopDto(this.id, this.points);
+  MarketShopDto(this.id, this.points, this.sellerEmail);
 
 }
