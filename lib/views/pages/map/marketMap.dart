@@ -22,23 +22,24 @@ class MarketMap extends StatefulWidget {
 
 class _MarketMapState extends State<MarketMap> {
   Future<List<MarketShopDto>> _fetch(int marketId) async {
+    Map<String, dynamic> queryParams = {
+      'marketId': marketId.toString()
+    };
     var uri = Uri(
         host: AuthClient.ip,
         scheme: 'http',
         port: 80,
         path: 'Market/GetShopsByMarketId',
-        queryParameters: {
-          'marketId': marketId
-        }
+        queryParameters: queryParams
     );
     var response = await http.Client().get(uri);
     var data = jsonDecode(response.body)['data'];
     List<MarketShopDto> result = data.map<MarketShopDto>((x) {
       var id = x['id'];
-      var pointsData = data['points'];
-      var points = pointsData.map<LatLng>((x){
-        var lat = x['latitude'];
-        var long = x['longitude'];
+      var pointsData = x['points'];
+      var points = pointsData.map<LatLng>((p){
+        var lat = p['latitude'];
+        var long = p['longitude'];
         return LatLng(lat, long);
       }).toList();
       return MarketShopDto(id, points);
@@ -51,7 +52,7 @@ class _MarketMapState extends State<MarketMap> {
     super.initState();
   }
   final Completer<GoogleMapController> _controller = Completer();
-  final _bounds = LatLngBounds(northeast: LatLng(42.86612099748323, 74.57394708836233),southwest: LatLng(42.86363603417931, 74.56925858682715));
+  final _bounds = LatLngBounds(northeast: LatLng(42.86612099748323, 74.57394708836233), southwest: LatLng(42.86363603417931, 74.56925858682715));
   late CameraPosition marketPosition = CameraPosition(
     target: widget.marketPoint,
     zoom: 18,
@@ -70,19 +71,22 @@ class _MarketMapState extends State<MarketMap> {
                 return Polygon(
                   polygonId: PolygonId(e.id.toString()),
                   points: e.points,
+                  strokeColor: Colors.red,
+                  strokeWidth: 1,
                   onTap: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            Center(child: Text(e.id.toString())),
+                      MaterialPageRoute(builder: (context) => Center(child: Text(e.id.toString())),
                       ),
                     );
                   },
                 );
               }).toSet(),
+              onTap: (latLong){
+                print(latLong);
+              },
             );
           } else {
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           }
         });
   }
@@ -97,12 +101,9 @@ class _MarketMapState extends State<MarketMap> {
         children: [
           GoogleMap(
             minMaxZoomPreference: MinMaxZoomPreference(18, 30),
-            onTap: (options){
-              print(options.latitude);
-              print(options.longitude);
+            onTap: (options) {
             },
             onCameraMove: (CameraPosition cameraPosition) async {
-
               var controller = await _controller.future;
               controller.animateCamera(CameraUpdate.newLatLngBounds(
                   _bounds,
@@ -124,7 +125,6 @@ class _MarketMapState extends State<MarketMap> {
             onCameraMoveStarted: () async {
               var controller = await _controller.future;
               var zoomLevel = await controller.getVisibleRegion();
-              print(zoomLevel);
               controller.animateCamera(
                 CameraUpdate.newLatLngBounds(
                   _bounds,
@@ -132,8 +132,6 @@ class _MarketMapState extends State<MarketMap> {
                 ),
               );
             },
-            // cameraTargetBounds: CameraTargetBounds(_bounds),
-
           ),
         ],
       ),

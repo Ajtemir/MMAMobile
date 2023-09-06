@@ -494,10 +494,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
       padding: const EdgeInsets.symmetric(horizontal: 60.0),
       child: InkWell(
         onTap: () {
-          setState(()   {
+          setState(() {
             if(isMadeCollective){
               AuthClient().unmakeCollective(UnmakeCollectiveArgument(productInfo.id!)).then((value) => _productParentSetState());
-            }else{
+            } else {
               showMaterialModalBottomSheet(
                 context: context,
                 builder: (context) => SingleChildScrollView(

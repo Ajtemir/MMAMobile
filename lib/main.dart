@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:upai_app/shared/app_theme.dart';
+import 'package:upai_app/views/pages/map/globalMap.dart';
+import 'package:upai_app/views/pages/map/marketMap.dart';
 import 'package:upai_app/views/splash_page/splash_page.dart';
 import 'package:upai_app/provider/selectCatProvider.dart';
 import 'package:upai_app/provider/selectTabProvider.dart';
