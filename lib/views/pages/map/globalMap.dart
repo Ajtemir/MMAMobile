@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -78,6 +79,7 @@ class MapSample extends StatefulWidget {
 
 class MapSampleState extends State<MapSample> {
   late List<ShopViewModel> _shops;
+  final InMapShopType inMapShopType = InMapShopType();
   final Completer<GoogleMapController> _controller = Completer();
   static const CameraPosition _london = CameraPosition(
     target: LatLng(42.86461810693966, 74.57107949918931),
@@ -97,6 +99,10 @@ class MapSampleState extends State<MapSample> {
           ? MapType.satellite
           : MapType.normal;
     });
+  }
+
+  void _updateMap() {
+    _shops = _shops.where((element) => element.shopType == ShopType.market).toList();
   }
 
   @override
@@ -136,13 +142,59 @@ class MapSampleState extends State<MapSample> {
               _controller.complete(controller);
             },
           ),
+          // Padding(
+          //   padding: const EdgeInsets.all(18),
+          //   child: Align(
+          //     alignment: Alignment.topRight,
+          //     child: FloatingActionButton(
+          //       onPressed: _onMapType,
+          //       child: const Icon(Icons.map, size: 36),
+          //     ),
+          //   ),
+          // ),
           Padding(
             padding: const EdgeInsets.all(18),
             child: Align(
-              alignment: Alignment.topRight,
-              child: FloatingActionButton(
-                onPressed: _onMapType,
-                child: const Icon(Icons.map, size: 36),
+              alignment: Alignment.bottomLeft,
+              child: Column(
+                children: [
+                  FloatingActionButton.extended(
+                    label: const Text("БУТИК"),
+                    onPressed: (){
+                      setState(() {
+                        inMapShopType.updateFixed();
+                        _updateMap();
+                      });
+                    },
+                    icon: Checkbox(
+                      value: inMapShopType.fixed, onChanged: (bool? value) {  },
+                    ),
+                  ),
+                  const SizedBox(height: 5,),
+                  FloatingActionButton.extended(
+                    label: const Text("ТЦ/БАЗАР"),
+                    onPressed: (){
+                      setState(() {
+                        inMapShopType.updateMarket();
+                      });
+                    },
+                    icon: Checkbox(
+                      value: inMapShopType.market, onChanged: (bool? value) {  },
+                    ),
+                  ),
+                  const SizedBox(height: 5,),
+                  FloatingActionButton.extended(
+                    label: const Text("Стихийная"),
+                    onPressed: (){
+                      setState(() {
+                        inMapShopType.updateFree();
+                      });
+                    },
+                    icon: Checkbox(
+                      value: inMapShopType.free, onChanged: (bool? value) {  },
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -200,4 +252,22 @@ class ShopType{
   static const fixed = 2;
   static const free = 3;
   static const market = 4;
+}
+
+class InMapShopType {
+  bool fixed = true;
+  bool free = true;
+  bool market = true;
+
+  void updateMarket(){
+    market = !market;
+  }
+
+  void updateFixed(){
+    fixed = !fixed;
+  }
+
+  void updateFree(){
+    free = !free;
+  }
 }

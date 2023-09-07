@@ -66,25 +66,28 @@ class _MarketMapState extends State<MarketMap> {
           if (snapshot.hasError) {
             return Text(snapshot.error.toString());
           } else if (snapshot.hasData) {
-            return GoogleMap(
-              initialCameraPosition: marketPosition,
-              polygons: snapshot.data!.map((e) {
-                return Polygon(
-                  polygonId: PolygonId(e.id.toString()),
-                  points: e.points,
-                  strokeColor: Colors.red,
-                  strokeWidth: 1,
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => ProfileUser(emailUser:e.sellerEmail),
-                      ),
-                    );
-                  },
-                );
-              }).toSet(),
-              onTap: (latLong){
-                print(latLong);
-              },
+            return Scaffold(
+              bottomNavigationBar: BottomAppBar(child: Row(children: [Text('fasdfas'), Text('fgsfdgs')],)),
+              body: GoogleMap(
+                initialCameraPosition: marketPosition,
+                polygons: snapshot.data!.map((e) {
+                  return Polygon(
+                    polygonId: PolygonId(e.id.toString()),
+                    points: e.points,
+                    strokeColor: Colors.red,
+                    strokeWidth: 1,
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => ProfileUser(emailUser:e.sellerEmail),
+                        ),
+                      );
+                    },
+                  );
+                }).toSet(),
+                onTap: (latLong){
+                  print(latLong);
+                },
+              ),
             );
           } else {
             return const Center(child: CircularProgressIndicator());
