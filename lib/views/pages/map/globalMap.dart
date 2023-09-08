@@ -79,13 +79,15 @@ class MapSample extends StatefulWidget {
 
 class MapSampleState extends State<MapSample> {
   late List<ShopViewModel> _shops;
-  final InMapShopType inMapShopType = InMapShopType();
+  final InMapShopType _inMapShopType = InMapShopType();
   final Completer<GoogleMapController> _controller = Completer();
   static const CameraPosition _london = CameraPosition(
     target: LatLng(42.86461810693966, 74.57107949918931),
     zoom: 18,
   );
   MapType _currentMapType = MapType.normal;
+
+  late Map<int, BitmapDescriptor> typesIcons;
 
   @override
   void initState() {
@@ -101,15 +103,39 @@ class MapSampleState extends State<MapSample> {
     });
   }
 
+  getIcons() async {
+    var free = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration.empty,
+        "assets/shopType/free.png");
+    var fixed = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration.empty,
+        "assets/shopType/fixed.png");
+    var market = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration.empty,
+        "assets/shopType/market.png");
+    setState(() {
+      typesIcons = {
+        ShopType.free : free,
+        ShopType.fixed : fixed,
+        ShopType.market : market,
+      };
+    });
+  }
+
   void _updateMap() {
-    _shops = _shops.where((element) => element.shopType == ShopType.market).toList();
+    var types = [
+      _inMapShopType.market ? ShopType.market : null,
+      _inMapShopType.fixed ? ShopType.fixed : null,
+      _inMapShopType.free ? ShopType.free : null,
+    ];
+    _shops = widget.shops.where((element) => types.contains(element.shopType)).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Google Map Sample'),
+        title: const Text('Карта'),
         backgroundColor: Colors.blue,
       ),
       body: Stack(
@@ -160,26 +186,29 @@ class MapSampleState extends State<MapSample> {
                 children: [
                   FloatingActionButton.extended(
                     label: const Text("БУТИК"),
+                    backgroundColor: Colors.green,
                     onPressed: (){
                       setState(() {
-                        inMapShopType.updateFixed();
+                        _inMapShopType.updateFixed();
                         _updateMap();
                       });
                     },
                     icon: Checkbox(
-                      value: inMapShopType.fixed, onChanged: (bool? value) {  },
+                      value: _inMapShopType.fixed, onChanged: (bool? value) {  },
                     ),
                   ),
                   const SizedBox(height: 5,),
                   FloatingActionButton.extended(
+                    backgroundColor: Colors.amber,
                     label: const Text("ТЦ/БАЗАР"),
                     onPressed: (){
                       setState(() {
-                        inMapShopType.updateMarket();
+                        _inMapShopType.updateMarket();
+                        _updateMap();
                       });
                     },
                     icon: Checkbox(
-                      value: inMapShopType.market, onChanged: (bool? value) {  },
+                      value: _inMapShopType.market, onChanged: (bool? value) {  },
                     ),
                   ),
                   const SizedBox(height: 5,),
@@ -187,11 +216,12 @@ class MapSampleState extends State<MapSample> {
                     label: const Text("Стихийная"),
                     onPressed: (){
                       setState(() {
-                        inMapShopType.updateFree();
+                        _inMapShopType.updateFree();
+                        _updateMap();
                       });
                     },
                     icon: Checkbox(
-                      value: inMapShopType.free, onChanged: (bool? value) {  },
+                      value: _inMapShopType.free, onChanged: (bool? value) {  },
                     ),
                   ),
                 ],
@@ -224,6 +254,20 @@ class ShopViewModel{
         return "Стихийная торговля";
       case ShopType.market:
         return "Базар/ТЦ";
+    }
+    throw Exception('Не найден тип');
+  }
+
+  String getIconPath(){
+    switch(shopType){
+      case ShopType.online:
+        throw Exception('Не найден тип для ONLINE');
+      case ShopType.fixed:
+        return "assets/shopType/fixed.png";
+      case ShopType.free:
+        return "assets/shopType/free.png";
+      case ShopType.market:
+        return "assets/shopType/market.png";
     }
     throw Exception('Не найден тип');
   }
