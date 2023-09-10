@@ -69,7 +69,7 @@ class ProductsModel {
 class CollectiveInfo {
   final int minBuyerCount;
   final int currentBuyerCount;
-  final int collectivePrice;
+  final double collectivePrice;
   final DateTime startDate;
   final DateTime endDate;
   CollectiveInfo(this.minBuyerCount, this.currentBuyerCount, this.collectivePrice, this.startDate, this.endDate);
