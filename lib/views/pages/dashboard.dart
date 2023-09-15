@@ -873,7 +873,7 @@ class _DashboardState extends State<Dashboard> {
                           textAlign: TextAlign.start,
                         ),
                         Text(
-                          "коллективная цена:${args.collectivePrice}",
+                          "коллективная цена:${args.collectivePrice.toStringAsFixed(2)}",
                           style: const TextStyle(color: Colors.red, fontSize: 16),
                           overflow: TextOverflow.clip,
                         ),
