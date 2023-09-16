@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:location/location.dart' as loc;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:upai_app/views/auth/server/service.dart';
@@ -67,6 +67,7 @@ class _GlobalMapState extends State<GlobalMap> {
 
 class MapSample extends StatefulWidget {
   final List<ShopViewModel> shops;
+
   const MapSample({Key? key, required this.shops}) : super(key: key);
 
   @override
@@ -90,6 +91,17 @@ class MapSampleState extends State<MapSample> {
     // TODO: implement initState
     super.initState();
     _shops = widget.shops;
+  }
+
+  Future<LatLng> getMyCoordsLocator() async {
+    loc.LocationData? data = await AuthClient.getLocation();
+    LatLng _latLng;
+    if (data != null) {
+      _latLng = LatLng(data!.latitude!, data!.longitude!);
+    } else {
+      _latLng = LatLng(55.749711, 37.616806);
+    }
+    return _latLng;
   }
 
   void _onMapType() {
@@ -136,39 +148,52 @@ class MapSampleState extends State<MapSample> {
       ),
       body: Stack(
         children: [
-          GoogleMap(
-            onCameraMove: (CameraPosition cameraPosition) {
-              print(cameraPosition.zoom);
-              print(cameraPosition.target);
-            },
-            mapType: _currentMapType,
-            initialCameraPosition: _london,
-            markers: _shops
-                .map(
-                  (e) => Marker(
-                    markerId: MarkerId(e.getMarkerId()),
-                    position: e.latLng,
-                    icon:
-                        BitmapDescriptor.defaultMarkerWithHue(e.getIconColor()),
-                    infoWindow: InfoWindow(
-                      title: e.getName(),
-                    ),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => e.isMarket
-                              ? MarketMap(marketId: e.id, marketPoint: e.latLng)
-                              : ProfileUser(emailUser: e.email),
-                        ),
-                      );
+          FutureBuilder(
+              future: getMyCoordsLocator(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasData) {
+                  return GoogleMap(
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: true,
+                    onCameraMove: (CameraPosition cameraPosition) {
+                      print(cameraPosition.zoom);
+                      print(cameraPosition.target);
                     },
-                  ),
-                )
-                .toSet(),
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            },
-          ),
+                    mapType: _currentMapType,
+                    initialCameraPosition: _london,
+                    markers: _shops
+                        .map(
+                          (e) => Marker(
+                            markerId: MarkerId(e.getMarkerId()),
+                            position: e.latLng,
+                            icon: BitmapDescriptor.defaultMarkerWithHue(
+                                e.getIconColor()),
+                            infoWindow: InfoWindow(
+                              title: e.getName(),
+                            ),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => e.isMarket
+                                      ? MarketMap(
+                                          marketId: e.id, marketPoint: e.latLng)
+                                      : ProfileUser(emailUser: e.email),
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                        .toSet(),
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                    },
+                  );
+                }
+                return const Center(child: CircularProgressIndicator());
+              }),
           // Padding(
           //   padding: const EdgeInsets.all(18),
           //   child: Align(
