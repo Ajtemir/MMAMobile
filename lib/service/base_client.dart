@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-
 import 'package:http/http.dart' as http;
 
 const String baseUrl = 'http://192.168.43.81:2323';
@@ -10,7 +7,7 @@ class BaseClient {
 
   //GET
   Future<dynamic> get(String api) async {
-    var url = Uri.parse(baseUrl+api);
+    var url = Uri.parse(baseUrl + api);
 
     var response = await client.get(url);
     if (response.statusCode == 200) {
@@ -21,11 +18,11 @@ class BaseClient {
     }
   }
 
-  Future<dynamic> post(String api,var json) async {
-    var url = Uri.parse(baseUrl+api);
+  Future<dynamic> post(String api, var json) async {
+    var url = Uri.parse(baseUrl + api);
     //var _payload = json.encode(object);
 
-    var response = await client.post(url,body: json);
+    var response = await client.post(url, body: json);
     print(response.statusCode);
     if (response.statusCode == 201 || response.statusCode == 200) {
       print(response.body);

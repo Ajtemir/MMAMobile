@@ -28,7 +28,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-
   late Future<ListProductsModel> futureProducts;
   late Future<UserDataModel> futureUserData;
   late String emailGet;
@@ -38,14 +37,11 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
-    emailGet=Provider.of<SelectCatProvider>(context,
-        listen: false)
-        .email;
+    emailGet = Provider.of<SelectCatProvider>(context, listen: false).email;
     print(emailGet);
     super.initState();
     futureProducts = fetchProfileProducts(emailGet);
     futureUserData = fetchUserData(emailGet);
-
   }
 
   @override
@@ -53,10 +49,8 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AllAppBar(),
       body: RefreshIndicator(
-        onRefresh: () async{
-          setState(() {
-
-          });
+        onRefresh: () async {
+          setState(() {});
         },
         child: ListView(
           padding: EdgeInsets.only(left: 14, right: 14, top: 5),
@@ -88,30 +82,29 @@ class _ProfileState extends State<Profile> {
                 child: Stack(
                   //overflow: Overflow.visible,
                   children: [
-
                     FutureBuilder<UserDataModel>(
                       future: fetchUserData(emailGet),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          var path=snapshot.data!;
-                          imageProfile='http://${AuthClient.ip}/${path.avatar}';
-                          name=path.username!;
-                          phone=path.phone!;
-                          return
-                            Positioned(
-                                top: 0,
-                                left: 111,
-                                child: path.avatar!=null? CircleAvatar(
-
-                                  radius: 53,
-                                  backgroundImage: NetworkImage('http://${AuthClient.ip}/${path.avatar}')
-                                ) : CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  radius: 53,
-                                  backgroundImage: AssetImage('assets/img/user.png'),
-                                )
-                            );
-                    /*Container(
+                          var path = snapshot.data!;
+                          imageProfile =
+                              'http://${AuthClient.ip}/${path.avatar}';
+                          name = path.username!;
+                          phone = path.phone!;
+                          return Center(
+                            child: path.avatar != null
+                                ? CircleAvatar(
+                                    radius: 53,
+                                    backgroundImage: NetworkImage(
+                                        'http://${AuthClient.ip}/${path.avatar}'))
+                                : CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 53,
+                                    backgroundImage:
+                                        AssetImage('assets/img/user.png'),
+                                  ),
+                          );
+                          /*Container(
                       padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -131,21 +124,27 @@ class _ProfileState extends State<Profile> {
                             image: AssetImage('assets/img/user.png')) ,
                       ),
                     );*/
-                        }else if (snapshot.hasError) {
-  return Text('${snapshot.error}');
-  }
+                        } else if (snapshot.hasError) {
+                          return Text('${snapshot.error}');
+                        }
 
-  // By default, show a loading spinner.
-  return Center(child: const CircularProgressIndicator());
-},),
+                        // By default, show a loading spinner.
+                        return Center(child: const CircularProgressIndicator());
+                      },
+                    ),
                     Positioned(
                       top: 0,
                       right: 72,
                       child: GestureDetector(
-                        onTap: (){
-
-                          Navigator.of(context).push(MaterialPageRoute(builder:(context)=>UserEditing(image: imageProfile!=null? imageProfile:'',email: emailGet,name: name,number: phone)));
-                          },
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => UserEditing(
+                                  image:
+                                      imageProfile != null ? imageProfile : '',
+                                  email: emailGet,
+                                  name: name,
+                                  number: phone)));
+                        },
                         child: Container(
                           padding: EdgeInsets.all(9),
                           decoration: BoxDecoration(
@@ -170,22 +169,20 @@ class _ProfileState extends State<Profile> {
               future: fetchUserData(emailGet),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var path=snapshot.data!;
-                  return
-
-                    Text(path.username!=null ? path.username.toString() :
-                      'User',
-                      style: TextStyle(color: Colors.black, fontSize: 20),
-                      textAlign: TextAlign.center,
-                    );
-                }else if (snapshot.hasError) {
+                  var path = snapshot.data!;
+                  return Text(
+                    path.username != null ? path.username.toString() : 'User',
+                    style: TextStyle(color: Colors.black, fontSize: 20),
+                    textAlign: TextAlign.center,
+                  );
+                } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 }
 
                 // By default, show a loading spinner.
                 return Center(child: const CircularProgressIndicator());
-              },),
-
+              },
+            ),
 
             SizedBox(height: 15),
             Container(
@@ -215,21 +212,26 @@ class _ProfileState extends State<Profile> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-    FutureBuilder<ListProductsModel>(
-    future: fetchProfileProducts(emailGet),
-    builder: (context, snapshot) {
-    if (snapshot.hasData) {
-    var items=snapshot.data!.data!.length;
-    return
-                                Text(items!=0 ? items.toString() : '0',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20));}else if (snapshot.hasError) {
-        return Text('${snapshot.error}');
-    }
+                                FutureBuilder<ListProductsModel>(
+                                  future: fetchProfileProducts(emailGet),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      var items = snapshot.data!.data!.length;
+                                      return Text(
+                                          items != 0 ? items.toString() : '0',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20));
+                                    } else if (snapshot.hasError) {
+                                      return Text('${snapshot.error}');
+                                    }
 
-    // By default, show a loading spinner.
-    return Center(child: const CircularProgressIndicator());
-    },),
+                                    // By default, show a loading spinner.
+                                    return Center(
+                                        child:
+                                            const CircularProgressIndicator());
+                                  },
+                                ),
                                 Text(
                                   'Объявлений',
                                   style: TextStyle(
@@ -267,37 +269,40 @@ class _ProfileState extends State<Profile> {
                             // left: 22,
                             child: Container(
                               width: 200,
-                              child:
-
-                              FutureBuilder<UserDataModel>(
+                              child: FutureBuilder<UserDataModel>(
                                 future: fetchUserData(emailGet),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
-                                    var path=snapshot.data!;
-                                    return
-
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Text(path.email.toString(),
-                                              style: TextStyle(
-                                                  color: Colors.white, fontSize: 16)),
-                                          SizedBox(height: 6),
-                                          Text(path.phone!=null ? path.phone.toString():'...',
-                                              style: TextStyle(
-                                                  color: Colors.white, fontSize: 20)),
-                                        ],
-                                      );
-                                  }else if (snapshot.hasError) {
+                                    var path = snapshot.data!;
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(path.email.toString(),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16)),
+                                        SizedBox(height: 6),
+                                        Text(
+                                            path.phone != null
+                                                ? path.phone.toString()
+                                                : '...',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20)),
+                                      ],
+                                    );
+                                  } else if (snapshot.hasError) {
                                     return Text('${snapshot.error}');
                                   }
 
                                   // By default, show a loading spinner.
-                                  return Center(child: const CircularProgressIndicator());
-                                },),
-
-
+                                  return Center(
+                                      child: const CircularProgressIndicator());
+                                },
+                              ),
                             ),
                           ),
                         ],
@@ -315,7 +320,8 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             ListTile(
-              onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder:(context)=>AllMagazine())),
+              onTap: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => AllMagazine())),
               // dense: true,
               contentPadding: EdgeInsets.symmetric(horizontal: 0),
               leading: Text(
@@ -328,34 +334,39 @@ class _ProfileState extends State<Profile> {
               ),
             ),
 
-
-
             FutureBuilder<ListProductsModel>(
               future: fetchProfileProducts(emailGet),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                    var items=snapshot.data!.data!.length;
-                  return
-                    Padding(
-                      padding: const EdgeInsets.only(left: 14.0),
-                      child: Container(
-                        height: 200,
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          separatorBuilder: (context, _) => SizedBox(width: 5),
-                          itemCount: items,
-                          itemBuilder: (context, index) =>
-                              HotKeshSecond(snapshot.data!.data![index].images!.length>0 ? snapshot.data!.data![index].images![0] : null, 3, snapshot.data!.data![index].description!, snapshot.data!.data![index].price.toString(),((snapshot.data!.data![index].id!).toString()),emailGet),
-
-                        ),
+                  var items = snapshot.data!.data!.length;
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 14.0),
+                    child: Container(
+                      height: 200,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        separatorBuilder: (context, _) => SizedBox(width: 5),
+                        itemCount: items,
+                        itemBuilder: (context, index) => HotKeshSecond(
+                            snapshot.data!.data![index].images!.length > 0
+                                ? snapshot.data!.data![index].images![0]
+                                : null,
+                            3,
+                            snapshot.data!.data![index].description!,
+                            snapshot.data!.data![index].price.toString(),
+                            ((snapshot.data!.data![index].id!).toString()),
+                            emailGet),
                       ),
-                    );}else if (snapshot.hasError) {
+                    ),
+                  );
+                } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 }
 
                 // By default, show a loading spinner.
                 return Center(child: const CircularProgressIndicator());
-              },),
+              },
+            ),
 
             /*PokupkiContainer(0, '15.10.20', 'Эльдорадо', '1 200', '649'),
             SizedBox(height: 10),
@@ -378,26 +389,41 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
             ),*/
-            Divider(height: 1,color: Color(0xFFEBEBEB)),
-            CatFun(1, 'Пригласить друга',Referal()),
+            Divider(height: 1, color: Color(0xFFEBEBEB)),
+            CatFun(1, 'Пригласить друга', Referal()),
             // Divider(height: 1,color: Color(0xFFEBEBEB)),
             // CatFun(2, 'Настройки кошелька',PurseSetting()),
-            Divider(height: 1,color: Color(0xFFEBEBEB)),
-            CatFun(3, 'FAQ',FAQ()),
-            Divider(height: 1,color: Color(0xFFEBEBEB)),
-            CatFun(4, 'Бизнес профиль',BussinesProf()),
-            Divider(height: 1,color: Color(0xFFEBEBEB)),
+            Divider(height: 1, color: Color(0xFFEBEBEB)),
+            CatFun(3, 'FAQ', FAQ()),
+            Divider(height: 1, color: Color(0xFFEBEBEB)),
+            CatFun(4, 'Бизнес профиль', BussinesProf()),
+            Divider(height: 1, color: Color(0xFFEBEBEB)),
             ListTile(
-              leading: Image.asset('assets/img/prof/catIcon5.png',width: 16,height: 16),
-              title: Text('Поделиться приложением',style: TextStyle(color: Color(0xFF313131),fontSize: 16,fontWeight: FontWeight.w400),),
+              leading: Image.asset('assets/img/prof/catIcon5.png',
+                  width: 16, height: 16),
+              title: Text(
+                'Поделиться приложением',
+                style: TextStyle(
+                    color: Color(0xFF313131),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
+              ),
             ),
-            Divider(height: 1,color: Color(0xFFEBEBEB)),
-          ListTile(
-            onTap: ()=>Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                SingInScreen()), (Route<dynamic> route) => false),
-            leading: Image.asset('assets/img/prof/catIcon6.png',width: 16,height: 16),
-            title: Text('Выход',style: TextStyle(color: Color(0xFF313131),fontSize: 16,fontWeight: FontWeight.w400),),
-          ),
+            Divider(height: 1, color: Color(0xFFEBEBEB)),
+            ListTile(
+              onTap: () => Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => SingInScreen()),
+                  (Route<dynamic> route) => false),
+              leading: Image.asset('assets/img/prof/catIcon6.png',
+                  width: 16, height: 16),
+              title: Text(
+                'Выход',
+                style: TextStyle(
+                    color: Color(0xFF313131),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
+              ),
+            ),
             SizedBox(height: 99),
           ],
         ),
@@ -405,16 +431,24 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget CatFun(int imageIndex,String funName,Widget widgetForCat){
+  Widget CatFun(int imageIndex, String funName, Widget widgetForCat) {
     return ListTile(
-      onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder:(context)=>widgetForCat)),
-      leading: Image.asset('assets/img/prof/catIcon$imageIndex.png',width: 16,height: 16),
-      title: Text(funName,style: TextStyle(color: Color(0xFF313131),fontSize: 16,fontWeight: FontWeight.w400),),
+      onTap: () => Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => widgetForCat)),
+      leading: Image.asset('assets/img/prof/catIcon$imageIndex.png',
+          width: 16, height: 16),
+      title: Text(
+        funName,
+        style: TextStyle(
+            color: Color(0xFF313131),
+            fontSize: 16,
+            fontWeight: FontWeight.w400),
+      ),
     );
   }
 
-
-  Widget PokupkiContainer(int imageIndex,String date,String name,String plata,String ostatok){
+  Widget PokupkiContainer(
+      int imageIndex, String date, String name, String plata, String ostatok) {
     return Container(
       height: 86,
       decoration: BoxDecoration(
@@ -441,24 +475,23 @@ class _ProfileState extends State<Profile> {
                   height: 30,
                 ),
                 SizedBox(height: 6),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/img/prof/likeIcon.png',
-                        width: 13,
-                        height: 13,
-                      ),
-                      SizedBox(width: 4,),
-                      Text(
-                        'Оставить отзыв',
-                        style: TextStyle(color: Colors.black, fontSize: 10),
-                      ),
-                    ]),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Image.asset(
+                    'assets/img/prof/likeIcon.png',
+                    width: 13,
+                    height: 13,
+                  ),
+                  SizedBox(
+                    width: 4,
+                  ),
+                  Text(
+                    'Оставить отзыв',
+                    style: TextStyle(color: Colors.black, fontSize: 10),
+                  ),
+                ]),
                 Text(
                   '$dateг',
-                  style:
-                  TextStyle(color: Color(0xFF8D8D8D), fontSize: 10),
+                  style: TextStyle(color: Color(0xFF8D8D8D), fontSize: 10),
                 )
               ],
             ),
@@ -476,23 +509,42 @@ class _ProfileState extends State<Profile> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 5),
-                Text(name,style: TextStyle(color: Color(0xFF313131),fontSize: 14),),
-                SizedBox(height: 14,),
+                Text(
+                  name,
+                  style: TextStyle(color: Color(0xFF313131), fontSize: 14),
+                ),
+                SizedBox(
+                  height: 14,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('assets/img/prof/somIcon.png',width: 15,height: 15,),
+                    Image.asset(
+                      'assets/img/prof/somIcon.png',
+                      width: 15,
+                      height: 15,
+                    ),
                     SizedBox(width: 5),
-                    Text('$plata сом',style: TextStyle(color: Color(0xFF515151),fontSize: 10),),
+                    Text(
+                      '$plata сом',
+                      style: TextStyle(color: Color(0xFF515151), fontSize: 10),
+                    ),
                   ],
                 ),
                 SizedBox(height: 2),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('assets/img/prof/somIcon2.png',width: 15,height: 15,),
+                    Image.asset(
+                      'assets/img/prof/somIcon2.png',
+                      width: 15,
+                      height: 15,
+                    ),
                     SizedBox(width: 3),
-                    Text('$ostatok сом',style: TextStyle(color: Color(0xFF515151),fontSize: 10),),
+                    Text(
+                      '$ostatok сом',
+                      style: TextStyle(color: Color(0xFF515151), fontSize: 10),
+                    ),
                   ],
                 ),
               ],
@@ -502,12 +554,20 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
-  Widget HotKeshSecond(
-      String? image, double rat,  String name, String cat,String productId,String email) {
-    List<String> nameAndDescription=[name.split('name').first,name.split('name').last];
+
+  Widget HotKeshSecond(String? image, double rat, String name, String cat,
+      String productId, String email) {
+    List<String> nameAndDescription = [
+      name.split('name').first,
+      name.split('name').last
+    ];
     return InkWell(
-      onTap: () => Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => AboutMagaz(productId: productId,email: email,checkUserPage: false,))),
+      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => AboutMagaz(
+                productId: productId,
+                email: email,
+                checkUserPage: false,
+              ))),
       child: Ink(
         width: 170,
         child: Column(
@@ -525,13 +585,13 @@ class _ProfileState extends State<Profile> {
                         offset: Offset(0, 6),
                         color: Color(0x33000000))
                   ],
-                  image:image!=null ? DecorationImage(
-                      fit: BoxFit.cover,
-                      image:  NetworkImage('http://${AuthClient.ip}/$image')  )
+                  image: image != null
+                      ? DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage('http://${AuthClient.ip}/$image'))
                       : DecorationImage(
-                      fit: BoxFit.cover,
-                      image:  AssetImage('assets/img/hotKesh/kesh0.jpg') )
-              ),
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/img/hotKesh/kesh0.jpg'))),
             ),
             SizedBox(height: 12),
             /*Row(
@@ -558,7 +618,6 @@ class _ProfileState extends State<Profile> {
                     ),*/
             SizedBox(height: 5),
             Container(
-
               child: Text(
                 nameAndDescription[0],
                 style: TextStyle(color: Color(0xFF313131), fontSize: 16),
@@ -567,13 +626,9 @@ class _ProfileState extends State<Profile> {
             ),
             SizedBox(height: 5),
             Text(
-              cat=='null'?"Договорная": cat.split('.').first+' сом',
+              cat == 'null' ? "Договорная" : cat.split('.').first + ' сом',
               style: TextStyle(color: Colors.orange, fontSize: 14),
             )
-
-
-
-
           ],
         ),
       ),

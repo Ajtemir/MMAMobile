@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -16,20 +15,15 @@ import 'marketMap.dart';
 class GlobalMap extends StatefulWidget {
   const GlobalMap({Key? key}) : super(key: key);
 
-
   @override
   State<GlobalMap> createState() => _GlobalMapState();
 }
 
 class _GlobalMapState extends State<GlobalMap> {
-
   late List<LatLng> _list;
 
-
-
   @override
-  void initState() {
-  }
+  void initState() {}
 
   Future<List<ShopViewModel>> _fetch() async {
     var response = await http.Client().get(Uri(
@@ -40,13 +34,13 @@ class _GlobalMapState extends State<GlobalMap> {
     ));
     var data = jsonDecode(response.body)['data'];
     List<ShopViewModel> result = data.map<ShopViewModel>((x) {
-       var lat = x['latitude'];
-       var long = x['longitude'];
-       var isMarket = x['isMarket'];
-       var id = x['id'];
-       var email = x['email'];
-       var shopType = x['shopType'];
-       var latLng = LatLng(lat, long);
+      var lat = x['latitude'];
+      var long = x['longitude'];
+      var isMarket = x['isMarket'];
+      var id = x['id'];
+      var email = x['email'];
+      var shopType = x['shopType'];
+      var latLng = LatLng(lat, long);
       return ShopViewModel(latLng, id, isMarket, email, shopType);
     }).toList();
     return result;
@@ -54,18 +48,20 @@ class _GlobalMapState extends State<GlobalMap> {
 
   @override
   Widget build(BuildContext context) {
-
-    return FutureBuilder<List<ShopViewModel>>(future: _fetch(), builder: (ctx, snapshot) {
-      if(snapshot.hasError){
-        return Text('${snapshot.error}');
-      }
-      else if(snapshot.hasData) {
-        return MapSample(shops: snapshot.data!,);
-      }
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    });
+    return FutureBuilder<List<ShopViewModel>>(
+        future: _fetch(),
+        builder: (ctx, snapshot) {
+          if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          } else if (snapshot.hasData) {
+            return MapSample(
+              shops: snapshot.data!,
+            );
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        });
   }
 }
 
@@ -95,6 +91,7 @@ class MapSampleState extends State<MapSample> {
     super.initState();
     _shops = widget.shops;
   }
+
   void _onMapType() {
     setState(() {
       _currentMapType = _currentMapType == MapType.normal
@@ -105,19 +102,16 @@ class MapSampleState extends State<MapSample> {
 
   getIcons() async {
     var free = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty,
-        "assets/shopType/free.png");
+        ImageConfiguration.empty, "assets/shopType/free.png");
     var fixed = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty,
-        "assets/shopType/fixed.png");
+        ImageConfiguration.empty, "assets/shopType/fixed.png");
     var market = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty,
-        "assets/shopType/market.png");
+        ImageConfiguration.empty, "assets/shopType/market.png");
     setState(() {
       typesIcons = {
-        ShopType.free : free,
-        ShopType.fixed : fixed,
-        ShopType.market : market,
+        ShopType.free: free,
+        ShopType.fixed: fixed,
+        ShopType.market: market,
       };
     });
   }
@@ -128,7 +122,9 @@ class MapSampleState extends State<MapSample> {
       _inMapShopType.fixed ? ShopType.fixed : null,
       _inMapShopType.free ? ShopType.free : null,
     ];
-    _shops = widget.shops.where((element) => types.contains(element.shopType)).toList();
+    _shops = widget.shops
+        .where((element) => types.contains(element.shopType))
+        .toList();
   }
 
   @override
@@ -149,15 +145,20 @@ class MapSampleState extends State<MapSample> {
             initialCameraPosition: _london,
             markers: _shops
                 .map(
-                  (e) =>  Marker(
+                  (e) => Marker(
                     markerId: MarkerId(e.getMarkerId()),
                     position: e.latLng,
-                    icon:  BitmapDescriptor.defaultMarkerWithHue(e.getIconColor()),
-                    infoWindow: InfoWindow(title: e.getName(), ),
+                    icon:
+                        BitmapDescriptor.defaultMarkerWithHue(e.getIconColor()),
+                    infoWindow: InfoWindow(
+                      title: e.getName(),
+                    ),
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) =>  e.isMarket ? MarketMap(marketId: e.id,marketPoint: e.latLng) : ProfileUser(emailUser:e.email),
+                          builder: (context) => e.isMarket
+                              ? MarketMap(marketId: e.id, marketPoint: e.latLng)
+                              : ProfileUser(emailUser: e.email),
                         ),
                       );
                     },
@@ -183,45 +184,53 @@ class MapSampleState extends State<MapSample> {
             child: Align(
               alignment: Alignment.bottomLeft,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   FloatingActionButton.extended(
                     label: const Text("БУТИК"),
                     backgroundColor: Colors.green,
-                    onPressed: (){
+                    onPressed: () {
                       setState(() {
                         _inMapShopType.updateFixed();
                         _updateMap();
                       });
                     },
                     icon: Checkbox(
-                      value: _inMapShopType.fixed, onChanged: (bool? value) {  },
+                      value: _inMapShopType.fixed,
+                      onChanged: (bool? value) {},
                     ),
                   ),
-                  const SizedBox(height: 5,),
+                  const SizedBox(
+                    height: 5,
+                  ),
                   FloatingActionButton.extended(
-                    backgroundColor: Colors.amber,
+                    backgroundColor: Colors.red,
                     label: const Text("ТЦ/БАЗАР"),
-                    onPressed: (){
+                    onPressed: () {
                       setState(() {
                         _inMapShopType.updateMarket();
                         _updateMap();
                       });
                     },
                     icon: Checkbox(
-                      value: _inMapShopType.market, onChanged: (bool? value) {  },
+                      value: _inMapShopType.market,
+                      onChanged: (bool? value) {},
                     ),
                   ),
-                  const SizedBox(height: 5,),
+                  const SizedBox(
+                    height: 5,
+                  ),
                   FloatingActionButton.extended(
                     label: const Text("Стихийная"),
-                    onPressed: (){
+                    onPressed: () {
                       setState(() {
                         _inMapShopType.updateFree();
                         _updateMap();
                       });
                     },
                     icon: Checkbox(
-                      value: _inMapShopType.free, onChanged: (bool? value) {  },
+                      value: _inMapShopType.free,
+                      onChanged: (bool? value) {},
                     ),
                   ),
                 ],
@@ -234,8 +243,7 @@ class MapSampleState extends State<MapSample> {
   }
 }
 
-
-class ShopViewModel{
+class ShopViewModel {
   final LatLng latLng;
   final int id;
   final bool isMarket;
@@ -244,8 +252,8 @@ class ShopViewModel{
 
   ShopViewModel(this.latLng, this.id, this.isMarket, this.email, this.shopType);
 
-  String getName(){
-    switch(shopType){
+  String getName() {
+    switch (shopType) {
       case ShopType.online:
         return "Онлайн магазин";
       case ShopType.fixed:
@@ -258,8 +266,8 @@ class ShopViewModel{
     throw Exception('Не найден тип');
   }
 
-  String getIconPath(){
-    switch(shopType){
+  String getIconPath() {
+    switch (shopType) {
       case ShopType.online:
         throw Exception('Не найден тип для ONLINE');
       case ShopType.fixed:
@@ -272,8 +280,8 @@ class ShopViewModel{
     throw Exception('Не найден тип');
   }
 
-  double getIconColor(){
-    switch(shopType){
+  double getIconColor() {
+    switch (shopType) {
       case ShopType.online:
         return BitmapDescriptor.hueMagenta;
       case ShopType.fixed:
@@ -281,7 +289,7 @@ class ShopViewModel{
       case ShopType.free:
         return BitmapDescriptor.hueGreen;
       case ShopType.market:
-        return BitmapDescriptor.hueOrange;
+        return BitmapDescriptor.hueRed;
     }
     throw Exception('Не найден тип');
   }
@@ -291,7 +299,7 @@ class ShopViewModel{
   MarkerId getMarketIdObj() => MarkerId(getMarkerId());
 }
 
-class ShopType{
+class ShopType {
   static const online = 1;
   static const fixed = 2;
   static const free = 3;
@@ -303,15 +311,15 @@ class InMapShopType {
   bool free = true;
   bool market = true;
 
-  void updateMarket(){
+  void updateMarket() {
     market = !market;
   }
 
-  void updateFixed(){
+  void updateFixed() {
     fixed = !fixed;
   }
 
-  void updateFree(){
+  void updateFree() {
     free = !free;
   }
 }

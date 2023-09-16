@@ -1,33 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:upai_app/views/pages/hotKesh.dart';
-import 'package:upai_app/widgets/appBar.dart';
+import 'package:upai_app/views/pages/profileUsers/micro_page.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 
-import '../../fetches/category_products_fetch.dart';
-import '../../fetches/favorite_products_fetch.dart';
-import '../../fetches/products_fetch.dart';
 import '../../fetches/search_products_fetch.dart';
 import '../../model/productModel.dart';
 import '../../provider/selectCatProvider.dart';
-import '../../shared/app_colors.dart';
-
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:upai_app/views/pages/Filtr.dart';
-import 'package:upai_app/views/pages/hotKesh.dart';
-import 'package:upai_app/widgets/UserAvatar.dart';
-import 'package:upai_app/widgets/appBar.dart';
 
 import '../auth/server/service.dart';
 import '../category/aboutMagaz.dart';
 
 class SearchProducts extends StatefulWidget {
-
   const SearchProducts({Key? key}) : super(key: key);
 
   @override
@@ -38,18 +21,14 @@ class _SearchProductsState extends State<SearchProducts> {
   Future<ListProductsModel>? futureSearchProducts;
   late String emailGet;
   TextEditingController search = TextEditingController();
-  bool searchActive=false;
+  bool searchActive = false;
 
   @override
   void initState() {
-    emailGet=Provider.of<SelectCatProvider>(context,
-        listen: false)
-        .email;
+    emailGet = Provider.of<SelectCatProvider>(context, listen: false).email;
     // TODO: implement initState
     super.initState();
-
   }
-
 
   phoneField() {
     return Container(
@@ -64,8 +43,8 @@ class _SearchProductsState extends State<SearchProducts> {
       ),
       child: Row(
         children: [
-          Container(
-            width: 300,
+          Flexible(
+            flex: 6,
             child: TextField(
               controller: search,
               keyboardType: TextInputType.emailAddress,
@@ -79,23 +58,47 @@ class _SearchProductsState extends State<SearchProducts> {
                 ),
                 hintText: 'Поиск',
                 border: InputBorder.none,
-
               ),
             ),
           ),
-          IconButton(
-            onPressed: (){
-              futureSearchProducts=fetchSearchProducts(search.text);
-              searchActive=true;
-              setState(() {
-
-              });
-            },
-              icon:Icon(
+          Flexible(
+            flex: 1,
+            child: IconButton(
+              splashRadius: 20,
+              onPressed: () {
+                futureSearchProducts = fetchSearchProducts(search.text);
+                searchActive = true;
+                setState(() {});
+              },
+              icon: Icon(
                 Icons.search,
                 color: Color(0xFF225196),
                 size: 19,
-              )),
+              ),
+            ),
+          ),
+          Flexible(
+            flex: 1,
+            child: IconButton(
+              splashRadius: 20,
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                          insetPadding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 20),
+                          contentPadding: EdgeInsets.all(10),
+                          content: MicrophoneScreen());
+                    });
+              },
+              icon: Icon(
+                Icons.mic,
+                color: Color(0xFF225196),
+                size: 19,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -107,10 +110,8 @@ class _SearchProductsState extends State<SearchProducts> {
         appBar: AllAppBar2(),
         backgroundColor: Colors.white,
         body: RefreshIndicator(
-          onRefresh: () async{
-            setState(() {
-
-            });
+          onRefresh: () async {
+            setState(() {});
           },
           child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -132,21 +133,19 @@ class _SearchProductsState extends State<SearchProducts> {
                 ),
                 phoneField(),
                 SizedBox(height: 20),
-                if(searchActive)
-                FutureBuilder<ListProductsModel>(
-                  future: futureSearchProducts,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      var items=snapshot.data!.data!.length;
-                      return
-                        Padding(
+                if (searchActive)
+                  FutureBuilder<ListProductsModel>(
+                    future: futureSearchProducts,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        var items = snapshot.data!.data!.length;
+                        return Padding(
                           padding: const EdgeInsets.only(left: 14.0),
                           child: Wrap(
                               runSpacing: 20,
                               spacing: 10,
                               // scrollDirection: Axis.horizontal,
-                              children:
-                              [
+                              children: [
                                 /*HotKesh(0, 5, 193, 'Бир Эки бургер', 'Fast food', 25),
                           SizedBox(width: 10),
                           HotKesh(1, 3, 27, 'Enter kg', 'Электро техника', 16),
@@ -156,65 +155,83 @@ class _SearchProductsState extends State<SearchProducts> {
                           HotKeshSecond('/images/9492e584-e0bc-4d98-a06b-b55d60afd380.jpg', 3, 27, 'Телефон', 'Электро техника', 16),
                           SizedBox(width: 10),
                           HotKeshSecond('/images/3949ff22-45a3-4251-95d4-1dc2d43f289e.jpg', 2, 42, 'Продается', 'Электро техника', 16),*/
-                                for (var i=0;i<items;i++)
-                                  HotKeshSecond(snapshot.data!.data![i].images!.length>0 ? snapshot.data!.data![i].images![0] : null, 3, snapshot.data!.data![i].description!, snapshot.data!.data![i].price.toString(),((snapshot.data!.data![i].id!).toString()),emailGet),
-
+                                for (var i = 0; i < items; i++)
+                                  HotKeshSecond(
+                                      snapshot.data!.data![i].images!.length > 0
+                                          ? snapshot.data!.data![i].images![0]
+                                          : null,
+                                      3,
+                                      snapshot.data!.data![i].description!,
+                                      snapshot.data!.data![i].price.toString(),
+                                      ((snapshot.data!.data![i].id!)
+                                          .toString()),
+                                      emailGet),
                               ]
 
-                            /*HotKesh(2, 4, 193, 'Baby Store', 'Для детей', 14),
+                              /*HotKesh(2, 4, 193, 'Baby Store', 'Для детей', 14),
                           SizedBox(width: 10),
                           HotKesh(3, 5, 27, 'Cinematika', 'Кино и театр', 24)*/
 
-                          ),
-                        );}else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
-                    }
+                              ),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
 
-                    // By default, show a loading spinner.
-                    return Center(child: const CircularProgressIndicator());
-                  },),
+                      // By default, show a loading spinner.
+                      return Center(child: const CircularProgressIndicator());
+                    },
+                  ),
               ]),
         )
-      //       Expanded(
-      //         child: Padding(
-      //           padding: const EdgeInsets.only(left: 14.0),
-      //           child: Container(
-      //             height: 150,
-      //             child: Wrap(
-      //               // scrollDirection: Axis.horizontal,
-      //               children: leftRight
-      //                   ? [
-      //                       HotKesh(
-      //                           0, 5, 193, 'Бир Эки бургер', 'Fast food', 25),
-      //                       SizedBox(width: 10),
-      //                       HotKesh(
-      //                           1, 3, 27, 'Enter kg', 'Электро техника', 16),
-      //                       SizedBox(width: 10),
-      //                       HotKesh(
-      //                           0, 5, 193, 'Бир Эки бургер', 'Fast food', 25),
-      //                       SizedBox(width: 10),
-      //                       HotKesh(1, 3, 27, 'Enter kg', 'Электро техника', 16)
-      //                     ]
-      //                   : [
-      //                       HotKesh(2, 4, 193, 'Baby Store', 'Для детей', 14),
-      //                       SizedBox(width: 10),
-      //                       HotKesh(3, 5, 27, 'Cinematika', 'Кино и театр', 24)
-      //                     ],
-      //             ),
-      //           ),
-      //         ),
-      //       ),
-      //     ],
-      //   ),
-      // ),
-    );
+        //       Expanded(
+        //         child: Padding(
+        //           padding: const EdgeInsets.only(left: 14.0),
+        //           child: Container(
+        //             height: 150,
+        //             child: Wrap(
+        //               // scrollDirection: Axis.horizontal,
+        //               children: leftRight
+        //                   ? [
+        //                       HotKesh(
+        //                           0, 5, 193, 'Бир Эки бургер', 'Fast food', 25),
+        //                       SizedBox(width: 10),
+        //                       HotKesh(
+        //                           1, 3, 27, 'Enter kg', 'Электро техника', 16),
+        //                       SizedBox(width: 10),
+        //                       HotKesh(
+        //                           0, 5, 193, 'Бир Эки бургер', 'Fast food', 25),
+        //                       SizedBox(width: 10),
+        //                       HotKesh(1, 3, 27, 'Enter kg', 'Электро техника', 16)
+        //                     ]
+        //                   : [
+        //                       HotKesh(2, 4, 193, 'Baby Store', 'Для детей', 14),
+        //                       SizedBox(width: 10),
+        //                       HotKesh(3, 5, 27, 'Cinematika', 'Кино и театр', 24)
+        //                     ],
+        //             ),
+        //           ),
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        );
   }
-  Widget HotKeshSecond(
-      String? image, double rat,  String name, String cat,String productId,String email) {
-    List<String> nameAndDescription=[name.split('name').first,name.split('name').last];
+
+  Widget HotKeshSecond(String? image, double rat, String name, String cat,
+      String productId, String email) {
+    List<String> nameAndDescription = [
+      name.split('name').first,
+      name.split('name').last
+    ];
     return InkWell(
-      onTap: () => Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => AboutMagaz(productId: productId,email: email,checkUserPage: false,))),
+      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => AboutMagaz(
+                productId: productId,
+                email: email,
+                checkUserPage: false,
+              ))),
       child: Ink(
         width: 170,
         child: Column(
@@ -232,13 +249,13 @@ class _SearchProductsState extends State<SearchProducts> {
                         offset: Offset(0, 6),
                         color: Color(0x33000000))
                   ],
-                  image:image!=null ? DecorationImage(
-                      fit: BoxFit.cover,
-                      image:  NetworkImage('http://${AuthClient.ip}/$image')  )
+                  image: image != null
+                      ? DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage('http://${AuthClient.ip}/$image'))
                       : DecorationImage(
-                      fit: BoxFit.cover,
-                      image:  AssetImage('assets/img/hotKesh/kesh0.jpg') )
-              ),
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/img/hotKesh/kesh0.jpg'))),
             ),
             SizedBox(height: 12),
             /*Row(
@@ -265,7 +282,6 @@ class _SearchProductsState extends State<SearchProducts> {
                     ),*/
             SizedBox(height: 5),
             Container(
-
               child: Text(
                 nameAndDescription[0],
                 style: TextStyle(color: Color(0xFF313131), fontSize: 16),
@@ -274,13 +290,9 @@ class _SearchProductsState extends State<SearchProducts> {
             ),
             SizedBox(height: 5),
             Text(
-              cat=='null'?"Договорная": cat.split('.').first+' сом',
+              cat == 'null' ? "Договорная" : cat.split('.').first + ' сом',
               style: TextStyle(color: Colors.orange, fontSize: 14),
             )
-
-
-
-
           ],
         ),
       ),

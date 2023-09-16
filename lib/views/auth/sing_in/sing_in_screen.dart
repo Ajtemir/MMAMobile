@@ -19,11 +19,12 @@ class SingInScreen extends StatefulWidget {
 }
 
 class _SingInScreenState extends State<SingInScreen> {
-  TextEditingController email = TextEditingController(text: "first@example.com");
+  TextEditingController email =
+      TextEditingController(text: "first@example.com");
   TextEditingController password = TextEditingController(text: "password");
-  TextEditingController ip=TextEditingController(text: "localhost");
+  TextEditingController ip = TextEditingController(text: "192.168.182.143");
   bool showPassword = false;
-  bool circular=false;
+  bool circular = false;
 
   phoneField() {
     return Container(
@@ -61,6 +62,7 @@ class _SingInScreenState extends State<SingInScreen> {
       ),
     );
   }
+
   ipField() {
     return Container(
       width: 300,
@@ -257,33 +259,26 @@ class _SingInScreenState extends State<SingInScreen> {
               ),
               InkWell(
                 onTap: () async {
-                  AuthClient.ip=ip.text;
-                  circular=true;
-                  setState(() {
-
-                  });
+                  AuthClient.ip = ip.text;
+                  circular = true;
+                  setState(() {});
                   String ans =
                       await AuthClient().postSingIn(email.text, password.text);
-                  if (ans == 'true'){
-                    circular=false;
-                    setState(() {
-
-                    });
+                  if (ans == 'true') {
+                    circular = false;
+                    setState(() {});
                     showToast('Вход выполнен!');
-                    Provider.of<SelectCatProvider>(context,listen: false).setEmail(email.text);
+                    Provider.of<SelectCatProvider>(context, listen: false)
+                        .setEmail(email.text);
                     Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => Home()));}
-                  else if (ans == 'password') {
-                    circular=false;
-                    setState(() {
-
-                    });
+                        MaterialPageRoute(builder: (_) => Home()));
+                  } else if (ans == 'password') {
+                    circular = false;
+                    setState(() {});
                     cancelToast('Неправильный пароль!');
                   } else {
-                    circular=false;
-                    setState(() {
-
-                    });
+                    circular = false;
+                    setState(() {});
                     cancelToast('Email не зарегистрирован!');
                   }
                 },
@@ -294,10 +289,13 @@ class _SingInScreenState extends State<SingInScreen> {
                       color: Color(0xFF225196),
                       borderRadius: BorderRadius.circular(30)),
                   child: Center(
-                      child: circular ? CircularProgressIndicator():Text(
-                    'Войти',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  )),
+                      child: circular
+                          ? CircularProgressIndicator()
+                          : Text(
+                              'Войти',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            )),
                 ),
               ),
               const SizedBox(height: 15),
