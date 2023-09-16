@@ -5,16 +5,15 @@ import 'package:upai_app/provider/selectTabProvider.dart';
 import 'package:upai_app/views/drawer/hotKeshAdd.dart';
 import 'package:upai_app/views/pages/favorite.dart';
 import 'package:upai_app/views/pages/messeg.dart';
-import 'package:upai_app/views/pages/notifications.dart';
 import 'package:upai_app/views/pages/dashboard.dart';
-import 'package:upai_app/views/pages/history.dart';
 import 'package:upai_app/views/pages/profile/profile.dart';
-import 'package:upai_app/widgets/floatingAction.dart';
 
 import '../../shared/app_colors.dart';
 import '../pages/map/globalMap.dart';
 
 class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -35,18 +34,31 @@ class _HomeState extends State<Home> {
         child: Provider.of<SelectTabProvider>(context).currentScreen,
         bucket: bucket,
       ),
-
-
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.white,
+        tooltip: "Карта",
+        onPressed: () {
+          Provider.of<SelectTabProvider>(context, listen: false)
+              .toggleSelect(const GlobalMap(), 4);
+        },
+        child: Icon(
+          Icons.map_rounded,
+          color: Provider.of<SelectTabProvider>(context).currentTab == 4
+              ? AppColors.red1
+              : AppColors.blue1,
+        ),
+      ),
       bottomNavigationBar: BottomAppBar(
+        padding: EdgeInsets.all(5),
         shape: CircularNotchedRectangle(),
-        // notchMargin: 10,
-        child: Container(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              MaterialButton(
-                minWidth: 40,
+        notchMargin: 10,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Flexible(
+              child: MaterialButton(
                 onPressed: () {
                   Provider.of<SelectTabProvider>(context, listen: false)
                       .toggleSelect(Dashboard(),
@@ -59,8 +71,9 @@ class _HomeState extends State<Home> {
                       : AppColors.blue1,
                 ),
               ),
-              MaterialButton(
-                minWidth: 40,
+            ),
+            Flexible(
+              child: MaterialButton(
                 onPressed: () {
                   Provider.of<SelectTabProvider>(context, listen: false)
                       .toggleSelect(HotKeshAdd(),
@@ -73,8 +86,12 @@ class _HomeState extends State<Home> {
                       : AppColors.blue1,
                 ),
               ),
-              MaterialButton(
-                minWidth: 40,
+            ),
+            Expanded(
+              child: SizedBox(),
+            ),
+            Flexible(
+              child: MaterialButton(
                 onPressed: () {
                   Provider.of<SelectTabProvider>(context, listen: false)
                       .toggleSelect(Favorite(),
@@ -87,8 +104,9 @@ class _HomeState extends State<Home> {
                       : Color(0xFF225196),
                 ),
               ),
-              MaterialButton(
-                minWidth: 40,
+            ),
+            Flexible(
+              child: MaterialButton(
                 onPressed: () {
                   Provider.of<SelectTabProvider>(context, listen: false)
                       .toggleSelect(Profile(),
@@ -101,24 +119,10 @@ class _HomeState extends State<Home> {
                       : AppColors.blue1,
                 ),
               ),
-              MaterialButton(
-                minWidth: 40,
-                onPressed: () {
-                  Provider.of<SelectTabProvider>(context, listen: false)
-                      .toggleSelect(GlobalMap(),
-                      4); // if user taps on this dashboard tab will be active
-                },
-                child: Icon(
-                  Icons.map_rounded,
-                  color: Provider.of<SelectTabProvider>(context).currentTab == 4
-                      ? AppColors.red1
-                      : AppColors.blue1,
-                ),
-              ),
+            ),
 
-              // Right Tab bar icons
-            ],
-          ),
+            // Right Tab bar icons
+          ],
         ),
       ),
     );

@@ -1,20 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:upai_app/fetches/categories_fetch.dart';
 import 'package:upai_app/model/categoriesModel.dart';
 import 'package:upai_app/views/auth/server/service.dart';
-import 'package:upai_app/views/pages/Filtr.dart';
 import 'package:upai_app/views/pages/categoryProducts.dart';
-import 'package:upai_app/views/pages/hotKesh.dart';
 import 'package:upai_app/views/pages/search_page.dart';
-import 'package:upai_app/widgets/UserAvatar.dart';
-import 'package:upai_app/widgets/appBar.dart';
-
-import '../../fetches/newProducts_fetch.dart';
 import '../../fetches/products_fetch.dart';
 import '../../model/productModel.dart';
 import '../../provider/selectCatProvider.dart';
@@ -44,25 +36,24 @@ class _DashboardState extends State<Dashboard> {
   List<Widget> listN = [
     Stack(
       fit: StackFit.passthrough,
-      //overflow: Overflow.visible,
       children: [
         Container(
           width: 332,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Color(0xFF313131),
+              color: const Color(0xFF313131),
               boxShadow: [
                 BoxShadow(
-                    color: Color(0x40000000).withOpacity(0.25),
+                    color: const Color(0x40000000).withOpacity(0.25),
                     blurRadius: 10,
-                    offset: Offset(0, 6))
+                    offset: const Offset(0, 6))
               ]),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 14),
+          child: const Padding(
+            padding: EdgeInsets.only(left: 14),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Padding(
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   top: 17,
                   right: 143,
                 ),
@@ -74,7 +65,7 @@ class _DashboardState extends State<Dashboard> {
               ),
               SizedBox(height: 7),
               Padding(
-                padding: const EdgeInsets.only(right: 112),
+                padding: EdgeInsets.only(right: 112),
                 child: Text(
                   "Летай сколько угодно, получай за каждую покупку до 15%",
                   style: TextStyle(color: Colors.white, fontSize: 12),
@@ -112,19 +103,19 @@ class _DashboardState extends State<Dashboard> {
           width: 332,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Color(0xFF313131),
+              color: const Color(0xFF313131),
               boxShadow: [
                 BoxShadow(
-                    color: Color(0x40000000).withOpacity(0.25),
+                    color: const Color(0x40000000).withOpacity(0.25),
                     blurRadius: 10,
-                    offset: Offset(0, 6))
+                    offset: const Offset(0, 6))
               ]),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 14),
+          child: const Padding(
+            padding: EdgeInsets.only(left: 14),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Padding(
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   top: 17,
                   right: 143,
                 ),
@@ -136,7 +127,7 @@ class _DashboardState extends State<Dashboard> {
               ),
               SizedBox(height: 7),
               Padding(
-                padding: const EdgeInsets.only(right: 112),
+                padding: EdgeInsets.only(right: 112),
                 child: Text(
                   "Летай сколько угодно, получай за каждую покупку до 15%",
                   style: TextStyle(color: Colors.white, fontSize: 12),
@@ -174,19 +165,20 @@ class _DashboardState extends State<Dashboard> {
           width: 332,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Color(0xFF313131),
+              color: const Color(0xFF313131),
               boxShadow: [
                 BoxShadow(
-                    color: Color(0x40000000).withOpacity(0.25),
-                    blurRadius: 10,
-                    offset: Offset(0, 6))
+                  color: const Color(0x40000000).withOpacity(0.25),
+                  blurRadius: 10,
+                  offset: const Offset(0, 6),
+                )
               ]),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 14),
+          child: const Padding(
+            padding: EdgeInsets.only(left: 14),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Padding(
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   top: 17,
                   right: 143,
                 ),
@@ -198,7 +190,7 @@ class _DashboardState extends State<Dashboard> {
               ),
               SizedBox(height: 7),
               Padding(
-                padding: const EdgeInsets.only(right: 112),
+                padding: EdgeInsets.only(right: 112),
                 child: Text(
                   "Летай сколько угодно, получай за каждую покупку до 15%",
                   style: TextStyle(color: Colors.white, fontSize: 12),
@@ -260,7 +252,7 @@ class _DashboardState extends State<Dashboard> {
         title: Container(
           width: 60,
           height: 60,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               image: DecorationImage(image: AssetImage('assets/img/logo.png'))),
         ),
         // elevation: 0,
@@ -269,10 +261,10 @@ class _DashboardState extends State<Dashboard> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => SearchProducts()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const SearchProducts()));
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.search,
               color: AppColors.blue1,
             ),
@@ -285,7 +277,7 @@ class _DashboardState extends State<Dashboard> {
         },
         child: ListView(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             /*Padding(
@@ -323,7 +315,7 @@ class _DashboardState extends State<Dashboard> {
                   ],
                 ),
               ),*/
-            SizedBox(height: 26),
+            const SizedBox(height: 26),
             CarouselSlider(
               items: listN,
               options: CarouselOptions(
@@ -336,33 +328,39 @@ class _DashboardState extends State<Dashboard> {
                 height: 160,
                 viewportFraction: 1,
                 autoPlay: true,
-                autoPlayInterval: Duration(seconds: 5),
+                autoPlayInterval: const Duration(seconds: 5),
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
                   width: 14,
                   height: 1,
-                  color: slideIndex == 0 ? AppColors.red1 : Color(0xFFC4C4C4),
+                  color: slideIndex == 0
+                      ? AppColors.red1
+                      : const Color(0xFFC4C4C4),
                 ),
-                SizedBox(width: 9),
+                const SizedBox(width: 9),
                 Container(
                   width: 14,
                   height: 1,
-                  color: slideIndex == 1 ? AppColors.red1 : Color(0xFFC4C4C4),
+                  color: slideIndex == 1
+                      ? AppColors.red1
+                      : const Color(0xFFC4C4C4),
                 ),
-                SizedBox(width: 9),
+                const SizedBox(width: 9),
                 Container(
                   width: 14,
                   height: 1,
-                  color: slideIndex == 2 ? AppColors.red1 : Color(0xFFC4C4C4),
+                  color: slideIndex == 2
+                      ? AppColors.red1
+                      : const Color(0xFFC4C4C4),
                 ),
               ],
             ),
-            ListTile(
+            const ListTile(
               leading: Text(
                 'Категории',
                 style: TextStyle(color: Color(0xFF313131), fontSize: 16),
@@ -379,11 +377,12 @@ class _DashboardState extends State<Dashboard> {
                   var items = snapshot.data!.data!.length;
                   var path = snapshot.data!;
                   return Container(
-                    padding: EdgeInsets.only(left: 14),
+                    padding: const EdgeInsets.only(left: 14),
                     height: 110,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
-                      separatorBuilder: (context, _) => SizedBox(width: 0),
+                      separatorBuilder: (context, _) =>
+                          const SizedBox(width: 0),
                       itemCount: items,
                       itemBuilder: (context, index) => Category(
                           path.data![index].id.toString(),
@@ -397,7 +396,7 @@ class _DashboardState extends State<Dashboard> {
                 }
 
                 // By default, show a loading spinner.
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               },
             ),
 
@@ -487,20 +486,21 @@ class _DashboardState extends State<Dashboard> {
             // //     ),
             // //   ),
             // // ),
-            SizedBox(
+            const SizedBox(
               height: 47,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Container(
                 height: 35,
                 decoration: BoxDecoration(
-                  color: Color(0xFFEBEBEB),
+                  color: const Color(0xFFEBEBEB),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Row(
                   children: [
-                    Expanded(
+                    Flexible(
+                      flex: 2,
                       child: GestureDetector(
                         onTap: () {
                           setState(() {
@@ -524,7 +524,8 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ),
                     ),
-                    Expanded(
+                    Flexible(
+                      flex: 2,
                       child: GestureDetector(
                         onTap: () {
                           setState(() {
@@ -552,7 +553,7 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             FutureBuilder<ListProductsModel>(
@@ -560,11 +561,10 @@ class _DashboardState extends State<Dashboard> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var items = snapshot.data!.data!.length;
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 14.0),
+                  return Center(
                     child: Wrap(
                       runSpacing: 20,
-                      spacing: 10,
+                      spacing: 20,
                       // scrollDirection: Axis.horizontal,
                       children: leftRight
                           ? [
@@ -609,14 +609,13 @@ class _DashboardState extends State<Dashboard> {
                   );
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
-                  ;
                 }
 
                 // By default, show a loading spinner.
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               },
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
           ],
         ),
       ),
@@ -625,17 +624,17 @@ class _DashboardState extends State<Dashboard> {
 
   Widget Magazine(int image, double rat, String name, String cat) {
     return Container(
-      padding: EdgeInsets.only(left: 5, right: 5, top: 13, bottom: 17),
+      padding: const EdgeInsets.only(left: 5, right: 5, top: 13, bottom: 17),
       decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-                color: Color(0x1A000000).withOpacity(0.1),
+                color: const Color(0x1A000000).withOpacity(0.1),
                 blurRadius: 4,
-                offset: Offset(0, 4)),
+                offset: const Offset(0, 4)),
           ],
           border: Border.all(
-              width: 0.5, color: Color(0xFF929292).withOpacity(0.37)),
+              width: 0.5, color: const Color(0xFF929292).withOpacity(0.37)),
           borderRadius: BorderRadius.circular(10)),
       child: Container(
         width: 100,
@@ -652,26 +651,27 @@ class _DashboardState extends State<Dashboard> {
                 RatingBar.builder(
                     initialRating: rat,
                     itemSize: 12,
-                    itemBuilder: (context, _) => Icon(
+                    itemBuilder: (context, _) => const Icon(
                           Icons.star,
                           color: AppColors.mainRed,
                         ),
                     onRatingUpdate: (rating) {}),
-                SizedBox(width: 2.5),
+                const SizedBox(width: 2.5),
                 Text(
                   '$rat',
-                  style: TextStyle(color: AppColors.mainRed, fontSize: 12),
+                  style:
+                      const TextStyle(color: AppColors.mainRed, fontSize: 12),
                 ),
               ],
             ),
-            SizedBox(height: 9),
+            const SizedBox(height: 9),
             Text(
               name,
-              style: TextStyle(color: Colors.black, fontSize: 12),
+              style: const TextStyle(color: Colors.black, fontSize: 12),
             ),
             Text(
               cat == 'null' ? "Договорная" : cat,
-              style: TextStyle(color: Colors.black, fontSize: 10),
+              style: const TextStyle(color: Colors.black, fontSize: 10),
             )
           ],
         ),
@@ -695,12 +695,13 @@ class _DashboardState extends State<Dashboard> {
                   color: Colors.white,
                   boxShadow: [
                     BoxShadow(
-                        color: Color(0x1A000000).withOpacity(0.1),
+                        color: const Color(0x1A000000).withOpacity(0.1),
                         blurRadius: 4,
-                        offset: Offset(0, 4)),
+                        offset: const Offset(0, 4)),
                   ],
                   border: Border.all(
-                      width: 0.5, color: Color(0xFF929292).withOpacity(0.37)),
+                      width: 0.5,
+                      color: const Color(0xFF929292).withOpacity(0.37)),
                   borderRadius: BorderRadius.circular(10)),
               child: Padding(
                 padding: const EdgeInsets.all(22),
@@ -711,10 +712,10 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
             ),
-            SizedBox(height: 13),
+            const SizedBox(height: 13),
             Text(
               name,
-              style: TextStyle(color: Colors.black, fontSize: 12),
+              style: const TextStyle(color: Colors.black, fontSize: 12),
               textAlign: TextAlign.center,
             ),
           ],
@@ -738,9 +739,10 @@ class _DashboardState extends State<Dashboard> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
-                      width: 2.5, color: Color(0xFF929292).withOpacity(0.37)),
+                      width: 2.5,
+                      color: const Color(0xFF929292).withOpacity(0.37)),
                   boxShadow: [
-                    BoxShadow(
+                    const BoxShadow(
                         blurRadius: 7,
                         offset: Offset(0, 6),
                         color: Color(0x33000000))
@@ -749,7 +751,7 @@ class _DashboardState extends State<Dashboard> {
                       fit: BoxFit.cover,
                       image: AssetImage('assets/img/hotKesh/kesh$image.jpg'))),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -761,7 +763,7 @@ class _DashboardState extends State<Dashboard> {
                         RatingBar.builder(
                             initialRating: rat,
                             itemSize: 12,
-                            itemBuilder: (context, _) => Icon(
+                            itemBuilder: (context, _) => const Icon(
                                   Icons.star,
                                   color: AppColors.mainRed,
                                 ),
@@ -770,39 +772,42 @@ class _DashboardState extends State<Dashboard> {
                                 rat = rating;
                               });
                             }),
-                        SizedBox(width: 2.5),
+                        const SizedBox(width: 2.5),
                         Text(
                           '$rat',
-                          style:
-                              TextStyle(color: AppColors.mainRed, fontSize: 12),
+                          style: const TextStyle(
+                              color: AppColors.mainRed, fontSize: 12),
                         ),
-                        SizedBox(width: 2),
+                        const SizedBox(width: 2),
                         Text(
                           '($otzyv отзыва)',
-                          style:
-                              TextStyle(color: Color(0xFF313131), fontSize: 10),
+                          style: const TextStyle(
+                              color: Color(0xFF313131), fontSize: 10),
                         )
                       ],
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(
                       name,
-                      style: TextStyle(color: Color(0xFF313131), fontSize: 12),
+                      style: const TextStyle(
+                          color: Color(0xFF313131), fontSize: 12),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(
                       cat,
-                      style: TextStyle(color: Color(0xFF8D8D8D), fontSize: 10),
+                      style: const TextStyle(
+                          color: Color(0xFF8D8D8D), fontSize: 10),
                     )
                   ],
                 ),
-                SizedBox(width: 5),
+                const SizedBox(width: 5),
                 Container(
                   width: 20,
                   child: Text(
                     'до $kesh%',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: AppColors.green, fontSize: 10),
+                    style:
+                        const TextStyle(color: AppColors.green, fontSize: 10),
                   ),
                 )
               ],
@@ -837,9 +842,10 @@ class _DashboardState extends State<Dashboard> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
-                      width: 2.5, color: Color(0xFF929292).withOpacity(0.37)),
+                      width: 2.5,
+                      color: const Color(0xFF929292).withOpacity(0.37)),
                   boxShadow: [
-                    BoxShadow(
+                    const BoxShadow(
                         blurRadius: 7,
                         offset: Offset(0, 6),
                         color: Color(0x33000000))
@@ -848,11 +854,11 @@ class _DashboardState extends State<Dashboard> {
                       ? DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage('http://${AuthClient.ip}/$image'))
-                      : DecorationImage(
+                      : const DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage('assets/img/hotKesh/kesh0.jpg'))),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             /*Row(
                       children: [
                         RatingBar.builder(
@@ -875,18 +881,18 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ],
                     ),*/
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Container(
               child: Text(
                 nameAndDescription[0],
-                style: TextStyle(color: Color(0xFF313131), fontSize: 16),
+                style: const TextStyle(color: Color(0xFF313131), fontSize: 16),
                 overflow: TextOverflow.clip,
               ),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Text(
               cat == 'null' ? "Договорная цена" : cat.split('.').first + ' сом',
-              style: TextStyle(color: Colors.orange, fontSize: 14),
+              style: const TextStyle(color: Colors.orange, fontSize: 14),
             ),
             args == null
                 ? const SizedBox(

@@ -329,83 +329,184 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                     ),
                   ),
                 const SizedBox(
-                  height: 5,
+                  height: 20,
                 ),
                 isSetCollective == null
                     ? const SizedBox(
                         height: 0,
                       )
-                    : Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 60.0),
-                        child: InkWell(
-                          onTap: () async {
-                            try {
-                              if (isSetCollective!) {
-                                await AuthClient()
-                                    .removeCollective(path.id!, widget.email);
-                              } else {
-                                await AuthClient()
-                                    .addCollective(path.id!, widget.email);
-                              }
-                              setState(() {});
-                            } on Exception catch (err) {
-                              print(err);
-                            }
-                          },
-                          child: Ink(
-                            height: 45,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color(0xFFFF6B00),
+                    : Container(
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: AppColors.white),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0x40000000).withOpacity(0.25),
+                              blurRadius: 10,
+                              offset: const Offset(0, 6),
                             ),
-                            child: Row(
+                          ],
+                        ),
+                        padding: EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
-                                    flex: 1,
-                                    child: isSetCollective!
-                                        ? Icon(
-                                            Icons.arrow_downward_outlined,
-                                            color: Colors.white,
-                                          )
-                                        : Icon(
-                                            Icons.arrow_upward_outlined,
-                                            color: Colors.white,
-                                          )),
-                                Expanded(
-                                  flex: 3,
                                   child: Text(
-                                    isSetCollective! ? 'Убрать' : 'Добавить',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 15),
+                                    'Конец:',
+                                    style: styleTitleInCard,
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 3,
                                   child: Text(
-                                    '${path.collectiveInfo!.currentBuyerCount} / ${path.collectiveInfo!.minBuyerCount}',
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 15),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: Text(
-                                    '${path.collectiveInfo!.collectivePrice} сом',
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 15),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: Text(
-                                    'Конец ${path.collectiveInfo!.endDate}',
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 15),
+                                    dateFormat(path.collectiveInfo!.endDate),
+                                    style: styleSubtitleInCard,
                                   ),
                                 ),
                               ],
                             ),
-                          ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Количество людей:',
+                                    style: styleTitleInCard,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    '${path.collectiveInfo!.currentBuyerCount} / ${path.collectiveInfo!.minBuyerCount}',
+                                    style: styleSubtitleInCard,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Цена товара:',
+                                    style: styleTitleInCard,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    '${path.collectiveInfo!.collectivePrice} сом',
+                                    style: styleSubtitleInCard,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                style: const ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStatePropertyAll(AppColors.red1),
+                                  padding: MaterialStatePropertyAll(
+                                      EdgeInsets.symmetric(vertical: 10)),
+                                ),
+                                onPressed: () async {
+                                  try {
+                                    if (isSetCollective!) {
+                                      await AuthClient().removeCollective(
+                                          path.id!, widget.email);
+                                    } else {
+                                      await AuthClient().addCollective(
+                                          path.id!, widget.email);
+                                    }
+                                    setState(() {});
+                                  } on Exception catch (err) {
+                                    print(err);
+                                  }
+
+                                  ;
+                                },
+                                child: Text(
+                                  isSetCollective! ? 'Убрать' : 'Добавить',
+                                ),
+                              ),
+                            ),
+                            // InkWell(
+                            //   onTap: () async {
+                            //     try {
+                            //       if (isSetCollective!) {
+                            //         await AuthClient().removeCollective(
+                            //             path.id!, widget.email);
+                            //       } else {
+                            //         await AuthClient()
+                            //             .addCollective(path.id!, widget.email);
+                            //       }
+                            //       setState(() {});
+                            //     } on Exception catch (err) {
+                            //       print(err);
+                            //     }
+                            //   },
+                            //   child: Ink(
+                            //     height: 45,
+                            //     decoration: BoxDecoration(
+                            //       borderRadius: BorderRadius.circular(10),
+                            //       color: Color(0xFFFF6B00),
+                            //     ),
+                            //     child: Row(
+                            //       children: [
+                            //         Flexible(
+                            //             flex: 1,
+                            //             child: isSetCollective!
+                            //                 ? Icon(
+                            //                     Icons.arrow_downward_outlined,
+                            //                     color: Colors.white,
+                            //                   )
+                            //                 : Icon(
+                            //                     Icons.arrow_upward_outlined,
+                            //                     color: Colors.white,
+                            //                   )),
+                            //         Flexible(
+                            //           flex: 3,
+                            //           child: Text(
+                            //             isSetCollective!
+                            //                 ? 'Убрать'
+                            //                 : 'Добавить',
+                            //             style: TextStyle(
+                            //                 color: Colors.white, fontSize: 15),
+                            //           ),
+                            //         ),
+                            //         Flexible(
+                            //           flex: 3,
+                            //           child: Text(
+                            //             '${path.collectiveInfo!.currentBuyerCount} / ${path.collectiveInfo!.minBuyerCount}',
+                            //             style: const TextStyle(
+                            //                 color: Colors.white, fontSize: 15),
+                            //           ),
+                            //         ),
+                            //         Flexible(
+                            //           flex: 3,
+                            //           child: Text(
+                            //             '${path.collectiveInfo!.collectivePrice} сом',
+                            //             style: const TextStyle(
+                            //                 color: Colors.white, fontSize: 15),
+                            //           ),
+                            //         ),
+                            //         Flexible(
+                            //           flex: 3,
+                            //           child: Text(
+                            //             'Конец ${path.collectiveInfo!.endDate}',
+                            //             style: const TextStyle(
+                            //                 color: Colors.white, fontSize: 15),
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+                          ],
                         ),
                       ),
                 isMadeCollectiveOrDefaultNotSeller == null
@@ -569,7 +670,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
             children: [
               const Expanded(
                 flex: 1,
-                child: Icon(Icons.add_card_sharp),
+                child: Icon(
+                  Icons.add_card_sharp,
+                  color: AppColors.white,
+                ),
               ),
               Expanded(
                 flex: 3,

@@ -14,7 +14,7 @@ class Messej extends StatelessWidget {
       appBar: AllAppBar(),
       body: Center(
         child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           children: [
             ListTile(
                 leading: Text(

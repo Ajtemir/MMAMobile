@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:upai_app/views/pages/profileUsers/micro_page.dart';
+import 'package:upai_app/shared/app_colors.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 
 import '../../fetches/search_products_fetch.dart';
@@ -86,10 +86,32 @@ class _SearchProductsState extends State<SearchProducts> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                          insetPadding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 20),
-                          contentPadding: EdgeInsets.all(10),
-                          content: MicrophoneScreen());
+                        insetPadding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                        contentPadding: EdgeInsets.all(10),
+                        content: Container(
+                          height: MediaQuery.of(context).size.height * 0.3,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text("Голосовой поиск"),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.mic,
+                                  size: 40,
+                                ),
+                              ),
+                              ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStatePropertyAll(
+                                          AppColors.red1)),
+                                  onPressed: () {},
+                                  child: Text("Поиск")),
+                            ],
+                          ),
+                        ),
+                      );
                     });
               },
               icon: Icon(

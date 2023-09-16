@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:upai_app/views/auth/server/service.dart';
 
+import '../../../shared/app_colors.dart';
+import '../../../widgets/appBar.dart';
 import '../profileUsers/profileUsers.dart';
 import 'dart:async';
 
@@ -82,7 +84,7 @@ class MapSampleState extends State<MapSample> {
     zoom: 18,
   );
   MapType _currentMapType = MapType.normal;
-
+  bool isOpenMarket = false;
   late Map<int, BitmapDescriptor> typesIcons;
 
   @override
@@ -130,17 +132,23 @@ class MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Карта'),
-        backgroundColor: Colors.blue,
+      appBar: AllAppBar(
+        leading: IconButton(
+          splashRadius: 20,
+          onPressed: () {
+            isOpenMarket = !isOpenMarket;
+            setState(() {});
+          },
+          icon: Icon(
+            Icons.place,
+            color: isOpenMarket ? AppColors.red1 : AppColors.grey,
+          ),
+        ),
       ),
       body: Stack(
         children: [
           GoogleMap(
-            onCameraMove: (CameraPosition cameraPosition) {
-              print(cameraPosition.zoom);
-              print(cameraPosition.target);
-            },
+            onCameraMove: (CameraPosition cameraPosition) {},
             mapType: _currentMapType,
             initialCameraPosition: _london,
             markers: _shops
@@ -153,8 +161,8 @@ class MapSampleState extends State<MapSample> {
                     infoWindow: InfoWindow(
                       title: e.getName(),
                     ),
-                    onTap: () {
-                      Navigator.of(context).push(
+                    onTap: () async {
+                      await Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => e.isMarket
                               ? MarketMap(marketId: e.id, marketPoint: e.latLng)
@@ -179,64 +187,76 @@ class MapSampleState extends State<MapSample> {
           //     ),
           //   ),
           // ),
-          Padding(
-            padding: const EdgeInsets.all(18),
-            child: Align(
-              alignment: Alignment.bottomLeft,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  FloatingActionButton.extended(
-                    label: const Text("БУТИК"),
-                    backgroundColor: Colors.green,
-                    onPressed: () {
-                      setState(() {
-                        _inMapShopType.updateFixed();
-                        _updateMap();
-                      });
-                    },
-                    icon: Checkbox(
-                      value: _inMapShopType.fixed,
-                      onChanged: (bool? value) {},
+          isOpenMarket
+              ? Container(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.95),
+                    borderRadius:
+                        BorderRadius.only(bottomRight: Radius.circular(20)),
+                    border: Border.all(
+                      color: Colors.grey,
                     ),
                   ),
-                  const SizedBox(
-                    height: 5,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ListTile(
+                        leading: Checkbox(
+                          side: BorderSide.none,
+                          fillColor:
+                              const MaterialStatePropertyAll(AppColors.red1),
+                          value: _inMapShopType.fixed,
+                          onChanged: (bool? value) {
+                            _inMapShopType.fixed = !_inMapShopType.fixed;
+                            setState(() {});
+                          },
+                        ),
+                        title: const Text("БУТИК"),
+                        trailing: const Icon(
+                          Icons.place,
+                          color: Colors.green,
+                        ),
+                      ),
+                      ListTile(
+                        leading: Checkbox(
+                          side: BorderSide.none,
+                          fillColor:
+                              const MaterialStatePropertyAll(AppColors.red1),
+                          value: _inMapShopType.market,
+                          onChanged: (bool? value) {
+                            _inMapShopType.market = !_inMapShopType.market;
+                            setState(() {});
+                          },
+                        ),
+                        title: const Text("ТЦ/БАЗАР"),
+                        trailing: const Icon(
+                          Icons.place,
+                          color: Colors.red,
+                        ),
+                      ),
+                      ListTile(
+                        leading: Checkbox(
+                          side: BorderSide.none,
+                          fillColor:
+                              const MaterialStatePropertyAll(AppColors.red1),
+                          value: _inMapShopType.free,
+                          onChanged: (bool? value) {
+                            _inMapShopType.free = !_inMapShopType.free;
+                            setState(() {});
+                          },
+                        ),
+                        title: const Text("Стихийная"),
+                        trailing: const Icon(
+                          Icons.place,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ],
                   ),
-                  FloatingActionButton.extended(
-                    backgroundColor: Colors.red,
-                    label: const Text("ТЦ/БАЗАР"),
-                    onPressed: () {
-                      setState(() {
-                        _inMapShopType.updateMarket();
-                        _updateMap();
-                      });
-                    },
-                    icon: Checkbox(
-                      value: _inMapShopType.market,
-                      onChanged: (bool? value) {},
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  FloatingActionButton.extended(
-                    label: const Text("Стихийная"),
-                    onPressed: () {
-                      setState(() {
-                        _inMapShopType.updateFree();
-                        _updateMap();
-                      });
-                    },
-                    icon: Checkbox(
-                      value: _inMapShopType.free,
-                      onChanged: (bool? value) {},
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+                )
+              : SizedBox(),
         ],
       ),
     );
@@ -285,9 +305,9 @@ class ShopViewModel {
       case ShopType.online:
         return BitmapDescriptor.hueMagenta;
       case ShopType.fixed:
-        return BitmapDescriptor.hueBlue;
-      case ShopType.free:
         return BitmapDescriptor.hueGreen;
+      case ShopType.free:
+        return BitmapDescriptor.hueBlue;
       case ShopType.market:
         return BitmapDescriptor.hueRed;
     }
