@@ -106,14 +106,6 @@ class MapSampleState extends State<MapSample> {
     return _latLng;
   }
 
-  void _onMapType() {
-    setState(() {
-      _currentMapType = _currentMapType == MapType.normal
-          ? MapType.satellite
-          : MapType.normal;
-    });
-  }
-
   getIcons() async {
     var free = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration.empty, "assets/shopType/free.png");
@@ -237,8 +229,10 @@ class MapSampleState extends State<MapSample> {
                               const MaterialStatePropertyAll(AppColors.red1),
                           value: _inMapShopType.fixed,
                           onChanged: (bool? value) {
-                            _inMapShopType.fixed = !_inMapShopType.fixed;
-                            setState(() {});
+                            setState(() {
+                              _inMapShopType.updateFixed();
+                              _updateMap();
+                            });
                           },
                         ),
                         title: const Text("БУТИК"),
@@ -254,8 +248,10 @@ class MapSampleState extends State<MapSample> {
                               const MaterialStatePropertyAll(AppColors.red1),
                           value: _inMapShopType.market,
                           onChanged: (bool? value) {
-                            _inMapShopType.market = !_inMapShopType.market;
-                            setState(() {});
+                            setState(() {
+                              _inMapShopType.updateMarket();
+                              _updateMap();
+                            });
                           },
                         ),
                         title: const Text("ТЦ/БАЗАР"),
@@ -271,8 +267,10 @@ class MapSampleState extends State<MapSample> {
                               const MaterialStatePropertyAll(AppColors.red1),
                           value: _inMapShopType.free,
                           onChanged: (bool? value) {
-                            _inMapShopType.free = !_inMapShopType.free;
-                            setState(() {});
+                            setState(() {
+                              _inMapShopType.updateFree();
+                              _updateMap();
+                            });
                           },
                         ),
                         title: const Text("Стихийная"),
