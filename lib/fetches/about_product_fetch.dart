@@ -6,6 +6,6 @@ import '../model/aboutProductModel.dart';
 Future<AboutProductModel> fetchProductData(
     String productId, String email) async {
   final response = await AuthClient().getProductData(productId, email);
-
-  return AboutProductModel.fromJson(jsonDecode(response));
+  final result = jsonDecode(response)['data'];
+  return AboutProductModel.fromJson(result);
 }

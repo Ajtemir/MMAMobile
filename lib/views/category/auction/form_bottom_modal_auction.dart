@@ -110,7 +110,6 @@ class _FormBottomModalAuctionState extends State<FormBottomModalAuction> {
                     try {
                       await AuthClient().makeAuction(data);
                       Navigator.pop(context);
-
                       _dto.update();
                     } catch (err) {
                       print(err.toString());
@@ -119,7 +118,7 @@ class _FormBottomModalAuctionState extends State<FormBottomModalAuction> {
                 }
               },
               child: const Text(
-                'Опубликовать скидку',
+                'Опубликовать аукцион',
                 style: TextStyle(
                   color: AppColors.white,
                   fontSize: 16,

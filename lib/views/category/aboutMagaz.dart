@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:upai_app/DTOs/auction_model/unmake_auction_post.dart';
+import 'package:upai_app/model/auction_model.dart';
+import 'package:upai_app/model/enum/auction_state_enum.dart';
 import 'package:upai_app/views/category/collective/form_bottom_modal_collective.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 import '../../DTOs/auction_model/make_auction_post.dart';
@@ -38,7 +40,8 @@ class AboutMagaz extends StatefulWidget {
 class _AboutMagazState extends State<AboutMagaz> {
   bool isFavorite = false;
   bool? isSetCollective;
-  bool? isSetAuction = false;
+  AuctionState? _auctionState;
+  AuctionModel? auctionModel;
   late bool isSeller;
   late bool? isMadeCollectiveOrDefaultNotSeller;
   late AboutProductModel productInfo;
@@ -52,14 +55,6 @@ class _AboutMagazState extends State<AboutMagaz> {
   void _productParentSetState() {
     setState(() {});
   }
-
-  String comment =
-      '''Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua tempor incididunt ut labore et dolore ''';
-  List<String> userComment = [
-    'Азим Дженалиев',
-    'Елена Ворон',
-    'Дмитрий Воробьев'
-  ];
 
   late Future<AboutProductModel> futureProductData;
 
@@ -79,16 +74,19 @@ class _AboutMagazState extends State<AboutMagaz> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<String> nameAndDescription = [
-              snapshot.data!.description!.split('name').first,
-              snapshot.data!.description!.split('name').last
+              snapshot.data!.description?.split('name').first ?? 'Пусто',
+              snapshot.data!.description?.split('name').last ?? 'Пусто'
             ];
             AboutProductModel path = snapshot.data!;
             productInfo = path;
             isFavorite = path.isFavorite ?? false;
             isSetCollective = path.isSetCollective;
-            isSeller = path.isSeller;
+            isSeller = path.isSeller ?? false;
+            _auctionState = AuctionState.values[path.auctionState ?? 4];
+            auctionModel = path.auctionDetail;
             isMadeCollectiveOrDefaultNotSeller =
                 isSeller ? path.collectiveInfo != null : null;
+
             return ListView(
               padding: const EdgeInsets.symmetric(horizontal: 14),
               children: [
@@ -148,14 +146,16 @@ class _AboutMagazState extends State<AboutMagaz> {
                               width: 26,
                               height: 26,
                               decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        color: Color(0x26000000),
-                                        offset: Offset(0, 1),
-                                        blurRadius: 4)
-                                  ]),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color(0x26000000),
+                                    offset: Offset(0, 1),
+                                    blurRadius: 4,
+                                  ),
+                                ],
+                              ),
                               child: const Center(
                                 child: Icon(
                                   Icons.email_outlined,
@@ -236,395 +236,468 @@ class _AboutMagazState extends State<AboutMagaz> {
                   ),
                 ),
                 const SizedBox(height: 30),
+                isSeller
+                    ?
 
-                /// Избранный
-                if (!(widget.email == path.sellerEmail))
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 60.0),
-                    child: InkWell(
-                      onTap: () async {
-                        String ans = "null";
-                        String ans2 = "null";
+                    ///Seller
+                    Column(
+                        children: [
+                          ///Коллективная покупка (Seller)
+                          isMadeCollectiveOrDefaultNotSeller == null
+                              ? const SizedBox(
+                                  height: 0,
+                                )
+                              : Column(
+                                  children: <Widget>[
+                                    _makingCollective(
+                                        isMadeCollectiveOrDefaultNotSeller!),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    _infoCollective(
+                                        isMadeCollectiveOrDefaultNotSeller!),
+                                  ],
+                                ),
+                          const SizedBox(height: 20),
 
-                        if (!isFavorite) {
-                          print('set');
-                          ans = await AuthClient()
-                              .getSetFavorite(widget.productId, widget.email);
-                        } else {
-                          print('unset');
-                          ans2 = await AuthClient()
-                              .getUnSetFavorite(widget.productId, widget.email);
-                        }
-                        print(ans + ' ' + ans2);
-                        if (ans == 'true') {
-                          Fluttertoast.showToast(
-                              msg: 'Добавлено',
-                              fontSize: 18,
-                              gravity: ToastGravity.BOTTOM,
-                              backgroundColor: Colors.green,
-                              textColor: Colors.white);
-
-                          setState(() {
-                            isFavorite = true;
-                          });
-                        } else if (ans == 'false') {
-                          Fluttertoast.showToast(
-                              msg: 'Вышла ошибка!',
-                              fontSize: 18,
-                              gravity: ToastGravity.BOTTOM,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white);
-                        }
-
-                        if (ans2 == 'true') {
-                          Fluttertoast.showToast(
-                              msg: 'Убрано',
-                              fontSize: 18,
-                              gravity: ToastGravity.BOTTOM,
-                              backgroundColor: Colors.green,
-                              textColor: Colors.white);
-
-                          setState(() {
-                            isFavorite = false;
-                          });
-                        } else if (ans2 == 'false') {
-                          Fluttertoast.showToast(
-                              msg: 'Вышла ошибка!',
-                              fontSize: 18,
-                              gravity: ToastGravity.BOTTOM,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white);
-                        }
-                      },
-                      child: Ink(
-                          height: 45,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: const Color(0xFFFF6B00),
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  flex: 1,
-                                  child: isFavorite
-                                      ? const Icon(Icons.favorite,
-                                          color: Colors.white)
-                                      : const Icon(
-                                          Icons.favorite_border_outlined,
-                                          color: Colors.white,
-                                        )),
-                              Expanded(
-                                flex: 3,
-                                child: Text(
-                                  isFavorite
-                                      ? 'Убрать из избранного'
-                                      : 'Добавить в избранное',
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 15),
+                          ///Аукцион (Seller)
+                          _auctionState == AuctionState.sellerMadeAuction
+                              ? const SizedBox(
+                                  height: 0,
+                                )
+                              : Column(
+                                  children: <Widget>[
+                                    _makingAuction(_auctionState ==
+                                        AuctionState.sellerMadeAuction),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    _infoAuction(_auctionState ==
+                                        AuctionState.sellerMadeAuction),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          )),
-                    ),
-                  ),
-                const SizedBox(
-                  height: 20,
-                ),
-
-                ///Коллекативная покупка (User)
-                isSetCollective == null
-                    ? const SizedBox(
-                        height: 0,
-                      )
-                    : Container(
-                        height: MediaQuery.of(context).size.height * 0.24,
-                        decoration: BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: AppColors.white),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0x40000000).withOpacity(0.25),
-                              blurRadius: 10,
-                              offset: const Offset(0, 6),
-                            ),
-                          ],
-                        ),
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            const Text(
-                              'Коллективная покупку',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'Конец:',
-                                    style: styleTitleInCard,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    dateFormat(path.collectiveInfo!.endDate),
-                                    style: styleSubtitleInCard,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'Количество людей:',
-                                    style: styleTitleInCard,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    '${path.collectiveInfo!.currentBuyerCount} / ${path.collectiveInfo!.minBuyerCount}',
-                                    style: styleSubtitleInCard,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'Цена товара:',
-                                    style: styleTitleInCard,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    '${path.collectiveInfo!.collectivePrice} сом',
-                                    style: styleSubtitleInCard,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                style: const ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStatePropertyAll(AppColors.red1),
-                                  padding: MaterialStatePropertyAll(
-                                      EdgeInsets.symmetric(vertical: 10)),
-                                ),
-                                onPressed: () async {
-                                  try {
-                                    if (isSetCollective!) {
-                                      await AuthClient().removeCollective(
-                                          path.id!, widget.email);
-                                    } else {
-                                      await AuthClient().addCollective(
-                                          path.id!, widget.email);
-                                    }
-                                    setState(() {});
-                                  } on Exception catch (err) {
-                                    print(err);
-                                  }
-                                },
-                                child: Text(
-                                  isSetCollective! ? 'Убрать' : 'Добавить',
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                ///Коллективная покупка (Seller)
-                isMadeCollectiveOrDefaultNotSeller == null
-                    ? const SizedBox(
-                        height: 0,
-                      )
-                    : Column(
-                        children: <Widget>[
-                          _makingCollective(
-                              isMadeCollectiveOrDefaultNotSeller!),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          _infoCollective(isMadeCollectiveOrDefaultNotSeller!),
                         ],
-                      ),
-                const SizedBox(height: 20),
-
-                ///Аукцион (User)
-                isSetAuction == null
-                    ? const SizedBox(
-                        height: 0,
                       )
-                    : Container(
-                        height: MediaQuery.of(context).size.height * 0.24,
-                        decoration: BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: AppColors.white),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0x40000000).withOpacity(0.25),
-                              blurRadius: 10,
-                              offset: const Offset(0, 6),
-                            ),
-                          ],
-                        ),
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            const Text(
-                              'Аукцион',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'Конец:',
-                                    style: styleTitleInCard,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    dateFormat(
-                                        productInfo.collectiveInfo!.endDate),
-                                    style: styleSubtitleInCard,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'Начальная цена:',
-                                    style: styleTitleInCard,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    '${productInfo.collectiveInfo!.currentBuyerCount} / ${productInfo.collectiveInfo!.minBuyerCount}',
-                                    style: styleSubtitleInCard,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'Текушая цена:',
-                                    style: styleTitleInCard,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    '${productInfo.collectiveInfo!.collectivePrice} сом',
-                                    style: styleSubtitleInCard,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                style: const ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStatePropertyAll(AppColors.red1),
-                                  padding: MaterialStatePropertyAll(
-                                      EdgeInsets.symmetric(vertical: 10)),
-                                ),
-                                onPressed: () async {
-                                  TextEditingController suggestPriceController =
-                                      TextEditingController();
-                                  try {
-                                    if (isSetAuction!) {
-                                      suggestPriceController.text = "0";
-                                      _suggestPriceForm(
-                                        suggestPriceController,
-                                        'Изменить свою цену',
-                                        SellerEmailAndProductId(
-                                            productInfo.id!,
-                                            productInfo.sellerEmail!,
-                                            _productParentSetState),
-                                      );
-                                      await AuthClient().updateAuction(
-                                        productInfo.id!,
-                                        widget.email,
-                                        double.parse(
-                                            suggestPriceController.text),
-                                      );
-                                    } else {
-                                      suggestPriceController.text = "1";
-                                      _suggestPriceForm(
-                                        suggestPriceController,
-                                        'Предложить свою цену',
-                                        SellerEmailAndProductId(
-                                            productInfo.id!,
-                                            productInfo.sellerEmail!,
-                                            _productParentSetState),
-                                      );
-                                      await AuthClient().applyAuction(
-                                        productInfo.id!,
-                                        widget.email,
-                                        double.parse(
-                                            suggestPriceController.text),
-                                      );
-                                    }
-                                    setState(() {});
-                                  } on Exception catch (err) {
-                                    print(err);
+
+                    /// Buyer
+                    : Column(
+                        children: [
+                          /// Избранный
+                          if (!(widget.email == path.sellerEmail))
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 60.0),
+                              child: InkWell(
+                                onTap: () async {
+                                  String ans = "null";
+                                  String ans2 = "null";
+
+                                  if (!isFavorite) {
+                                    print('set');
+                                    ans = await AuthClient().getSetFavorite(
+                                        widget.productId, widget.email);
+                                  } else {
+                                    print('unset');
+                                    ans2 = await AuthClient().getUnSetFavorite(
+                                        widget.productId, widget.email);
+                                  }
+                                  print(ans + ' ' + ans2);
+                                  if (ans == 'true') {
+                                    Fluttertoast.showToast(
+                                        msg: 'Добавлено',
+                                        fontSize: 18,
+                                        gravity: ToastGravity.BOTTOM,
+                                        backgroundColor: Colors.green,
+                                        textColor: Colors.white);
+
+                                    setState(() {
+                                      isFavorite = true;
+                                    });
+                                  } else if (ans == 'false') {
+                                    Fluttertoast.showToast(
+                                        msg: 'Вышла ошибка!',
+                                        fontSize: 18,
+                                        gravity: ToastGravity.BOTTOM,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white);
+                                  }
+
+                                  if (ans2 == 'true') {
+                                    Fluttertoast.showToast(
+                                        msg: 'Убрано',
+                                        fontSize: 18,
+                                        gravity: ToastGravity.BOTTOM,
+                                        backgroundColor: Colors.green,
+                                        textColor: Colors.white);
+
+                                    setState(() {
+                                      isFavorite = false;
+                                    });
+                                  } else if (ans2 == 'false') {
+                                    Fluttertoast.showToast(
+                                        msg: 'Вышла ошибка!',
+                                        fontSize: 18,
+                                        gravity: ToastGravity.BOTTOM,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white);
                                   }
                                 },
-                                child: Text(
-                                  isSetAuction!
-                                      ? 'Изменить'
-                                      : 'Предложить свою цену',
-                                ),
+                                child: Ink(
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: const Color(0xFFFF6B00),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 1,
+                                            child: isFavorite
+                                                ? const Icon(Icons.favorite,
+                                                    color: Colors.white)
+                                                : const Icon(
+                                                    Icons
+                                                        .favorite_border_outlined,
+                                                    color: Colors.white,
+                                                  )),
+                                        Expanded(
+                                          flex: 3,
+                                          child: Text(
+                                            isFavorite
+                                                ? 'Убрать из избранного'
+                                                : 'Добавить в избранное',
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15),
+                                          ),
+                                        ),
+                                      ],
+                                    )),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-
-                ///Аукцион (Seller)
-                isMadeCollectiveOrDefaultNotSeller == null
-                    ? const SizedBox(
-                        height: 0,
-                      )
-                    : Column(
-                        children: <Widget>[
-                          _makingAuction(isMadeCollectiveOrDefaultNotSeller!),
                           const SizedBox(
                             height: 20,
                           ),
-                          _infoAuction(isMadeCollectiveOrDefaultNotSeller!),
+
+                          /// Коллективная покупка (User)
+                          isSetCollective == null
+                              ? const SizedBox(
+                                  height: 0,
+                                )
+                              : Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.24,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.white,
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(color: AppColors.white),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color(0x40000000)
+                                            .withOpacity(0.25),
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 6),
+                                      ),
+                                    ],
+                                  ),
+                                  padding: const EdgeInsets.all(20),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      const Text(
+                                        'Коллективная покупку',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'Конец:',
+                                              style: styleTitleInCard,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              dateFormat(path
+                                                  .collectiveInfo!.endDate!),
+                                              style: styleSubtitleInCard,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'Количество людей:',
+                                              style: styleTitleInCard,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              '${path.collectiveInfo!.currentBuyerCount} / ${path.collectiveInfo!.minBuyerCount}',
+                                              style: styleSubtitleInCard,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'Цена товара:',
+                                              style: styleTitleInCard,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              '${path.collectiveInfo!.currentBuyerCount} сом',
+                                              style: styleSubtitleInCard,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: ElevatedButton(
+                                          style: const ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStatePropertyAll(
+                                                    AppColors.red1),
+                                            padding: MaterialStatePropertyAll(
+                                                EdgeInsets.symmetric(
+                                                    vertical: 10)),
+                                          ),
+                                          onPressed: () async {
+                                            try {
+                                              if (isSetCollective!) {
+                                                await AuthClient()
+                                                    .removeCollective(
+                                                        path.id!, widget.email);
+                                              } else {
+                                                await AuthClient()
+                                                    .addCollective(
+                                                        path.id!, widget.email);
+                                              }
+                                              setState(() {});
+                                            } on Exception catch (err) {
+                                              print(err);
+                                            }
+                                          },
+                                          child: Text(
+                                            isSetCollective!
+                                                ? 'Убрать'
+                                                : 'Добавить',
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                          ///Аукцион (User)
+                          _auctionState == AuctionState.notMadeAuctioned
+                              ? const SizedBox(
+                                  height: 0,
+                                )
+                              : Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.24,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.white,
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(color: AppColors.white),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color(0x40000000)
+                                            .withOpacity(0.25),
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 6),
+                                      ),
+                                    ],
+                                  ),
+                                  padding: const EdgeInsets.all(20),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      const Text(
+                                        'Аукцион',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'Конец:',
+                                              style: styleTitleInCard,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              dateFormat(productInfo
+                                                  .collectiveInfo!.endDate!),
+                                              style: styleSubtitleInCard,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'Начальная цена:',
+                                              style: styleTitleInCard,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              '${productInfo.collectiveInfo!.currentBuyerCount} / ${productInfo.collectiveInfo!.minBuyerCount}',
+                                              style: styleSubtitleInCard,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'Текушая цена:',
+                                              style: styleTitleInCard,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              '${productInfo.collectiveInfo!.discountedPrice} сом',
+                                              style: styleSubtitleInCard,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: ElevatedButton(
+                                          style: const ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStatePropertyAll(
+                                                    AppColors.red1),
+                                            padding: MaterialStatePropertyAll(
+                                                EdgeInsets.symmetric(
+                                                    vertical: 10)),
+                                          ),
+                                          onPressed: () async {
+                                            TextEditingController
+                                                suggestPriceController =
+                                                TextEditingController();
+                                            try {
+                                              if (_auctionState ==
+                                                  AuctionState.buyerApply) {
+                                                suggestPriceController.text =
+                                                    "0";
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom:
+                                                          MediaQuery.of(context)
+                                                              .viewInsets
+                                                              .bottom),
+                                                  child: SingleChildScrollView(
+                                                    controller:
+                                                        ModalScrollController
+                                                            .of(context),
+                                                    child: _suggestPriceForm(
+                                                      suggestPriceController,
+                                                      'Изменить свою цену',
+                                                      SellerEmailAndProductId(
+                                                          productInfo.id!,
+                                                          productInfo
+                                                              .sellerEmail!,
+                                                          _productParentSetState),
+                                                    ),
+                                                  ),
+                                                );
+                                                await AuthClient()
+                                                    .updateAuction(
+                                                  productInfo.id!,
+                                                  widget.email,
+                                                  double.parse(
+                                                      suggestPriceController
+                                                          .text),
+                                                );
+                                              } else {
+                                                suggestPriceController.text =
+                                                    "1";
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom:
+                                                          MediaQuery.of(context)
+                                                              .viewInsets
+                                                              .bottom),
+                                                  child: SingleChildScrollView(
+                                                    controller:
+                                                        ModalScrollController
+                                                            .of(context),
+                                                    child: _suggestPriceForm(
+                                                      suggestPriceController,
+                                                      'Предложить свою цену',
+                                                      SellerEmailAndProductId(
+                                                          productInfo.id!,
+                                                          productInfo
+                                                              .sellerEmail!,
+                                                          _productParentSetState),
+                                                    ),
+                                                  ),
+                                                );
+                                                await AuthClient().applyAuction(
+                                                  productInfo.id!,
+                                                  widget.email,
+                                                  double.parse(
+                                                      suggestPriceController
+                                                          .text),
+                                                );
+                                              }
+                                              setState(() {});
+                                            } on Exception catch (err) {
+                                              print(err);
+                                            }
+                                          },
+                                          child: Text(
+                                            _auctionState ==
+                                                    AuctionState.buyerApply!
+                                                ? 'Изменить'
+                                                : 'Предложить свою цену',
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                         ],
                       ),
                 const SizedBox(height: 20),
@@ -800,6 +873,7 @@ class _AboutMagazState extends State<AboutMagaz> {
         onTap: () {
           setState(() {
             if (isMadeCollective) {
+              _auctionState = AuctionState.sellerUnmadeAuction;
               AuthClient()
                   .unmakeAuction(UnmakeAuction(
                       sellerEmail: productInfo.sellerEmail!,
@@ -819,6 +893,7 @@ class _AboutMagazState extends State<AboutMagaz> {
                   ),
                 ),
               );
+              _auctionState = AuctionState.sellerMadeAuction;
             }
           });
         },
@@ -855,8 +930,8 @@ class _AboutMagazState extends State<AboutMagaz> {
 
   Widget _infoCollective(bool isMadeCollective) {
     if (isMadeCollective) {
-      bool isSubmittable = productInfo.collectiveInfo!.currentBuyerCount >=
-          productInfo.collectiveInfo!.minBuyerCount;
+      bool isSubmittable = productInfo.collectiveInfo!.currentBuyerCount! >=
+          productInfo.collectiveInfo!.minBuyerCount!;
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         decoration: BoxDecoration(
@@ -897,7 +972,7 @@ class _AboutMagazState extends State<AboutMagaz> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        dateFormat(productInfo.collectiveInfo!.startDate),
+                        dateFormat(productInfo.collectiveInfo!.startDate!),
                         style: styleSubtitleInCard,
                       ),
                     ],
@@ -914,7 +989,7 @@ class _AboutMagazState extends State<AboutMagaz> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        dateFormat(productInfo.collectiveInfo!.endDate),
+                        dateFormat(productInfo.collectiveInfo!.endDate!),
                         style: styleSubtitleInCard,
                       ),
                     ],
@@ -951,7 +1026,7 @@ class _AboutMagazState extends State<AboutMagaz> {
                 ),
                 Expanded(
                   child: Text(
-                    '${productInfo.collectiveInfo!.collectivePrice} сом',
+                    '${productInfo.collectiveInfo!.discountedPrice} сом',
                     style: styleSubtitleInCard,
                   ),
                 ),
@@ -1039,7 +1114,7 @@ class _AboutMagazState extends State<AboutMagaz> {
                     ),
                     Expanded(
                       child: Text(
-                        dateFormat(productInfo.collectiveInfo!.endDate),
+                        dateFormat(productInfo.auctionDetail!.endDate!),
                         style: styleSubtitleInCard,
                       ),
                     ),
@@ -1056,7 +1131,7 @@ class _AboutMagazState extends State<AboutMagaz> {
                     ),
                     Expanded(
                       child: Text(
-                        '${productInfo.collectiveInfo!.currentBuyerCount} / ${productInfo.collectiveInfo!.minBuyerCount}',
+                        '${auctionModel?.startPrice} сом',
                         style: styleSubtitleInCard,
                       ),
                     ),
@@ -1073,7 +1148,7 @@ class _AboutMagazState extends State<AboutMagaz> {
                     ),
                     Expanded(
                       child: Text(
-                        '${productInfo.collectiveInfo!.collectivePrice} сом',
+                        '${auctionModel?.startPrice} сом',
                         style: styleSubtitleInCard,
                       ),
                     ),
@@ -1088,21 +1163,20 @@ class _AboutMagazState extends State<AboutMagaz> {
                           EdgeInsets.symmetric(vertical: 10)),
                     ),
                     onPressed: () async {
-                      try {
-                        if (isSetCollective!) {
-                          await AuthClient()
-                              .removeCollective(productInfo.id!, widget.email);
-                        } else {
-                          await AuthClient()
-                              .addCollective(productInfo.id!, widget.email);
+                      if (auctionModel?.currentMaxPrice != null) {
+                        try {
+                          await AuthClient().submitCollective(
+                              SubmitCollectiveArgument(productInfo.id!));
+                          setState(() {});
+                        } catch (err) {
+                          print(err);
                         }
-                        setState(() {});
-                      } on Exception catch (err) {
-                        print(err);
                       }
                     },
                     child: Text(
-                      isSetAuction ?? false ? 'Подтвердить' : 'Клиентов нет',
+                      auctionModel?.currentMaxPrice != null
+                          ? 'Подтвердить'
+                          : 'Клиентов нет',
                     ),
                   ),
                 ),
@@ -1151,7 +1225,6 @@ class _AboutMagazState extends State<AboutMagaz> {
                   try {
                     await AuthClient().makeAuction(data);
                     Navigator.pop(context);
-
                     dto.update();
                   } catch (err) {
                     print(err.toString());
@@ -1160,7 +1233,7 @@ class _AboutMagazState extends State<AboutMagaz> {
               }
             },
             child: const Text(
-              'Опубликовать скидку',
+              'Изменить цену',
               style: TextStyle(
                 color: AppColors.white,
                 fontSize: 16,

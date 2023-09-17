@@ -612,6 +612,7 @@ class AuthClient {
       headers: {"Content-Type": "application/json", "Accept": "*/*"},
     );
     if (response.statusCode != 200) {
+      print(response.statusCode.toString());
       throw Exception("Не удалось создать аукцион.");
     }
   }
