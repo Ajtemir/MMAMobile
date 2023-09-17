@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:upai_app/widgets/appBar2.dart';
 
+import '../../../widgets/appBar.dart';
 import '../../auth/server/service.dart';
 import 'package:http/http.dart' as http;
 
@@ -55,7 +57,7 @@ class _MarketMapState extends State<MarketMap> {
       southwest: LatLng(42.86363603417931, 74.56925858682715));
   late CameraPosition marketPosition = CameraPosition(
     target: widget.marketPoint,
-    zoom: 18,
+    zoom: 19,
   );
   @override
   Widget build(BuildContext context) {
@@ -67,16 +69,18 @@ class _MarketMapState extends State<MarketMap> {
           } else if (snapshot.hasData) {
             print("Asan ///////////////");
             return Scaffold(
-              appBar: AppBar(),
-              bottomNavigationBar: BottomAppBar(
-                child: Row(
-                  children: [
-                    Text('fasdfas'),
-                    Text('fgsfdgs'),
-                  ],
-                ),
-              ),
+              appBar: AllAppBar2(),
               body: GoogleMap(
+                circles: {
+                  Circle(
+                    circleId: CircleId("1"),
+                    center: widget.marketPoint,
+                    radius: 330,
+                    strokeWidth: 2,
+                    strokeColor: Colors.green,
+                    fillColor: Colors.green.withOpacity(0.1)
+                  )
+                },
                 initialCameraPosition: marketPosition,
                 polygons: snapshot.data!.map((e) {
                   print(e.points.toString());

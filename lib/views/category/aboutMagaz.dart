@@ -650,10 +650,12 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                   borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                 ),
                 builder: (context) => SingleChildScrollView(
-                  controller: ModalScrollController.of(context),
-                  child: FormBottomModal(
-                    dto: SellerEmailAndProductId(productInfo.id!,
-                        productInfo.sellerEmail!, _productParentSetState),
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: FormBottomModal(
+                      dto: SellerEmailAndProductId(productInfo.id!,
+                          productInfo.sellerEmail!, _productParentSetState),
+                    ),
                   ),
                 ),
               );

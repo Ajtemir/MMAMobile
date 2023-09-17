@@ -159,7 +159,7 @@ class MapSampleState extends State<MapSample> {
       ),
       body: Stack(
         children: [
-          FutureBuilder(
+          FutureBuilder<LatLng>(
               future: getMyCoordsLocator(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
@@ -174,7 +174,10 @@ class MapSampleState extends State<MapSample> {
                       print(cameraPosition.target);
                     },
                     mapType: _currentMapType,
-                    initialCameraPosition: _london,
+                    initialCameraPosition: CameraPosition(
+                      target: snapshot.data!,
+                      zoom: 18,
+                    ),
                     markers: _shops
                         .map(
                           (e) => Marker(
