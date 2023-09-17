@@ -38,7 +38,7 @@ class AboutMagaz extends StatefulWidget {
 class _AboutMagazState extends State<AboutMagaz> {
   bool isFavorite = false;
   bool? isSetCollective;
-  bool? isSetAuction = false;
+  bool? isSetAuction;
   late bool isSeller;
   late bool? isMadeCollectiveOrDefaultNotSeller;
   late AboutProductModel productInfo;
@@ -355,7 +355,7 @@ class _AboutMagazState extends State<AboutMagaz> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             const Text(
-                              'Коллективная покупку',
+                              'Коллективная покупка',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 20,
@@ -528,7 +528,8 @@ class _AboutMagazState extends State<AboutMagaz> {
                                 ),
                                 Expanded(
                                   child: Text(
-                                    '${productInfo.collectiveInfo!.currentBuyerCount} / ${productInfo.collectiveInfo!.minBuyerCount}',
+                                    // '${productInfo.collectiveInfo!.currentBuyerCount} / ${productInfo.collectiveInfo!.minBuyerCount}',
+                                    '20000\$',
                                     style: styleSubtitleInCard,
                                   ),
                                 ),
@@ -753,9 +754,12 @@ class _AboutMagazState extends State<AboutMagaz> {
                 ),
                 builder: (context) => SingleChildScrollView(
                   controller: ModalScrollController.of(context),
-                  child: FormBottomModalCollective(
-                    dto: SellerEmailAndProductId(productInfo.id!,
-                        productInfo.sellerEmail!, _productParentSetState),
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: FormBottomModalCollective(
+                      dto: SellerEmailAndProductId(productInfo.id!,
+                          productInfo.sellerEmail!, _productParentSetState),
+                    ),
                   ),
                 ),
               );
@@ -813,9 +817,12 @@ class _AboutMagazState extends State<AboutMagaz> {
                 ),
                 builder: (context) => SingleChildScrollView(
                   controller: ModalScrollController.of(context),
-                  child: FormBottomModalAuction(
-                    dto: SellerEmailAndProductId(productInfo.id!,
-                        productInfo.sellerEmail!, _productParentSetState),
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: FormBottomModalAuction(
+                      dto: SellerEmailAndProductId(productInfo.id!,
+                          productInfo.sellerEmail!, _productParentSetState),
+                    ),
                   ),
                 ),
               );
@@ -1056,7 +1063,8 @@ class _AboutMagazState extends State<AboutMagaz> {
                     ),
                     Expanded(
                       child: Text(
-                        '${productInfo.collectiveInfo!.currentBuyerCount} / ${productInfo.collectiveInfo!.minBuyerCount}',
+                        // '${productInfo.collectiveInfo!.currentBuyerCount} / ${productInfo.collectiveInfo!.minBuyerCount}',
+                        '45000 сом',
                         style: styleSubtitleInCard,
                       ),
                     ),
@@ -1073,7 +1081,7 @@ class _AboutMagazState extends State<AboutMagaz> {
                     ),
                     Expanded(
                       child: Text(
-                        '${productInfo.collectiveInfo!.collectivePrice} сом',
+                        '${productInfo.collectiveInfo!.collectivePrice.toInt()} сом',
                         style: styleSubtitleInCard,
                       ),
                     ),

@@ -130,7 +130,7 @@ class MapSampleState extends State<MapSample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AllAppBar(
-        leading: IconButton(
+        leading: /*IconButton(
           splashRadius: 20,
           onPressed: () {
             isOpenMarket = !isOpenMarket;
@@ -140,18 +140,19 @@ class MapSampleState extends State<MapSample> {
             Icons.place,
             color: isOpenMarket ? AppColors.red1 : AppColors.grey,
           ),
-        ),
+        ),*/
+        SizedBox()
       ),
-      body: Stack(
-        children: [
-          FutureBuilder<LatLng>(
-              future: getMyCoordsLocator(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                if (snapshot.hasData) {
-                  return GoogleMap(
+      body: FutureBuilder<LatLng>(
+          future: getMyCoordsLocator(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasData) {
+              return Stack(
+                children: [
+                  GoogleMap(
                     myLocationEnabled: true,
                     myLocationButtonEnabled: true,
                     onCameraMove: (CameraPosition cameraPosition) {
@@ -189,98 +190,112 @@ class MapSampleState extends State<MapSample> {
                     onMapCreated: (GoogleMapController controller) {
                       _controller.complete(controller);
                     },
-                  );
-                }
-                return const Center(child: CircularProgressIndicator());
-              }),
-          // Padding(
-          //   padding: const EdgeInsets.all(18),
-          //   child: Align(
-          //     alignment: Alignment.topRight,
-          //     child: FloatingActionButton(
-          //       onPressed: _onMapType,
-          //       child: const Icon(Icons.map, size: 36),
-          //     ),
-          //   ),
-          // ),
-          isOpenMarket
-              ? Container(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.95),
-                    borderRadius:
-                        BorderRadius.only(bottomRight: Radius.circular(20)),
-                    border: Border.all(
-                      color: Colors.grey,
+                  ),
+
+                      InkWell(
+                    onTap: (){
+                      isOpenMarket = !isOpenMarket;
+                      setState(() {});
+                    },
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Container(
+                    decoration: BoxDecoration(
+                          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3),blurRadius:0.5 )],
+                          color: Colors.white.withOpacity(0.98)
+                    ),
+                    padding: EdgeInsets.all(8),
+                    child: Icon(
+                          Icons.filter_alt,
+                          color: Colors.grey,
                     ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ListTile(
-                        leading: Checkbox(
-                          side: BorderSide.none,
-                          fillColor:
-                              const MaterialStatePropertyAll(AppColors.red1),
-                          value: _inMapShopType.fixed,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _inMapShopType.updateFixed();
-                              _updateMap();
-                            });
-                          },
-                        ),
-                        title: const Text("БУТИК"),
-                        trailing: const Icon(
-                          Icons.place,
-                          color: Colors.green,
                         ),
                       ),
-                      ListTile(
-                        leading: Checkbox(
-                          side: BorderSide.none,
-                          fillColor:
+                  isOpenMarket
+                      ? Positioned(
+                    top: 60,
+                        left: 10,
+                        child: Container(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.95),
+                        borderRadius:
+                        BorderRadius.only(bottomRight: Radius.circular(20)),
+                        border: Border.all(
+                          color: Colors.grey,
+                        ),
+                    ),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ListTile(
+                            leading: Checkbox(
+                              side: BorderSide.none,
+                              fillColor:
                               const MaterialStatePropertyAll(AppColors.red1),
-                          value: _inMapShopType.market,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _inMapShopType.updateMarket();
-                              _updateMap();
-                            });
-                          },
-                        ),
-                        title: const Text("ТЦ/БАЗАР"),
-                        trailing: const Icon(
-                          Icons.place,
-                          color: Colors.red,
-                        ),
-                      ),
-                      ListTile(
-                        leading: Checkbox(
-                          side: BorderSide.none,
-                          fillColor:
+                              value: _inMapShopType.fixed,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _inMapShopType.updateFixed();
+                                  _updateMap();
+                                });
+                              },
+                            ),
+                            title: const Text("БУТИК"),
+                            trailing: const Icon(
+                              Icons.place,
+                              color: Colors.green,
+                            ),
+                          ),
+                          ListTile(
+                            leading: Checkbox(
+                              side: BorderSide.none,
+                              fillColor:
                               const MaterialStatePropertyAll(AppColors.red1),
-                          value: _inMapShopType.free,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _inMapShopType.updateFree();
-                              _updateMap();
-                            });
-                          },
-                        ),
-                        title: const Text("Стихийная"),
-                        trailing: const Icon(
-                          Icons.place,
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ],
+                              value: _inMapShopType.market,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _inMapShopType.updateMarket();
+                                  _updateMap();
+                                });
+                              },
+                            ),
+                            title: const Text("ТЦ/БАЗАР"),
+                            trailing: const Icon(
+                              Icons.place,
+                              color: Colors.red,
+                            ),
+                          ),
+                          ListTile(
+                            leading: Checkbox(
+                              side: BorderSide.none,
+                              fillColor:
+                              const MaterialStatePropertyAll(AppColors.red1),
+                              value: _inMapShopType.free,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _inMapShopType.updateFree();
+                                  _updateMap();
+                                });
+                              },
+                            ),
+                            title: const Text("Стихийная"),
+                            trailing: const Icon(
+                              Icons.place,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ],
+                    ),
                   ),
-                )
-              : SizedBox(),
-        ],
-      ),
+                      ): SizedBox()
+                ],
+              );
+            }
+            return const Center(child: CircularProgressIndicator());
+          }),
     );
   }
 }

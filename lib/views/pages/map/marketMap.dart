@@ -54,6 +54,10 @@ class _MarketMapState extends State<MarketMap> {
     target: widget.marketPoint,
     zoom: 19,
   );
+
+  /*List<LatLng> polygonPoints=[
+    LatLng(latitude, longitude)
+  ];*/
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<MarketShopDto>>(
@@ -77,11 +81,11 @@ class _MarketMapState extends State<MarketMap> {
                   )
                 },
                 initialCameraPosition: marketPosition,
-                polygons: snapshot.data!.map((e) {
+                polygons:[ ...snapshot.data!.map((e) {
                   print(e.points.toString());
                   return Polygon(
                     consumeTapEvents: true,
-                    fillColor: Colors.blue,
+                    fillColor: Colors.blue.withOpacity(0.2),
                     polygonId: PolygonId(e.id.toString()),
                     points: e.points,
                     strokeColor: Colors.red,
@@ -96,7 +100,42 @@ class _MarketMapState extends State<MarketMap> {
                       );
                     },
                   );
-                }).toSet(),
+                }),
+                  Polygon(
+                    consumeTapEvents: true,
+                    fillColor: Colors.blue.withOpacity(0.2),
+                    polygonId: PolygonId("myPolygon1"),
+                    points: [
+                      LatLng(42.8654624133242, 74.57146000894457),
+                      LatLng(42.865510468662045, 74.57166931637587),
+                      LatLng(42.86560778221169, 74.5716270715847),
+                      LatLng(42.86556059990374, 74.57141785928548),
+                    ],
+                    strokeColor: Colors.red,
+                    strokeWidth: 1,
+                    onTap: () {
+
+                    },
+                  ),
+                  Polygon(
+                    consumeTapEvents: true,
+                    fillColor: Colors.blue.withOpacity(0.2),
+                    polygonId: PolygonId("myPolygon1"),
+                    points: [
+                      LatLng(42.86554266035031, 74.57125564109003),
+                      LatLng(42.86551651410762, 74.5711339887104),
+                      LatLng(42.86549304952141, 74.57114313550588),
+                      LatLng(42.86548031159944, 74.57109374281038),
+                      LatLng(42.865374385620285, 74.57113581806951),
+                      LatLng(42.865410588190564, 74.57130594846507),
+                    ],
+                    strokeColor: Colors.red,
+                    strokeWidth: 1,
+                    onTap: () {
+
+                    },
+                  ),
+                ].toSet(),
               ),
             );
           } else {
