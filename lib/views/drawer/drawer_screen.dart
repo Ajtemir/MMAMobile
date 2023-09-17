@@ -5,7 +5,6 @@ import 'package:upai_app/views/auth/sing_in/sing_in_screen.dart';
 import 'package:upai_app/views/category/category.dart';
 import 'package:upai_app/views/category/category_filter.dart';
 import 'package:upai_app/views/drawer/aboutProgram.dart';
-import 'package:upai_app/views/drawer/hotKeshAdd.dart';
 import 'package:upai_app/views/pages/notifications.dart';
 import 'package:upai_app/widgets/UserAvatar.dart';
 
@@ -26,7 +25,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color:AppColors.green, //change your color here
+          color: AppColors.green, //change your color here
         ),
         elevation: 0,
         backgroundColor: Colors.white,
@@ -78,9 +77,12 @@ class _DrawerScreenState extends State<DrawerScreen> {
               child: ListTile(
                 onTap: () => Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
-                      if(Provider.of<SelectCatProvider>(context).category=='' || Provider.of<SelectCatProvider>(context).category=='Другое')
-                  return Category();
-                      else return CategoryFilter();
+                  if (Provider.of<SelectCatProvider>(context).category == '' ||
+                      Provider.of<SelectCatProvider>(context).category ==
+                          'Другое')
+                    return Category();
+                  else
+                    return CategoryFilter();
                 })),
                 title: Text(
                   'Категории',
@@ -97,14 +99,14 @@ class _DrawerScreenState extends State<DrawerScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 30.0),
               child: ListTile(
-                onTap: ()=>Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context)=>Notifications()/*HotKeshAdd()*/)),
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => Notifications() /*HotKeshAdd()*/)),
                 title: Text(
                   'Уведомления',
                   style: TextStyle(color: Color(0xFF515151), fontSize: 16),
                 ),
-                leading: Icon(Icons.notifications,
-                    color: AppColors.blue1, size: 20),
+                leading:
+                    Icon(Icons.notifications, color: AppColors.blue1, size: 20),
               ),
             ),
             Divider(
@@ -114,14 +116,14 @@ class _DrawerScreenState extends State<DrawerScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 30.0),
               child: ListTile(
-                onTap: ()=>Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context)=>QR_Page()/*HotKeshAdd()*/)),
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => QR_Page() /*HotKeshAdd()*/)),
                 title: Text(
                   'QR',
                   style: TextStyle(color: Color(0xFF515151), fontSize: 16),
                 ),
-                leading: Icon(Icons.qr_code,
-                    color:AppColors.mainRed, size: 20),
+                leading:
+                    Icon(Icons.qr_code, color: AppColors.mainRed, size: 20),
               ),
             ),
             Divider(
@@ -146,8 +148,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 30.0),
               child: ListTile(
-                onTap: ()=>Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context)=>AboutProgram())),
+                onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => AboutProgram())),
                 title: Text(
                   'О программе',
                   style: TextStyle(color: Color(0xFF515151), fontSize: 16),

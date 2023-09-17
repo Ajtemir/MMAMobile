@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:upai_app/service/base_client.dart';
-import 'package:upai_app/views/auth/server/service.dart';
+import 'package:upai_app/service/service.dart';
 import 'package:upai_app/views/auth/sing_in/sing_in_screen.dart';
-import 'package:http/http.dart' as http;
 import '../../../shared/app_colors.dart';
 import '../email_verify/email_verify.dart';
 
@@ -15,8 +13,6 @@ class SingUpScreen extends StatefulWidget {
 }
 
 class _SingUpScreenState extends State<SingUpScreen> {
-
-
   void cancelToast(String msgError) => Fluttertoast.showToast(
       msg: msgError,
       fontSize: 18,
@@ -243,9 +239,8 @@ class _SingUpScreenState extends State<SingUpScreen> {
                         .postSingUp(email.text, password.text, 'User/SignUp');
                     if (ans) {
                       await AuthClient().getConfirmEmail(email.text);
-                      Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (_) => EmailVerify(email: email.text)));
-
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (_) => EmailVerify(email: email.text)));
                     } else {
                       cancelToast("Введите правильно email или пароль");
                     }

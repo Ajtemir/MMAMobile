@@ -2,14 +2,12 @@ import 'dart:convert';
 import 'package:location/location.dart' as loc;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:upai_app/views/auth/server/service.dart';
+import 'package:upai_app/service/service.dart';
 
 import '../../../shared/app_colors.dart';
 import '../../../widgets/appBar.dart';
 import '../profileUsers/profileUsers.dart';
 import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'marketMap.dart';
@@ -22,11 +20,6 @@ class GlobalMap extends StatefulWidget {
 }
 
 class _GlobalMapState extends State<GlobalMap> {
-  late List<LatLng> _list;
-
-  @override
-  void initState() {}
-
   Future<List<ShopViewModel>> _fetch() async {
     var response = await http.Client().get(Uri(
       host: AuthClient.ip,
@@ -99,7 +92,7 @@ class MapSampleState extends State<MapSample> {
     loc.LocationData? data = await AuthClient.getLocation();
     LatLng _latLng;
     if (data != null) {
-      _latLng = LatLng(data!.latitude!, data!.longitude!);
+      _latLng = LatLng(data.latitude!, data.longitude!);
     } else {
       _latLng = LatLng(55.749711, 37.616806);
     }

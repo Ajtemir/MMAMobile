@@ -4,7 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:upai_app/fetches/categories_fetch.dart';
 import 'package:upai_app/model/categoriesModel.dart';
-import 'package:upai_app/views/auth/server/service.dart';
+import 'package:upai_app/service/service.dart';
 import 'package:upai_app/views/pages/categoryProducts.dart';
 import 'package:upai_app/views/pages/search_page.dart';
 import '../../fetches/products_fetch.dart';
@@ -392,7 +392,6 @@ class _DashboardState extends State<Dashboard> {
                   );
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
-                  ;
                 }
 
                 // By default, show a loading spinner.

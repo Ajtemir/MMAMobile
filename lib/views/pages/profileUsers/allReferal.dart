@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:upai_app/views/category/filter.dart';
 import 'package:upai_app/views/pages/profile/referalFilter.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 
 class AllReferal extends StatefulWidget {
   List<Widget> referal;
-  AllReferal(this.referal);
+  AllReferal(this.referal, {Key? key}) : super(key: key);
 
   @override
   _AllReferalState createState() => _AllReferalState();
@@ -27,7 +26,8 @@ class _AllReferalState extends State<AllReferal> {
                       fontSize: 24,
                       fontWeight: FontWeight.w400)),
               trailing: GestureDetector(
-                onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder:(context)=>ReferalFilter())),
+                onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => ReferalFilter())),
                 child: Image.asset(
                   'assets/img/category_page/filterIcon.png',
                   width: 20,
@@ -41,7 +41,7 @@ class _AllReferalState extends State<AllReferal> {
                 itemCount: widget.referal.length,
                 separatorBuilder: (context, index) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Divider(height: 1,color: Color(0xFFEBEBEB)),
+                  child: Divider(height: 1, color: Color(0xFFEBEBEB)),
                 ),
                 itemBuilder: (BuildContext context, int index) {
                   return widget.referal[index];

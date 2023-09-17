@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../auth/server/service.dart';
+import '../../../service/service.dart';
 import 'package:http/http.dart' as http;
 
 import '../profileUsers/profileUsers.dart';
@@ -49,10 +49,6 @@ class _MarketMapState extends State<MarketMap> {
     super.initState();
   }
 
-  final Completer<GoogleMapController> _controller = Completer();
-  final _bounds = LatLngBounds(
-      northeast: LatLng(42.86612099748323, 74.57394708836233),
-      southwest: LatLng(42.86363603417931, 74.56925858682715));
   late CameraPosition marketPosition = CameraPosition(
     target: widget.marketPoint,
     zoom: 18,
@@ -68,7 +64,7 @@ class _MarketMapState extends State<MarketMap> {
             print("Asan ///////////////");
             return Scaffold(
               appBar: AppBar(),
-              bottomNavigationBar: BottomAppBar(
+              bottomNavigationBar: const BottomAppBar(
                 child: Row(
                   children: [
                     Text('fasdfas'),

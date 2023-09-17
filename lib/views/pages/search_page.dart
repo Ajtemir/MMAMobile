@@ -7,7 +7,7 @@ import '../../fetches/search_products_fetch.dart';
 import '../../model/productModel.dart';
 import '../../provider/selectCatProvider.dart';
 
-import '../auth/server/service.dart';
+import '../../service/service.dart';
 import '../category/aboutMagaz.dart';
 
 class SearchProducts extends StatefulWidget {

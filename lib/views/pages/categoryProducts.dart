@@ -1,28 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:upai_app/views/pages/hotKesh.dart';
-import 'package:upai_app/widgets/appBar.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 
 import '../../fetches/category_products_fetch.dart';
-import '../../fetches/favorite_products_fetch.dart';
-import '../../fetches/products_fetch.dart';
 import '../../model/productModel.dart';
 import '../../provider/selectCatProvider.dart';
-import '../../shared/app_colors.dart';
-
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:upai_app/views/pages/Filtr.dart';
-import 'package:upai_app/views/pages/hotKesh.dart';
-import 'package:upai_app/widgets/UserAvatar.dart';
-import 'package:upai_app/widgets/appBar.dart';
-
-import '../auth/server/service.dart';
+import '../../service/service.dart';
 import '../category/aboutMagaz.dart';
 
 class CategoryProducts extends StatefulWidget {

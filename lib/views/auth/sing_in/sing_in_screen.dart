@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:upai_app/views/auth/sing_up/sing_up_screen.dart';
 import 'package:upai_app/views/home/home_screen.dart';
 
 import '../../../provider/selectCatProvider.dart';
-import '../../../provider/selectTabProvider.dart';
-import '../../../shared/app_text_styles.dart';
-import '../server/service.dart';
+import '../../../service/service.dart';
 
 class SingInScreen extends StatefulWidget {
   const SingInScreen({Key? key}) : super(key: key);
