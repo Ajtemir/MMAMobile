@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:upai_app/views/pages/profile/profileEditing.dart';
 
 import '../shared/app_colors.dart';
 
@@ -24,9 +23,7 @@ class _CircleAvatarState extends State<CircleAvatar> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-                blurRadius: 5,
-                offset: Offset(0, 0),
-                color: Color(0x26000000))
+                blurRadius: 5, offset: Offset(0, 0), color: Color(0x26000000))
           ]),
       child: Container(
         padding: EdgeInsets.all(9),
@@ -35,9 +32,7 @@ class _CircleAvatarState extends State<CircleAvatar> {
             color: Colors.white,
             boxShadow: [
               BoxShadow(
-                  blurRadius: 5,
-                  offset: Offset(0, 0),
-                  color: Color(0x26000000))
+                  blurRadius: 5, offset: Offset(0, 0), color: Color(0x26000000))
             ]),
         child: Stack(
           //overflow: Overflow.visible,
@@ -48,8 +43,7 @@ class _CircleAvatarState extends State<CircleAvatar> {
                 color: Colors.white,
                 shape: BoxShape.circle,
                 border: Border.all(
-                    width: 0.5,
-                    color: Color(0xFF929292).withOpacity(0.37)),
+                    width: 0.5, color: Color(0xFF929292).withOpacity(0.37)),
                 boxShadow: [
                   BoxShadow(
                       blurRadius: 16,
@@ -61,28 +55,27 @@ class _CircleAvatarState extends State<CircleAvatar> {
                     image: AssetImage('assets/img/user2.png')),
               ),
             ),
-            widget.isLoading ?
-            Positioned(
-              top: 0,
-              right: 72,
-              child: GestureDetector(
-                // onTap: (){Navigator.of(context).push(MaterialPageRoute(builder:(context)=>UserEditing()));},
-                child: Container(
-                  padding: EdgeInsets.all(9),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color:AppColors.red1,
-                  ),
-                  child: Image.asset(
-                    'assets/img/penIcon.png',
-                    width: 15,
-                    height: 15,
-                  ),
-                ),
-              ),
-            ):
-                Center(),
-
+            widget.isLoading
+                ? Positioned(
+                    top: 0,
+                    right: 72,
+                    child: GestureDetector(
+                      // onTap: (){Navigator.of(context).push(MaterialPageRoute(builder:(context)=>UserEditing()));},
+                      child: Container(
+                        padding: EdgeInsets.all(9),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.red1,
+                        ),
+                        child: Image.asset(
+                          'assets/img/penIcon.png',
+                          width: 15,
+                          height: 15,
+                        ),
+                      ),
+                    ),
+                  )
+                : Center(),
           ],
         ),
       ),

@@ -20,18 +20,18 @@ class _ToCardState extends State<ToCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Вывод денег',
+            const Text('Вывод денег',
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 24,
                     fontWeight: FontWeight.w400)),
-            SizedBox(height: 28),
+            const SizedBox(height: 28),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 50),
+              padding: const EdgeInsets.symmetric(vertical: 50),
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Color(0xFF26000000),
                       blurRadius: 11,
@@ -43,27 +43,30 @@ class _ToCardState extends State<ToCard> {
                 children: [
                   Image.asset('assets/img/prof/purse/toCard.png',
                       width: 100, height: 100),
-                  SizedBox(height: 48),
+                  const SizedBox(height: 48),
                   Container(
-                    width: 210,
-                      child: Text(
-                    '2500 сом были успешно переведены на Элсом',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Color(0xFF515151), fontSize: 16),
-                  )),
-                  SizedBox(height: 34),
+                      width: 210,
+                      child: const Text(
+                        '2500 сом были успешно переведены на Элсом',
+                        textAlign: TextAlign.center,
+                        style:
+                            TextStyle(color: Color(0xFF515151), fontSize: 16),
+                      )),
+                  const SizedBox(height: 34),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 56.0),
                     child: GestureDetector(
-                      onTap: ()=>Navigator.pop(context),
+                      onTap: () => Navigator.pop(context),
                       child: Container(
                         height: 44,
                         decoration: BoxDecoration(
                             color: AppColors.red1,
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        child: Center(
-                          child: Text('Закрыть',style: TextStyle(color: Colors.white,fontSize: 14),),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: const Center(
+                          child: Text(
+                            'Закрыть',
+                            style: TextStyle(color: Colors.white, fontSize: 14),
+                          ),
                         ),
                       ),
                     ),

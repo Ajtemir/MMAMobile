@@ -2,14 +2,12 @@ import 'dart:convert';
 import 'package:location/location.dart' as loc;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:upai_app/views/auth/server/service.dart';
+import 'package:upai_app/service/service.dart';
 
 import '../../../shared/app_colors.dart';
 import '../../../widgets/appBar.dart';
 import '../profileUsers/profileUsers.dart';
 import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'marketMap.dart';
@@ -22,11 +20,6 @@ class GlobalMap extends StatefulWidget {
 }
 
 class _GlobalMapState extends State<GlobalMap> {
-  late List<LatLng> _list;
-
-  @override
-  void initState() {}
-
   Future<List<ShopViewModel>> _fetch() async {
     var response = await http.Client().get(Uri(
       host: AuthClient.ip,
@@ -99,19 +92,11 @@ class MapSampleState extends State<MapSample> {
     loc.LocationData? data = await AuthClient.getLocation();
     LatLng _latLng;
     if (data != null) {
-      _latLng = LatLng(data!.latitude!, data!.longitude!);
+      _latLng = LatLng(data.latitude!, data.longitude!);
     } else {
       _latLng = LatLng(55.749711, 37.616806);
     }
     return _latLng;
-  }
-
-  void _onMapType() {
-    setState(() {
-      _currentMapType = _currentMapType == MapType.normal
-          ? MapType.satellite
-          : MapType.normal;
-    });
   }
 
   getIcons() async {
@@ -240,8 +225,10 @@ class MapSampleState extends State<MapSample> {
                               const MaterialStatePropertyAll(AppColors.red1),
                           value: _inMapShopType.fixed,
                           onChanged: (bool? value) {
-                            _inMapShopType.fixed = !_inMapShopType.fixed;
-                            setState(() {});
+                            setState(() {
+                              _inMapShopType.updateFixed();
+                              _updateMap();
+                            });
                           },
                         ),
                         title: const Text("БУТИК"),
@@ -257,8 +244,10 @@ class MapSampleState extends State<MapSample> {
                               const MaterialStatePropertyAll(AppColors.red1),
                           value: _inMapShopType.market,
                           onChanged: (bool? value) {
-                            _inMapShopType.market = !_inMapShopType.market;
-                            setState(() {});
+                            setState(() {
+                              _inMapShopType.updateMarket();
+                              _updateMap();
+                            });
                           },
                         ),
                         title: const Text("ТЦ/БАЗАР"),
@@ -274,8 +263,10 @@ class MapSampleState extends State<MapSample> {
                               const MaterialStatePropertyAll(AppColors.red1),
                           value: _inMapShopType.free,
                           onChanged: (bool? value) {
-                            _inMapShopType.free = !_inMapShopType.free;
-                            setState(() {});
+                            setState(() {
+                              _inMapShopType.updateFree();
+                              _updateMap();
+                            });
                           },
                         ),
                         title: const Text("Стихийная"),

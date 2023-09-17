@@ -12,8 +12,8 @@ class ReferalFilter extends StatefulWidget {
 }
 
 class _ReferalFilterState extends State<ReferalFilter> {
-  DateTime selectedDate1=DateTime.now();
-  DateTime selectedDate2=DateTime.now();
+  DateTime selectedDate1 = DateTime.now();
+  DateTime selectedDate2 = DateTime.now();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,28 +31,34 @@ class _ReferalFilterState extends State<ReferalFilter> {
                       fontWeight: FontWeight.w400)),
             ),
             SizedBox(height: 15),
-            Text('Дата',style: TextStyle(color: Color(0xFF313131),fontSize: 20)),
+            Text('Дата',
+                style: TextStyle(color: Color(0xFF313131), fontSize: 20)),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     _selectDate(context);
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 38),
                     height: 45,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: AppColors.blue1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    child: Center(child: Text("${selectedDate1.day}.${selectedDate1.month}.${selectedDate1.year}",style: TextStyle(color: AppColors.blue1,fontSize: 16),)),
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 1, color: AppColors.blue1),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                        child: Text(
+                      "${selectedDate1.day}.${selectedDate1.month}.${selectedDate1.year}",
+                      style: TextStyle(color: AppColors.blue1, fontSize: 16),
+                    )),
                   ),
                 ),
-                Text('-',style: TextStyle(color: AppColors.blue1,fontSize: 16)),
+                Text('-',
+                    style: TextStyle(color: AppColors.blue1, fontSize: 16)),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     _selectDate2(context);
                   },
                   child: Container(
@@ -62,7 +68,11 @@ class _ReferalFilterState extends State<ReferalFilter> {
                       border: Border.all(width: 1, color: AppColors.blue1),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Center(child: Text("${selectedDate2.day}.${selectedDate2.month}.${selectedDate2.year}",style: TextStyle(color:AppColors.blue1,fontSize: 16),)),
+                    child: Center(
+                        child: Text(
+                      "${selectedDate2.day}.${selectedDate2.month}.${selectedDate2.year}",
+                      style: TextStyle(color: AppColors.blue1, fontSize: 16),
+                    )),
                   ),
                 ),
               ],
@@ -71,15 +81,18 @@ class _ReferalFilterState extends State<ReferalFilter> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 91.0),
               child: GestureDetector(
-                onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder:(context)=>Sort())),
+                onTap: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => Sort())),
                 child: Container(
                   height: 44,
                   decoration: BoxDecoration(
                       color: AppColors.red1,
-                      borderRadius: BorderRadius.circular(10)
-                  ),
+                      borderRadius: BorderRadius.circular(10)),
                   child: Center(
-                    child: Text('Сортировать',style: TextStyle(color: Colors.white,fontSize: 14),),
+                    child: Text(
+                      'Сортировать',
+                      style: TextStyle(color: Colors.white, fontSize: 14),
+                    ),
                   ),
                 ),
               ),
@@ -89,6 +102,7 @@ class _ReferalFilterState extends State<ReferalFilter> {
       ),
     );
   }
+
   _selectDate(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
       context: context,
@@ -96,10 +110,11 @@ class _ReferalFilterState extends State<ReferalFilter> {
       firstDate: DateTime(2010),
       lastDate: DateTime(2025),
     );
-    if (selected != null && selected != selectedDate1)
+    if (selected != null && selected != selectedDate1) {
       setState(() {
         selectedDate1 = selected;
       });
+    }
   }
 
   _selectDate2(BuildContext context) async {
@@ -109,9 +124,10 @@ class _ReferalFilterState extends State<ReferalFilter> {
       firstDate: DateTime(2010),
       lastDate: DateTime(2025),
     );
-    if (selected != null && selected != selectedDate2)
+    if (selected != null && selected != selectedDate2) {
       setState(() {
         selectedDate2 = selected;
       });
+    }
   }
 }

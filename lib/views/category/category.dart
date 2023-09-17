@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:upai_app/views/category/aboutMagaz.dart';
 import 'package:upai_app/views/category/filter.dart';
 import 'package:upai_app/widgets/appBar.dart';
 
@@ -24,7 +22,10 @@ class _CategoryState extends State<Category> {
         padding: EdgeInsets.only(left: 14, top: 5),
         children: [
           ListTile(
-            onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder:(context)=>Filter(category: '',))),
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => Filter(
+                      category: '',
+                    ))),
             leading: Text('Категории',
                 style: TextStyle(
                     color: Colors.black,
@@ -50,9 +51,9 @@ class _CategoryState extends State<Category> {
               children: [
                 SlideContainer(0, 5, 193, 'Ресторан Дияр', 25),
                 SizedBox(width: 10),
-                SlideContainer(1, 4, 148, 'Ресторан Кайн',  16),
+                SlideContainer(1, 4, 148, 'Ресторан Кайн', 16),
                 SizedBox(width: 10),
-                SlideContainer(2, 4, 95, 'Ресторан Кайнар',  16)
+                SlideContainer(2, 4, 95, 'Ресторан Кайнар', 16)
               ],
             ),
           ),
@@ -68,11 +69,11 @@ class _CategoryState extends State<Category> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                SlideContainerTwo(3, 4.3, 371, 'Cinematica',  25),
+                SlideContainerTwo(3, 4.3, 371, 'Cinematica', 25),
                 SizedBox(width: 10),
-                SlideContainerTwo(4, 4, 93, 'Brodway cinema',  16),
+                SlideContainerTwo(4, 4, 93, 'Brodway cinema', 16),
                 SizedBox(width: 10),
-                SlideContainerTwo(5, 5, 109, 'Manas cinema',  16)
+                SlideContainerTwo(5, 5, 109, 'Manas cinema', 16)
               ],
             ),
           ),
@@ -97,35 +98,38 @@ class _CategoryState extends State<Category> {
                       ]),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 14),
-                    child:
-                    Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 17,
-                          right: 143,
-                        ),
-                        child: Text(
-                          'Пейнтбольный клуб “Skorpion”',
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                          softWrap: true,
-                        ),
-                      ),
-                      SizedBox(height: 7),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 180),
-                        child: Text(
-                          "Чем больше команда, тем больше  кешбек",
-                          style: TextStyle(color: Colors.white, fontSize: 12),
-                          softWrap: true,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 31,
-                      ),
-                      SizedBox(
-                        height: 8,
-                      )
-                    ]),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 17,
+                              right: 143,
+                            ),
+                            child: Text(
+                              'Пейнтбольный клуб “Skorpion”',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                              softWrap: true,
+                            ),
+                          ),
+                          SizedBox(height: 7),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 180),
+                            child: Text(
+                              "Чем больше команда, тем больше  кешбек",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 12),
+                              softWrap: true,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 31,
+                          ),
+                          SizedBox(
+                            height: 8,
+                          )
+                        ]),
                   ),
                 ),
               ),
@@ -144,15 +148,16 @@ class _CategoryState extends State<Category> {
                   height: 45,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage('assets/img/category_page/procentContIcon.png')
-                    ),
+                        image: AssetImage(
+                            'assets/img/category_page/procentContIcon.png')),
                     shape: BoxShape.circle,
                   ),
                   child: Center(
-                    child: Text('15%',style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                    )),
+                    child: Text('15%',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        )),
                   ),
                 ),
               ),
@@ -167,7 +172,8 @@ class _CategoryState extends State<Category> {
                     color: AppColors.green,
                     shape: BoxShape.circle,
                   ),
-                  child: Image.asset('assets/img/category_page/procentIcon.png',width: 10,height: 10),
+                  child: Image.asset('assets/img/category_page/procentIcon.png',
+                      width: 10, height: 10),
                 ),
               )
             ],
@@ -185,11 +191,11 @@ class _CategoryState extends State<Category> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                SlideContainer(6, 5, 193, 'LC waikiki',  25),
+                SlideContainer(6, 5, 193, 'LC waikiki', 25),
                 SizedBox(width: 10),
-                SlideContainer(7, 4.8, 148, 'Hugo BOSS',  16),
+                SlideContainer(7, 4.8, 148, 'Hugo BOSS', 16),
                 SizedBox(width: 10),
-                SlideContainer(8, 5, 180, 'Lion',  16)
+                SlideContainer(8, 5, 180, 'Lion', 16)
               ],
             ),
           ),
@@ -205,11 +211,11 @@ class _CategoryState extends State<Category> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                SlideContainerTwo(9, 4.6, 371, 'Иллюзион',  25),
+                SlideContainerTwo(9, 4.6, 371, 'Иллюзион', 25),
                 SizedBox(width: 10),
-                SlideContainerTwo(10, 3.9, 93, 'Brodway cinema',  16),
+                SlideContainerTwo(10, 3.9, 93, 'Brodway cinema', 16),
                 SizedBox(width: 10),
-                SlideContainerTwo(11, 5, 293, 'Manas cinema',  16)
+                SlideContainerTwo(11, 5, 293, 'Manas cinema', 16)
               ],
             ),
           ),
@@ -219,9 +225,10 @@ class _CategoryState extends State<Category> {
   }
 
   Widget SlideContainer(
-      int image, double rat, int otzyv, String name,int kesh) {
+      int image, double rat, int otzyv, String name, int kesh) {
     return GestureDetector(
-      onTap: (){},/*=>Navigator.of(context).push(MaterialPageRoute(builder:(context)=>AboutMagaz())),*/
+      onTap: () {},
+      /*=>Navigator.of(context).push(MaterialPageRoute(builder:(context)=>AboutMagaz())),*/
       child: Container(
         width: 150,
         child: Column(
@@ -242,7 +249,8 @@ class _CategoryState extends State<Category> {
                     ],
                     image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: AssetImage('assets/img/category_page/$image.jpg'))),
+                        image:
+                            AssetImage('assets/img/category_page/$image.jpg'))),
               ),
               Positioned(
                 right: 5,
@@ -252,15 +260,16 @@ class _CategoryState extends State<Category> {
                   height: 45,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/img/category_page/procentContIcon.png')
-                    ),
+                        image: AssetImage(
+                            'assets/img/category_page/procentContIcon.png')),
                     shape: BoxShape.circle,
                   ),
                   child: Center(
-                    child: Text('15%',style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                    )),
+                    child: Text('15%',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        )),
                   ),
                 ),
               ),
@@ -275,7 +284,8 @@ class _CategoryState extends State<Category> {
                     color: AppColors.green,
                     shape: BoxShape.circle,
                   ),
-                  child: Image.asset('assets/img/category_page/procentIcon.png',width: 10,height: 10),
+                  child: Image.asset('assets/img/category_page/procentIcon.png',
+                      width: 10, height: 10),
                 ),
               )
             ]),
@@ -293,13 +303,13 @@ class _CategoryState extends State<Category> {
                     Row(
                       children: [
                         RatingBar.builder(
-                          allowHalfRating: true,
+                            allowHalfRating: true,
                             initialRating: rat,
                             itemSize: 10,
                             itemBuilder: (context, _) => Icon(
-                              Icons.star,
-                              color: AppColors.mainRed,
-                            ),
+                                  Icons.star,
+                                  color: AppColors.mainRed,
+                                ),
                             onRatingUpdate: (rating) {
                               setState(() {
                                 rat = rating;
@@ -309,13 +319,13 @@ class _CategoryState extends State<Category> {
                         Text(
                           '$rat',
                           style:
-                          TextStyle(color: AppColors.mainRed, fontSize: 10),
+                              TextStyle(color: AppColors.mainRed, fontSize: 10),
                         ),
                         SizedBox(width: 2),
                         Text(
                           '($otzyv отзыва)',
                           style:
-                          TextStyle(color: Color(0xFF313131), fontSize: 10),
+                              TextStyle(color: Color(0xFF313131), fontSize: 10),
                         )
                       ],
                     ),
@@ -351,7 +361,8 @@ class _CategoryState extends State<Category> {
                   ],
                   image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: AssetImage('assets/img/category_page/$image.jpg'))),
+                      image:
+                          AssetImage('assets/img/category_page/$image.jpg'))),
             ),
             Positioned(
               right: 5,
@@ -361,15 +372,16 @@ class _CategoryState extends State<Category> {
                 height: 45,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/img/category_page/procentContIcon.png')
-                  ),
+                      image: AssetImage(
+                          'assets/img/category_page/procentContIcon.png')),
                   shape: BoxShape.circle,
                 ),
                 child: Center(
-                  child: Text('15%',style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                  )),
+                  child: Text('15%',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                      )),
                 ),
               ),
             ),
@@ -384,7 +396,8 @@ class _CategoryState extends State<Category> {
                   color: AppColors.green,
                   shape: BoxShape.circle,
                 ),
-                child: Image.asset('assets/img/category_page/procentIcon.png',width: 10,height: 10),
+                child: Image.asset('assets/img/category_page/procentIcon.png',
+                    width: 10, height: 10),
               ),
             )
           ]),
@@ -405,9 +418,9 @@ class _CategoryState extends State<Category> {
                           initialRating: rat,
                           itemSize: 10,
                           itemBuilder: (context, _) => Icon(
-                            Icons.star,
-                            color: AppColors.mainRed,
-                          ),
+                                Icons.star,
+                                color: AppColors.mainRed,
+                              ),
                           onRatingUpdate: (rating) {
                             setState(() {
                               rat = rating;
@@ -417,13 +430,13 @@ class _CategoryState extends State<Category> {
                       Text(
                         '$rat',
                         style:
-                        TextStyle(color: AppColors.mainRed, fontSize: 10),
+                            TextStyle(color: AppColors.mainRed, fontSize: 10),
                       ),
                       SizedBox(width: 2),
                       Text(
                         '($otzyv отзыва)',
                         style:
-                        TextStyle(color: Color(0xFF313131), fontSize: 10),
+                            TextStyle(color: Color(0xFF313131), fontSize: 10),
                       )
                     ],
                   ),

@@ -5,7 +5,6 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import 'package:upai_app/provider/selectCatProvider.dart';
 import 'package:upai_app/provider/selectTabProvider.dart';
-import 'package:provider/provider.dart';
 import 'package:upai_app/shared/app_colors.dart';
 import 'package:upai_app/views/category/mestopolojenia.dart';
 import 'package:upai_app/views/category/selectCategoty.dart';

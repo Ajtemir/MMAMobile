@@ -1,27 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:upai_app/model/userDataModel.dart';
-import 'package:upai_app/views/pages/profile/allMagazine.dart';
-import 'package:upai_app/views/pages/profile/bussinessProf.dart';
-import 'package:upai_app/views/pages/profile/profileEditing.dart';
-import 'package:upai_app/views/pages/profile/purseSetting.dart';
-import 'package:upai_app/views/pages/profile/referal.dart';
-import 'package:upai_app/widgets/appBar.dart';
 
 import '../../../fetches/newProducts_fetch.dart';
-import '../../../fetches/products_fetch.dart';
 import '../../../fetches/userData_fetch.dart';
 import '../../../model/productModel.dart';
 import '../../../provider/selectCatProvider.dart';
-import '../../../shared/app_colors.dart';
 import '../../../widgets/appBar2.dart';
-import '../../auth/server/service.dart';
-import '../../auth/sing_in/sing_in_screen.dart';
+import '../../../service/service.dart';
 import '../../category/aboutMagaz.dart';
-import '../hotKesh.dart';
-import 'faq.dart';
 
 class ProfileUser extends StatefulWidget {
   final emailUser;

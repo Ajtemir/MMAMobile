@@ -1,28 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:upai_app/model/userDataModel.dart';
 import 'package:upai_app/views/pages/profile/allMagazine.dart';
 import 'package:upai_app/views/pages/profile/bussinessProf.dart';
 import 'package:upai_app/views/pages/profile/profileEditing.dart';
-import 'package:upai_app/views/pages/profile/purseSetting.dart';
 import 'package:upai_app/views/pages/profile/referal.dart';
 import 'package:upai_app/widgets/appBar.dart';
 
 import '../../../fetches/newProducts_fetch.dart';
-import '../../../fetches/products_fetch.dart';
 import '../../../fetches/userData_fetch.dart';
 import '../../../model/productModel.dart';
 import '../../../provider/selectCatProvider.dart';
 import '../../../shared/app_colors.dart';
-import '../../auth/server/service.dart';
+import '../../../service/service.dart';
 import '../../auth/sing_in/sing_in_screen.dart';
 import '../../category/aboutMagaz.dart';
-import '../hotKesh.dart';
-import 'faq.dart';
+import '../profileUsers/faq.dart';
 
 class Profile extends StatefulWidget {
+  const Profile({Key? key}) : super(key: key);
+
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -31,7 +29,7 @@ class _ProfileState extends State<Profile> {
   late Future<ListProductsModel> futureProducts;
   late Future<UserDataModel> futureUserData;
   late String emailGet;
-  late String imageProfile;
+  late String? imageProfile;
   late String name;
   late String phone;
 
@@ -139,8 +137,7 @@ class _ProfileState extends State<Profile> {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => UserEditing(
-                                  image:
-                                      imageProfile != null ? imageProfile : '',
+                                  image: imageProfile ?? 'assets/img/user.png',
                                   email: emailGet,
                                   name: name,
                                   number: phone)));

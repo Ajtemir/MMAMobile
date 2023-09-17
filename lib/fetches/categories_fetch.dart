@@ -1,15 +1,10 @@
 import 'dart:convert';
 
-
-import 'package:http/http.dart' as http;
-import 'package:upai_app/views/auth/server/service.dart';
-
-import '../Service/base_client.dart';
+import 'package:upai_app/service/service.dart';
 import '../model/categoriesModel.dart';
-import '../model/productModel.dart';
 
 Future<CategoriesModel> fetchCategories() async {
   final response = await AuthClient().getCategories();
 
-    return CategoriesModel.fromJson(jsonDecode(response));
+  return CategoriesModel.fromJson(jsonDecode(response));
 }

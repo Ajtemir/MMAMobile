@@ -32,15 +32,15 @@ class ProductsModel {
   CollectiveInfo? collectiveInfo;
 
   ProductsModel({
-        this.id,
-        this.description,
-        this.price,
-        this.categoryId,
-        this.userId,
-        this.sellerEmail,
-        this.images,
-        this.collectiveInfo,
-      });
+    this.id,
+    this.description,
+    this.price,
+    this.categoryId,
+    this.userId,
+    this.sellerEmail,
+    this.images,
+    this.collectiveInfo,
+  });
 
   ProductsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -50,18 +50,20 @@ class ProductsModel {
     userId = json['userId'];
     sellerEmail = json['sellerEmail'];
     images = json['images'].cast<String>();
-    collectiveInfo = json['collectiveInfo'] == null ? null : CollectiveInfo.fromJson(json['collectiveInfo']);
+    collectiveInfo = json['collectiveInfo'] == null
+        ? null
+        : CollectiveInfo.fromJson(json['collectiveInfo']);
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['description'] = this.description;
-    data['price'] = this.price;
-    data['categoryId'] = this.categoryId;
-    data['userId'] = this.userId;
-    data['sellerEmail'] = this.sellerEmail;
-    data['images'] = this.images;
+    data['id'] = id;
+    data['description'] = description;
+    data['price'] = price;
+    data['categoryId'] = categoryId;
+    data['userId'] = userId;
+    data['sellerEmail'] = sellerEmail;
+    data['images'] = images;
     return data;
   }
 }
@@ -72,8 +74,12 @@ class CollectiveInfo {
   final double collectivePrice;
   final DateTime startDate;
   final DateTime endDate;
-  CollectiveInfo(this.minBuyerCount, this.currentBuyerCount, this.collectivePrice, this.startDate, this.endDate);
-  static CollectiveInfo fromJson(Map<String, dynamic> json) =>
-      CollectiveInfo(json['minBuyerCount'], json['currentBuyerCount'], json['discountedPrice'], DateTime.parse(json['startDate']), DateTime.parse(json['endDate']));
-
+  CollectiveInfo(this.minBuyerCount, this.currentBuyerCount,
+      this.collectivePrice, this.startDate, this.endDate);
+  static CollectiveInfo fromJson(Map<String, dynamic> json) => CollectiveInfo(
+      json['minBuyerCount'],
+      json['currentBuyerCount'],
+      json['discountedPrice'],
+      DateTime.parse(json['startDate']),
+      DateTime.parse(json['endDate']));
 }

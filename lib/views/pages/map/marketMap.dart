@@ -5,8 +5,7 @@ import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 
-import '../../../widgets/appBar.dart';
-import '../../auth/server/service.dart';
+import '../../../service/service.dart';
 import 'package:http/http.dart' as http;
 
 import '../profileUsers/profileUsers.dart';
@@ -51,10 +50,6 @@ class _MarketMapState extends State<MarketMap> {
     super.initState();
   }
 
-  final Completer<GoogleMapController> _controller = Completer();
-  final _bounds = LatLngBounds(
-      northeast: LatLng(42.86612099748323, 74.57394708836233),
-      southwest: LatLng(42.86363603417931, 74.56925858682715));
   late CameraPosition marketPosition = CameraPosition(
     target: widget.marketPoint,
     zoom: 19,
