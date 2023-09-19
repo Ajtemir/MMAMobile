@@ -51,7 +51,8 @@ class AboutProductModel {
     isFavorite = json['isFavorite'];
     isSeller = json['isSeller'];
     auctionState = json['auctionState'] ?? 4;
-    auctionDetail = json['auctionDetail'];
+    auctionDetail =
+        json != null ? AuctionModel.fromJson(json['auctionDetail']) : null;
   }
 
   Map<String, dynamic> toJson() {

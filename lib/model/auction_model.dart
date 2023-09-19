@@ -10,8 +10,8 @@ class AuctionModel {
   AuctionModel.fromJson(Map<String, dynamic> json) {
     startPrice = json['startPrice'];
     currentMaxPrice = json['currentMaxPrice'];
-    startDate = json['startDate'];
-    endDate = json['endDate'];
+    startDate = DateTime.parse(json['startDate']);
+    endDate = DateTime.parse(json['endDate']);
   }
 
   Map<String, dynamic> toJson() {

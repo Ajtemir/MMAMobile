@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:location/location.dart' as loc;
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -7,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../service/service.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../widgets/appBar2.dart';
 import '../profileUsers/profileUsers.dart';
 
 class MarketMap extends StatefulWidget {
@@ -53,51 +55,147 @@ class _MarketMapState extends State<MarketMap> {
     target: widget.marketPoint,
     zoom: 18,
   );
+
+  Future<LatLng> getMyCoordsLocator() async {
+    loc.LocationData? data = await AuthClient.getLocation();
+    LatLng _latLng;
+    if (data != null) {
+      _latLng = LatLng(data.latitude!, data.longitude!);
+    } else {
+      _latLng = LatLng(55.749711, 37.616806);
+    }
+    return _latLng;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<MarketShopDto>>(
-        future: _fetch(widget.marketId),
+    return FutureBuilder(
+        future: getMyCoordsLocator(),
         builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          } else if (snapshot.hasData) {
-            print("Asan ///////////////");
-            return Scaffold(
-              appBar: AppBar(),
-              bottomNavigationBar: const BottomAppBar(
-                child: Row(
-                  children: [
-                    Text('fasdfas'),
-                    Text('fgsfdgs'),
-                  ],
-                ),
-              ),
-              body: GoogleMap(
-                initialCameraPosition: marketPosition,
-                polygons: snapshot.data!.map((e) {
-                  print(e.points.toString());
-                  return Polygon(
-                    consumeTapEvents: true,
-                    fillColor: Colors.blue,
-                    polygonId: PolygonId(e.id.toString()),
-                    points: e.points,
-                    strokeColor: Colors.red,
-                    strokeWidth: 1,
-                    onTap: () {
-                      setState(() {});
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ProfileUser(emailUser: e.sellerEmail),
-                        ),
-                      );
-                    },
-                  );
-                }).toSet(),
-              ),
+          if (snapshot.hasData) {
+            return FutureBuilder<List<MarketShopDto>>(
+                future: _fetch(widget.marketId),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text(snapshot.error.toString());
+                  } else if (snapshot.hasData) {
+                    print("Asan ///////////////");
+                    return Scaffold(
+                      appBar: AllAppBar2(),
+                      body: GoogleMap(
+                        myLocationEnabled: true,
+                        myLocationButtonEnabled: true,
+                        initialCameraPosition: marketPosition,
+                        polygons: [
+                          ...snapshot.data!.map((e) {
+                            print(e.points.toString());
+                            return Polygon(
+                              consumeTapEvents: true,
+                              fillColor: Colors.blue,
+                              polygonId: PolygonId(e.id.toString()),
+                              points: e.points,
+                              strokeColor: Colors.red,
+                              strokeWidth: 1,
+                              onTap: () {
+                                setState(() {});
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProfileUser(emailUser: e.sellerEmail),
+                                  ),
+                                );
+                              },
+                            );
+                          }).toList(),
+                          Polygon(
+                            polygonId: PolygonId("21"),
+                            points: [
+                              LatLng(42.865597079606864, 74.57170878381608),
+                              LatLng(42.86552630611915, 74.57174097032365),
+                              LatLng(42.86551057866644, 74.57166989178609),
+                              LatLng(42.86558184365456, 74.57164038748749),
+                            ],
+                            fillColor: Colors.blue,
+                            strokeColor: Colors.red,
+                            strokeWidth: 1,
+                          ),
+                          Polygon(
+                            polygonId: PolygonId("22"),
+                            points: [
+                              LatLng(42.86560815238309, 74.57162670199095),
+                              LatLng(42.86550979033042, 74.57167068345906),
+                              LatLng(42.86549243230485, 74.57158948690255),
+                              LatLng(42.86558914124227, 74.57154663316439),
+                            ],
+                            fillColor: Colors.blue,
+                            strokeColor: Colors.red,
+                            strokeWidth: 1,
+                          ),
+                          Polygon(
+                            polygonId: PolygonId("23"),
+                            points: [
+                              LatLng(42.86557591609737, 74.57149024666683),
+                              LatLng(42.86547838056631, 74.57153197267502),
+                              LatLng(42.86546267567826, 74.57146092568807),
+                              LatLng(42.86556103780599, 74.57141919967987),
+                            ],
+                            fillColor: Colors.blue,
+                            strokeColor: Colors.red,
+                            strokeWidth: 1,
+                          ),
+                          Polygon(
+                            polygonId: PolygonId("23"),
+                            points: [
+                              LatLng(42.86556801888772, 74.57141347245273),
+                              LatLng(42.86546236949163, 74.57146088765641),
+                              LatLng(42.86542553117286, 74.57130536578835),
+                              LatLng(42.86553257075525, 74.57125700228059),
+                            ],
+                            fillColor: Colors.blue,
+                            strokeColor: Colors.red,
+                            strokeWidth: 1,
+                          ),
+                          Polygon(
+                            polygonId: PolygonId("23"),
+                            points: [
+                              LatLng(42.86554299667868, 74.57125131245614),
+                              LatLng(42.86541093485178, 74.57130441748426),
+                              LatLng(42.8653754866291, 74.57113751596731),
+                              LatLng(42.865480441111686, 74.57109294567586),
+                              LatLng(42.86549295223015, 74.57114415409582),
+                              LatLng(42.86551797445948, 74.57113467105509),
+                            ],
+                            fillColor: Colors.blue,
+                            strokeColor: Colors.red,
+                            strokeWidth: 1,
+                          ),
+                          Polygon(
+                            polygonId: PolygonId("23"),
+                            points: [
+                              LatLng(42.86536853599482, 74.57111191175731),
+                              LatLng(42.86547488061379, 74.57109389397993),
+                              LatLng(42.86546028430438, 74.57094121702409),
+                              LatLng(42.86535324459664, 74.57095828649739),
+                            ],
+                            fillColor: Colors.blue,
+                            strokeColor: Colors.red,
+                            strokeWidth: 1,
+                          ),
+                        ].toSet(),
+                      ),
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                });
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
             );
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: Text('Ошибка с подключением'),
+            );
           }
         });
   }

@@ -509,6 +509,10 @@ class _AboutMagazState extends State<AboutMagaz> {
                                   ),
                                 ),
 
+                          SizedBox(
+                            height: 20,
+                          ),
+
                           ///Аукцион (User)
                           _auctionState == AuctionState.notMadeAuctioned
                               ? const SizedBox(
@@ -577,7 +581,8 @@ class _AboutMagazState extends State<AboutMagaz> {
                                           ),
                                           Expanded(
                                             child: Text(
-                                              '${productInfo.collectiveInfo!.currentBuyerCount} / ${productInfo.collectiveInfo!.minBuyerCount}',
+                                              // '${auctionModel?.startPrice} сом',
+                                              '50000 сом',
                                               style: styleSubtitleInCard,
                                             ),
                                           ),
@@ -595,7 +600,8 @@ class _AboutMagazState extends State<AboutMagaz> {
                                           ),
                                           Expanded(
                                             child: Text(
-                                              '${productInfo.collectiveInfo!.discountedPrice} сом',
+                                              // '${auctionModel?.currentMaxPrice ?? auctionModel?.startPrice} сом',
+                                              '63000 сом',
                                               style: styleSubtitleInCard,
                                             ),
                                           ),
@@ -609,8 +615,9 @@ class _AboutMagazState extends State<AboutMagaz> {
                                                 MaterialStatePropertyAll(
                                                     AppColors.red1),
                                             padding: MaterialStatePropertyAll(
-                                                EdgeInsets.symmetric(
-                                                    vertical: 10)),
+                                              EdgeInsets.symmetric(
+                                                  vertical: 10),
+                                            ),
                                           ),
                                           onPressed: () async {
                                             TextEditingController
@@ -620,25 +627,37 @@ class _AboutMagazState extends State<AboutMagaz> {
                                               if (_auctionState ==
                                                   AuctionState.buyerApply) {
                                                 suggestPriceController.text =
-                                                    "0";
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      bottom:
-                                                          MediaQuery.of(context)
-                                                              .viewInsets
-                                                              .bottom),
-                                                  child: SingleChildScrollView(
-                                                    controller:
-                                                        ModalScrollController
-                                                            .of(context),
-                                                    child: _suggestPriceForm(
-                                                      suggestPriceController,
-                                                      'Изменить свою цену',
-                                                      SellerEmailAndProductId(
-                                                          productInfo.id!,
-                                                          productInfo
-                                                              .sellerEmail!,
-                                                          _productParentSetState),
+                                                    "";
+                                                showMaterialModalBottomSheet(
+                                                  context: context,
+                                                  shape:
+                                                      const RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.vertical(
+                                                            top:
+                                                                Radius.circular(
+                                                                    20)),
+                                                  ),
+                                                  builder: (context) => Padding(
+                                                    padding: EdgeInsets.only(
+                                                        bottom: MediaQuery.of(
+                                                                context)
+                                                            .viewInsets
+                                                            .bottom),
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      controller:
+                                                          ModalScrollController
+                                                              .of(context),
+                                                      child: _suggestPriceForm(
+                                                        suggestPriceController,
+                                                        'Изменить свою цену',
+                                                        SellerEmailAndProductId(
+                                                            productInfo.id!,
+                                                            productInfo
+                                                                .sellerEmail!,
+                                                            _productParentSetState),
+                                                      ),
                                                     ),
                                                   ),
                                                 );
@@ -653,24 +672,36 @@ class _AboutMagazState extends State<AboutMagaz> {
                                               } else {
                                                 suggestPriceController.text =
                                                     "1";
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      bottom:
-                                                          MediaQuery.of(context)
-                                                              .viewInsets
-                                                              .bottom),
-                                                  child: SingleChildScrollView(
-                                                    controller:
-                                                        ModalScrollController
-                                                            .of(context),
-                                                    child: _suggestPriceForm(
-                                                      suggestPriceController,
-                                                      'Предложить свою цену',
-                                                      SellerEmailAndProductId(
-                                                          productInfo.id!,
-                                                          productInfo
-                                                              .sellerEmail!,
-                                                          _productParentSetState),
+                                                showMaterialModalBottomSheet(
+                                                  context: context,
+                                                  shape:
+                                                      const RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.vertical(
+                                                            top:
+                                                                Radius.circular(
+                                                                    20)),
+                                                  ),
+                                                  builder: (context) => Padding(
+                                                    padding: EdgeInsets.only(
+                                                        bottom: MediaQuery.of(
+                                                                context)
+                                                            .viewInsets
+                                                            .bottom),
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      controller:
+                                                          ModalScrollController
+                                                              .of(context),
+                                                      child: _suggestPriceForm(
+                                                        suggestPriceController,
+                                                        'Предложить свою цену',
+                                                        SellerEmailAndProductId(
+                                                            productInfo.id!,
+                                                            productInfo
+                                                                .sellerEmail!,
+                                                            _productParentSetState),
+                                                      ),
                                                     ),
                                                   ),
                                                 );
@@ -885,11 +916,15 @@ class _AboutMagazState extends State<AboutMagaz> {
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                 ),
-                builder: (context) => SingleChildScrollView(
-                  controller: ModalScrollController.of(context),
-                  child: FormBottomModalAuction(
-                    dto: SellerEmailAndProductId(productInfo.id!,
-                        productInfo.sellerEmail!, _productParentSetState),
+                builder: (context) => Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: SingleChildScrollView(
+                    controller: ModalScrollController.of(context),
+                    child: FormBottomModalAuction(
+                      dto: SellerEmailAndProductId(productInfo.id!,
+                          productInfo.sellerEmail!, _productParentSetState),
+                    ),
                   ),
                 ),
               );
@@ -1188,59 +1223,65 @@ class _AboutMagazState extends State<AboutMagaz> {
   Widget _suggestPriceForm(TextEditingController controller, String title,
       SellerEmailAndProductId dto) {
     final _formKey = GlobalKey<FormBuilderState>();
-    return Form(
-      child: Column(
-        children: [
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          FormBuilderTextField(
-            name: 'startAuctionPrice',
-            enabled: true,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              labelText: 'Начальная цена',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          MaterialButton(
-            color: AppColors.red1,
-            onPressed: () async {
-              if (_formKey.currentState!.saveAndValidate()) {
-                var keyValuePairs = _formKey.currentState?.value;
-                if (keyValuePairs != null) {
-                  var data = MakingAuctionProduct(
-                    startDate: keyValuePairs['startDate'],
-                    endDate: keyValuePairs['endDate'],
-                    startAuctionPrice:
-                        double.parse(keyValuePairs['startAuctionPrice']),
-                    email: dto.sellerEmail,
-                    productId: dto.productId,
-                  );
-                  try {
-                    await AuthClient().makeAuction(data);
-                    Navigator.pop(context);
-                    dto.update();
-                  } catch (err) {
-                    print(err.toString());
-                  }
-                }
-              }
-            },
-            child: const Text(
-              'Изменить цену',
-              style: TextStyle(
-                color: AppColors.white,
-                fontSize: 16,
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Form(
+        child: Column(
+          children: [
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ),
-        ],
+            SizedBox(height: 10),
+            FormBuilderTextField(
+              name: 'startAuctionPrice',
+              enabled: true,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Начальная цена',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 10),
+            MaterialButton(
+              color: AppColors.red1,
+              onPressed: () async {
+                if (_formKey.currentState!.saveAndValidate()) {
+                  var keyValuePairs = _formKey.currentState?.value;
+                  if (keyValuePairs != null) {
+                    var data = MakingAuctionProduct(
+                      startDate: keyValuePairs['startDate'],
+                      endDate: keyValuePairs['endDate'],
+                      startAuctionPrice:
+                          double.parse(keyValuePairs['startAuctionPrice']),
+                      email: dto.sellerEmail,
+                      productId: dto.productId,
+                    );
+                    try {
+                      await AuthClient().makeAuction(data);
+                      Navigator.pop(context);
+                      dto.update();
+                    } catch (err) {
+                      print(err.toString());
+                    }
+                  }
+                }
+              },
+              child: const Text(
+                'Изменить цену',
+                style: TextStyle(
+                  color: AppColors.white,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+          ],
+        ),
       ),
     );
   }
