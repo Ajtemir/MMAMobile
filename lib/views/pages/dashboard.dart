@@ -706,7 +706,7 @@ class _DashboardState extends State<Dashboard> {
               child: Padding(
                 padding: const EdgeInsets.all(22),
                 child: Image.network(
-                  'http://${AuthClient.ip}/$image',
+                  'https://${AuthClient.ip}:80/$image',
                   height: 22,
                   width: 22,
                 ),
@@ -853,7 +853,7 @@ class _DashboardState extends State<Dashboard> {
                   image: image != null
                       ? DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage('http://${AuthClient.ip}/$image'))
+                          image: NetworkImage('https://${AuthClient.ip}:80/$image'))
                       : const DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage('assets/img/hotKesh/kesh0.jpg'))),

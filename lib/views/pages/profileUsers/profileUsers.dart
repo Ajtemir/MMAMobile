@@ -89,7 +89,7 @@ class _ProfileUserState extends State<ProfileUser> {
                               ? CircleAvatar(
                                   radius: 53,
                                   backgroundImage: NetworkImage(
-                                      'http://${AuthClient.ip}/${path.avatar}'))
+                                      'https://${AuthClient.ip}:80/${path.avatar}'))
                               : CircleAvatar(
                                   backgroundColor: Colors.white,
                                   radius: 53,
@@ -534,7 +534,7 @@ class _ProfileUserState extends State<ProfileUser> {
                   image: image != null
                       ? DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage('http://${AuthClient.ip}/$image'))
+                          image: NetworkImage('https://${AuthClient.ip}:80/$image'))
                       : DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage('assets/img/hotKesh/kesh0.jpg'))),

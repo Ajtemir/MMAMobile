@@ -124,7 +124,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                           child: CircleAvatar(
                             radius: 53,
                             backgroundImage: NetworkImage(
-                                'http://${AuthClient.ip}/${(path.images!.isEmpty ? 'images/default.png' : path.images?[0]) ?? 'images/default.png'}'),
+                                'https://${AuthClient.ip}:80/${(path.images!.isEmpty ? 'images/default.png' : path.images?[0]) ?? 'images/default.png'}'),
                           )),
                     ),
                     SizedBox(width: 15),
@@ -553,7 +553,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                               image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image: NetworkImage(
-                                      'http://${AuthClient.ip}/${path.images![index]}'))),
+                                      'https://${AuthClient.ip}:80/${path.images![index]}'))),
                         ),
                       );
                     },

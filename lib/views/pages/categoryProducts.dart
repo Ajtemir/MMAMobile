@@ -191,7 +191,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
                   image: image != null
                       ? DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage('http://${AuthClient.ip}/$image'))
+                          image: NetworkImage('https://${AuthClient.ip}:80/$image'))
                       : DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage('assets/img/hotKesh/kesh0.jpg'))),

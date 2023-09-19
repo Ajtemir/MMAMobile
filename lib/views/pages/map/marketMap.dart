@@ -24,7 +24,7 @@ class _MarketMapState extends State<MarketMap> {
     Map<String, dynamic> queryParams = {'marketId': marketId.toString()};
     var uri = Uri(
         host: AuthClient.ip,
-        scheme: 'http',
+        scheme: 'https',
         port: 80,
         path: 'Market/GetShopsByMarketId',
         queryParameters: queryParams);

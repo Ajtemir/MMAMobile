@@ -30,7 +30,7 @@ class _GlobalMapState extends State<GlobalMap> {
   Future<List<ShopViewModel>> _fetch() async {
     var response = await http.Client().get(Uri(
       host: AuthClient.ip,
-      scheme: 'http',
+      scheme: 'https',
       port: 80,
       path: 'Shops/GetShopsAndMarkets',
     ));

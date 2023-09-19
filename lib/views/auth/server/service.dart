@@ -15,7 +15,7 @@ class AuthClient{
 
   Future<dynamic> getProducts() async {
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: ip,
       port: 80,
       path: 'Products/Index',
@@ -35,7 +35,7 @@ class AuthClient{
 
   Future<dynamic> getCategoryProducts(String id) async {
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: ip,
       port: 80,
       path: 'Products/getProductsByCategoryId',
@@ -56,7 +56,7 @@ class AuthClient{
 
   Future<dynamic> getSearchProducts(String search) async {
     var uri = Uri(
-        scheme: 'http',
+        scheme: 'https',
         host: ip,
         port: 80,
         path: 'Products/Search',
@@ -77,7 +77,7 @@ class AuthClient{
 
   Future<dynamic> getCategories() async {
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: ip,
       port: 80,
       path: 'Categories/Index',
@@ -124,7 +124,7 @@ class AuthClient{
 
   Future<dynamic> getProductsFavorite(String email) async {
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: ip,
       port: 80,
       path: 'Favorites/GetFavorites',
@@ -145,7 +145,7 @@ class AuthClient{
 
   Future<dynamic> getProductData(String productId,String email) async {
     var uri = Uri(
-        scheme: 'http',
+        scheme: 'https',
         host: ip,
         port: 80,
         path: 'Products/GetById',
@@ -166,7 +166,7 @@ class AuthClient{
 
   Future<String> getSetFavorite(String productId,String email) async {
     var uri = Uri(
-        scheme: 'http',
+        scheme: 'https',
         host: ip,
         port: 80,
         path: 'Favorites/SetFavorite',
@@ -188,7 +188,7 @@ class AuthClient{
 
   Future<String> getUnSetFavorite(String productId,String email) async {
     var uri = Uri(
-        scheme: 'http',
+        scheme: 'https',
         host: ip,
         port: 80,
         path: 'Favorites/UnsetFavorite',
@@ -223,7 +223,7 @@ class AuthClient{
 
 
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: ip,
       port: 80,
       path: 'User/SignUp',
@@ -252,7 +252,7 @@ class AuthClient{
 
 
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: ip,
       port: 80,
       path: 'User/SignIn',
@@ -283,7 +283,7 @@ class AuthClient{
 
 
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: ip,
       port: 80,
       path: 'User/UpdateProfile',
@@ -306,7 +306,7 @@ class AuthClient{
 
     var url=Uri.parse('http://$ip/Products/Index?email=$email');
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: ip,
       port: 80,
       path: 'Products/Index',
@@ -329,7 +329,7 @@ class AuthClient{
   Future<dynamic> getUserData(String email) async {
 
     var uri = Uri(
-        scheme: 'http',
+        scheme: 'https',
         host: ip,
         port: 80,
         path: '/User/GetProfile',
@@ -357,7 +357,7 @@ class AuthClient{
 
     var url=Uri.parse('http://$ip/User/SendCodeWordToEmailToConfirmEmail?email=$email');
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: ip,
       port: 80,
       path: "User/SendCodeWordToEmailToConfirmEmail?email=$email",
@@ -386,7 +386,7 @@ class AuthClient{
 
 
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: ip,
       port: 80,
       path: 'User/ConfirmEmail',
@@ -409,7 +409,7 @@ class AuthClient{
 
 
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: ip,
       port: 80,
       path: 'Products/AddWithEmail',
@@ -434,7 +434,7 @@ class AuthClient{
 
   Future<bool> postProductPhotoAdd( List<XFile> file,int id) async {
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: ip,
       port: 80,
       path: 'ProductImage/AddImage/$id',
@@ -475,7 +475,7 @@ class AuthClient{
 
   Future<bool> postProfilePhotoAdd( XFile file,String email,[bool update=false]) async {
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: ip,
       port: 80,
       path: 'User/ProfileAvatar',
@@ -516,7 +516,7 @@ class AuthClient{
 
   Future addCollective(int productId, String buyerEmail) async {
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: ip,
       port: 80,
       path: 'CollectiveTrade/AddCollectiveProduct',
@@ -539,7 +539,7 @@ class AuthClient{
 
   Future removeCollective(int productId, String buyerEmail) async {
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: ip,
       port: 80,
       path: 'CollectiveTrade/RemoveCollectiveProduct',
@@ -561,7 +561,7 @@ class AuthClient{
 
   Future makeCollective(MakingCollectiveProduct argument) async {
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: ip,
       port: 80,
       path: 'CollectiveTrade/MakeProductCollective',
@@ -580,7 +580,7 @@ class AuthClient{
 
   Future unmakeCollective(UnmakeCollectiveArgument argument) async {
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: ip,
       port: 80,
       path: 'CollectiveTrade/UnmakeProductCollective',
@@ -598,7 +598,7 @@ class AuthClient{
 
   Future submitCollective(SubmitCollectiveArgument argument) async {
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: ip,
       port: 80,
       path: 'CollectiveTrade/SubmitDeal',

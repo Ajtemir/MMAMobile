@@ -88,7 +88,7 @@ class _ProfileState extends State<Profile> {
                         if (snapshot.hasData) {
                           var path = snapshot.data!;
                           imageProfile =
-                              'http://${AuthClient.ip}/${path.avatar}';
+                              'https://${AuthClient.ip}:80/${path.avatar}';
                           name = path.username!;
                           phone = path.phone!;
                           return Center(
@@ -96,7 +96,7 @@ class _ProfileState extends State<Profile> {
                                 ? CircleAvatar(
                                     radius: 53,
                                     backgroundImage: NetworkImage(
-                                        'http://${AuthClient.ip}/${path.avatar}'))
+                                        'https://${AuthClient.ip}:80/${path.avatar}'))
                                 : CircleAvatar(
                                     backgroundColor: Colors.white,
                                     radius: 53,
@@ -588,7 +588,7 @@ class _ProfileState extends State<Profile> {
                   image: image != null
                       ? DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage('http://${AuthClient.ip}/$image'))
+                          image: NetworkImage('https://${AuthClient.ip}:80/$image'))
                       : DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage('assets/img/hotKesh/kesh0.jpg'))),

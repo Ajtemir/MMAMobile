@@ -15,7 +15,7 @@ class AuthClient{
 
 
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: '192.168.225.236',
       port: 80,
       path: 'User/SignUp',
@@ -44,7 +44,7 @@ class AuthClient{
 
 
     var uri = Uri(
-      scheme: 'http',
+      scheme: 'https',
       host: '192.168.225.236',
       port: 80,
       path: 'User/SignIn',
