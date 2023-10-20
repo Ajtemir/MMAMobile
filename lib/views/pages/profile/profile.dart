@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:upai_app/constants/constants.dart';
 import 'package:upai_app/model/userDataModel.dart';
 import 'package:upai_app/views/pages/profile/allMagazine.dart';
 import 'package:upai_app/views/pages/profile/bussinessProf.dart';
@@ -88,7 +89,7 @@ class _ProfileState extends State<Profile> {
                         if (snapshot.hasData) {
                           var path = snapshot.data!;
                           imageProfile =
-                              'http://${AuthClient.ip}/${path.avatar}';
+                              Constants.addPartToBaseUrl(path.avatar.toString());
                           name = path.username!;
                           phone = path.phone!;
                           return Center(
@@ -96,7 +97,7 @@ class _ProfileState extends State<Profile> {
                                 ? CircleAvatar(
                                     radius: 53,
                                     backgroundImage: NetworkImage(
-                                        'http://${AuthClient.ip}/${path.avatar}'))
+                                      Constants.addPartToBaseUrl(path.avatar.toString())))
                                 : CircleAvatar(
                                     backgroundColor: Colors.white,
                                     radius: 53,
@@ -588,7 +589,7 @@ class _ProfileState extends State<Profile> {
                   image: image != null
                       ? DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage('http://${AuthClient.ip}/$image'))
+                          image: NetworkImage(Constants.addPartToBaseUrl(image)))
                       : DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage('assets/img/hotKesh/kesh0.jpg'))),

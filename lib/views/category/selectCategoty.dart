@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:upai_app/constants/constants.dart';
 import 'package:upai_app/fetches/categories_fetch.dart';
 import 'package:upai_app/provider/selectCatProvider.dart';
 import 'package:upai_app/widgets/appBar2.dart';
@@ -97,7 +98,7 @@ class _SelectCategoryState extends State<SelectCategory> {
               child: Padding(
                 padding: const EdgeInsets.all(22),
                 child: Image.network(
-                  'http://${AuthClient.ip}/$image',
+                  Constants.addPartToBaseUrl(image),
                   height: 22,
                   width: 22,
                 ),

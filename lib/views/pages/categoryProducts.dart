@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:upai_app/constants/constants.dart';
 import 'package:upai_app/views/pages/hotKesh.dart';
 import 'package:upai_app/widgets/appBar.dart';
 import 'package:upai_app/widgets/appBar2.dart';
@@ -191,7 +192,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
                   image: image != null
                       ? DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage('http://${AuthClient.ip}/$image'))
+                          image: NetworkImage(Constants.addPartToBaseUrl(image)))
                       : DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage('assets/img/hotKesh/kesh0.jpg'))),

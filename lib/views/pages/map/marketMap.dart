@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../../constants/constants.dart';
 import '../../auth/server/service.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,12 +23,8 @@ class MarketMap extends StatefulWidget {
 class _MarketMapState extends State<MarketMap> {
   Future<List<MarketShopDto>> _fetch(int marketId) async {
     Map<String, dynamic> queryParams = {'marketId': marketId.toString()};
-    var uri = Uri(
-        host: AuthClient.ip,
-        scheme: 'http',
-        port: 80,
-        path: 'Market/GetShopsByMarketId',
-        queryParameters: queryParams);
+    var uri = Constants.addPathToBaseUrl('Market/GetShopsByMarketId', queryParameters: queryParams);
+
     var response = await http.Client().get(uri);
     var data = jsonDecode(response.body)['data'];
     List<MarketShopDto> result = data.map<MarketShopDto>((x) {

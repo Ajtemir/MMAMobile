@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:location/location.dart' as loc;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:upai_app/constants/constants.dart';
 import 'package:upai_app/views/auth/server/service.dart';
 
 import '../../../shared/app_colors.dart';
@@ -28,12 +29,9 @@ class _GlobalMapState extends State<GlobalMap> {
   void initState() {}
 
   Future<List<ShopViewModel>> _fetch() async {
-    var response = await http.Client().get(Uri(
-      host: AuthClient.ip,
-      scheme: 'http',
-      port: 80,
-      path: 'Shops/GetShopsAndMarkets',
-    ));
+    var response = await http.Client().get(
+        Constants.addPathToBaseUrl('Shops/GetShopsAndMarkets'),
+        );
     var data = jsonDecode(response.body)['data'];
     List<ShopViewModel> result = data.map<ShopViewModel>((x) {
       var lat = x['latitude'];

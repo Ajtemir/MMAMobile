@@ -5,6 +5,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 import 'package:upai_app/DTOs/submit_collective_argument.dart';
+import 'package:upai_app/constants/constants.dart';
 
 import '../../../DTOs/make_collective_post.dart';
 import '../../../DTOs/unmake_collective_product.dart';
@@ -14,12 +15,7 @@ class AuthClient{
   static var ip='192.168.164.236';
 
   Future<dynamic> getProducts() async {
-    var uri = Uri(
-      scheme: 'http',
-      host: ip,
-      port: 80,
-      path: 'Products/Index',
-    );
+    var uri = Constants.addPathToBaseUrl('Products/Index');
 
     var response = await client.get(uri);
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -34,13 +30,7 @@ class AuthClient{
   }
 
   Future<dynamic> getCategoryProducts(String id) async {
-    var uri = Uri(
-      scheme: 'http',
-      host: ip,
-      port: 80,
-      path: 'Products/getProductsByCategoryId',
-      queryParameters: {'categoryId': id}
-    );
+    var uri = Constants.addPathToBaseUrl('Products/getProductsByCategoryId', queryParameters: {'categoryId': id});
 
     var response = await client.get(uri);
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -55,13 +45,7 @@ class AuthClient{
   }
 
   Future<dynamic> getSearchProducts(String search) async {
-    var uri = Uri(
-        scheme: 'http',
-        host: ip,
-        port: 80,
-        path: 'Products/Search',
-        queryParameters: {'param':search}
-    );
+    var uri = Constants.addPathToBaseUrl('Products/Search', queryParameters: {'param':search});
 
     var response = await client.get(uri);
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -76,12 +60,7 @@ class AuthClient{
   }
 
   Future<dynamic> getCategories() async {
-    var uri = Uri(
-      scheme: 'http',
-      host: ip,
-      port: 80,
-      path: 'Categories/Index',
-    );
+    var uri = Constants.addPathToBaseUrl('Categories/Index');
 
     var response = await client.get(uri);
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -123,13 +102,7 @@ class AuthClient{
   }
 
   Future<dynamic> getProductsFavorite(String email) async {
-    var uri = Uri(
-      scheme: 'http',
-      host: ip,
-      port: 80,
-      path: 'Favorites/GetFavorites',
-      queryParameters: {'email':email}
-    );
+    var uri = Constants.addPathToBaseUrl('Favorites/GetFavorites', queryParameters: {'email':email});
 
     var response = await client.get(uri);
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -144,13 +117,7 @@ class AuthClient{
   }
 
   Future<dynamic> getProductData(String productId,String email) async {
-    var uri = Uri(
-        scheme: 'http',
-        host: ip,
-        port: 80,
-        path: 'Products/GetById',
-        queryParameters: {'productId':productId,'email':email}
-    );
+    var uri = Constants.addPathToBaseUrl('Products/GetById', queryParameters: {'productId':productId,'email':email});
 
     var response = await client.get(uri);
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -165,13 +132,7 @@ class AuthClient{
   }
 
   Future<String> getSetFavorite(String productId,String email) async {
-    var uri = Uri(
-        scheme: 'http',
-        host: ip,
-        port: 80,
-        path: 'Favorites/SetFavorite',
-        queryParameters: {'email':email,'productId':productId}
-    );
+    var uri = Constants.addPathToBaseUrl('Favorites/SetFavorite', queryParameters: {'email':email,'productId':productId});
 
     var response = await client.get(uri);
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -187,13 +148,7 @@ class AuthClient{
   }
 
   Future<String> getUnSetFavorite(String productId,String email) async {
-    var uri = Uri(
-        scheme: 'http',
-        host: ip,
-        port: 80,
-        path: 'Favorites/UnsetFavorite',
-        queryParameters: {'email':email,'productId':productId}
-    );
+    var uri = Constants.addPathToBaseUrl('Favorites/UnsetFavorite', queryParameters: {'email':email,'productId':productId});
 
     var response = await client.get(uri);
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -218,16 +173,8 @@ class AuthClient{
       "password" : password
     };
 
+    var uri = Constants.addPathToBaseUrl('User/SignUp');
 
-
-
-
-    var uri = Uri(
-      scheme: 'http',
-      host: ip,
-      port: 80,
-      path: 'User/SignUp',
-    );
     var response = await client.post(uri,body: jsonEncode(json), headers: {"Content-Type":"application/json","Accept":"*/*"});
     print(response.statusCode);
     if (response.statusCode == 201 || response.statusCode == 200) {
@@ -250,13 +197,8 @@ class AuthClient{
     };
 
 
+    var uri = Constants.addPathToBaseUrl('User/SignIn');
 
-    var uri = Uri(
-      scheme: 'http',
-      host: ip,
-      port: 80,
-      path: 'User/SignIn',
-    );
     var response = await client.post(uri,body: jsonEncode(json), headers: {"Content-Type":"application/json","Accept":"*/*"});
     print(response.statusCode);
     if (response.statusCode == 201 || response.statusCode == 200) {
@@ -281,13 +223,7 @@ class AuthClient{
 
 
 
-
-    var uri = Uri(
-      scheme: 'http',
-      host: ip,
-      port: 80,
-      path: 'User/UpdateProfile',
-    );
+    var uri = Constants.addPathToBaseUrl('User/UpdateProfile');
     var response = await client.post(uri,body: jsonEncode(json), headers: {"Content-Type":"application/json","Accept":"*/*"});
     print(response.statusCode);
     if (response.statusCode == 201 || response.statusCode == 200) {
@@ -304,15 +240,7 @@ class AuthClient{
   Future<dynamic> getProfileProducts(String email) async {
     // email=email.replaceAll('@', '%40');
 
-    var url=Uri.parse('http://$ip/Products/Index?email=$email');
-    var uri = Uri(
-      scheme: 'http',
-      host: ip,
-      port: 80,
-      path: 'Products/Index',
-     queryParameters: {'email':email}
-    );
-    print('$url\n'+uri.toString());
+    var uri = Constants.addPathToBaseUrl('Products/Index', queryParameters: {'email':email});
 
     var response = await client.get(uri);
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -328,15 +256,7 @@ class AuthClient{
 
   Future<dynamic> getUserData(String email) async {
 
-    var uri = Uri(
-        scheme: 'http',
-        host: ip,
-        port: 80,
-        path: '/User/GetProfile',
-        queryParameters: {'Email':email}
-    );
-    print(uri.toString());
-
+    var uri = Constants.addPathToBaseUrl('/User/GetProfile', queryParameters: {'Email':email});
     var response = await client.get(uri);
     if (response.statusCode == 200 || response.statusCode == 201) {
       print(response.body);
@@ -355,7 +275,7 @@ class AuthClient{
     email=email.replaceAll('@', '%40');
     print(email);
 
-    var url=Uri.parse('http://$ip/User/SendCodeWordToEmailToConfirmEmail?email=$email');
+    var url=Uri.parse('http://${Constants.host}/User/SendCodeWordToEmailToConfirmEmail?email=$email');
     var uri = Uri(
       scheme: 'http',
       host: ip,
@@ -384,13 +304,8 @@ class AuthClient{
     };
 
 
+    var uri = Constants.addPathToBaseUrl('User/ConfirmEmail');
 
-    var uri = Uri(
-      scheme: 'http',
-      host: ip,
-      port: 80,
-      path: 'User/ConfirmEmail',
-    );
     var response = await client.post(uri,body: jsonEncode(json), headers: {"Content-Type":"application/json","Accept":"*/*"});
     print(response.statusCode);
     if (response.statusCode == 201 || response.statusCode == 200) {
@@ -407,13 +322,7 @@ class AuthClient{
     //var _payload = json.encode(object);
 
 
-
-    var uri = Uri(
-      scheme: 'http',
-      host: ip,
-      port: 80,
-      path: 'Products/AddWithEmail',
-    );
+    var uri = Constants.addPathToBaseUrl('Products/AddWithEmail');
     var response = await client.post(uri,body: jsonEncode(json), headers: {"Content-Type":"application/json","Accept":"*/*"});
     print(response.statusCode);
     if (response.statusCode == 201 || response.statusCode == 200) {
@@ -433,12 +342,7 @@ class AuthClient{
   }
 
   Future<bool> postProductPhotoAdd( List<XFile> file,int id) async {
-    var uri = Uri(
-      scheme: 'http',
-      host: ip,
-      port: 80,
-      path: 'ProductImage/AddImage/$id',
-    );
+    var uri = Constants.addPathToBaseUrl('ProductImage/AddImage/$id');
     var request = http.MultipartRequest('POST', uri);
 
 
@@ -474,13 +378,8 @@ class AuthClient{
   }
 
   Future<bool> postProfilePhotoAdd( XFile file,String email,[bool update=false]) async {
-    var uri = Uri(
-      scheme: 'http',
-      host: ip,
-      port: 80,
-      path: 'User/ProfileAvatar',
-      queryParameters:update ?{'email':email,'updateDelete':'true'}:{'email':email}
-    );
+    var uri = Constants.addPathToBaseUrl('User/ProfileAvatar',queryParameters: update ?{'email':email,'updateDelete':'true'}:{'email':email});
+
     print(uri);
     var request = http.MultipartRequest('POST', uri);
 
@@ -515,12 +414,7 @@ class AuthClient{
   }
 
   Future addCollective(int productId, String buyerEmail) async {
-    var uri = Uri(
-      scheme: 'http',
-      host: ip,
-      port: 80,
-      path: 'CollectiveTrade/AddCollectiveProduct',
-    );
+    var uri = Constants.addPathToBaseUrl('CollectiveTrade/AddCollectiveProduct');
     Map<String, dynamic> obj = {
       'productId': productId,
       'buyerEmail': buyerEmail,
@@ -538,12 +432,7 @@ class AuthClient{
   }
 
   Future removeCollective(int productId, String buyerEmail) async {
-    var uri = Uri(
-      scheme: 'http',
-      host: ip,
-      port: 80,
-      path: 'CollectiveTrade/RemoveCollectiveProduct',
-    );
+    var uri = Constants.addPathToBaseUrl('CollectiveTrade/RemoveCollectiveProduct');
     Map<String, dynamic> data = {
       'productId': productId,
       'buyerEmail': buyerEmail,
@@ -560,12 +449,8 @@ class AuthClient{
 
 
   Future makeCollective(MakingCollectiveProduct argument) async {
-    var uri = Uri(
-      scheme: 'http',
-      host: ip,
-      port: 80,
-      path: 'CollectiveTrade/MakeProductCollective',
-    );
+    var uri = Constants.addPathToBaseUrl('CollectiveTrade/MakeProductCollective');
+
     var json = jsonEncode(argument.toMap());
     // Map<String, dynamic> data = argument.toMap();
     var response = await client.post(
@@ -579,12 +464,7 @@ class AuthClient{
   }
 
   Future unmakeCollective(UnmakeCollectiveArgument argument) async {
-    var uri = Uri(
-      scheme: 'http',
-      host: ip,
-      port: 80,
-      path: 'CollectiveTrade/UnmakeProductCollective',
-    );
+    var uri = Constants.addPathToBaseUrl('CollectiveTrade/UnmakeProductCollective');
     // Map<String, dynamic> data = argument.toMap();
     var response = await client.delete(
       uri,
@@ -597,12 +477,7 @@ class AuthClient{
   }
 
   Future submitCollective(SubmitCollectiveArgument argument) async {
-    var uri = Uri(
-      scheme: 'http',
-      host: ip,
-      port: 80,
-      path: 'CollectiveTrade/SubmitDeal',
-    );
+    var uri = Constants.addPathToBaseUrl('CollectiveTrade/SubmitDeal');
     var response = await client.post(
       uri,
       body: argument.toJson(),

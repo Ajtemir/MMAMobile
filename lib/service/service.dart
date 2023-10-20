@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import '../constants/constants.dart';
+
 class AuthClient{
   var client = http.Client();
   Future<bool> postSingUp(String email,String password,String api) async {
@@ -13,13 +15,7 @@ class AuthClient{
     };
 
 
-
-    var uri = Uri(
-      scheme: 'http',
-      host: '192.168.225.236',
-      port: 80,
-      path: 'User/SignUp',
-    );
+    var uri = Constants.addPathToBaseUrl('User/SignUp');
     var response = await client.post(uri,body: jsonEncode(json), headers: {"Content-Type":"application/json","Accept":"*/*"});
     print(response.statusCode);
     if (response.statusCode == 201 || response.statusCode == 200) {
@@ -42,13 +38,8 @@ class AuthClient{
     };
 
 
+    var uri = Constants.addPathToBaseUrl('User/SignIn');
 
-    var uri = Uri(
-      scheme: 'http',
-      host: '192.168.225.236',
-      port: 80,
-      path: 'User/SignIn',
-    );
     var response = await client.post(uri,body: jsonEncode(json), headers: {"Content-Type":"application/json","Accept":"*/*"});
     print(response.statusCode);
     if (response.statusCode == 201 || response.statusCode == 200) {

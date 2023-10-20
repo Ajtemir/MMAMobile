@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:upai_app/constants/constants.dart';
 import 'package:upai_app/fetches/categories_fetch.dart';
 import 'package:upai_app/model/categoriesModel.dart';
 import 'package:upai_app/views/auth/server/service.dart';
@@ -706,7 +707,7 @@ class _DashboardState extends State<Dashboard> {
               child: Padding(
                 padding: const EdgeInsets.all(22),
                 child: Image.network(
-                  'http://${AuthClient.ip}/$image',
+                  Constants.addPartToBaseUrl(image),
                   height: 22,
                   width: 22,
                 ),
@@ -853,7 +854,7 @@ class _DashboardState extends State<Dashboard> {
                   image: image != null
                       ? DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage('http://${AuthClient.ip}/$image'))
+                          image: NetworkImage(Constants.addPartToBaseUrl(image)))
                       : const DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage('assets/img/hotKesh/kesh0.jpg'))),

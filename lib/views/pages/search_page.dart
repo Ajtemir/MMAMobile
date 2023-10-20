@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:upai_app/constants/constants.dart';
 import 'package:upai_app/shared/app_colors.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 
@@ -274,7 +275,7 @@ class _SearchProductsState extends State<SearchProducts> {
                   image: image != null
                       ? DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage('http://${AuthClient.ip}/$image'))
+                          image: NetworkImage(Constants.addPartToBaseUrl(image)))
                       : DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage('assets/img/hotKesh/kesh0.jpg'))),

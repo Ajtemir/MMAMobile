@@ -9,6 +9,7 @@ import 'package:upai_app/DTOs/submit_collective_argument.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 
 import '../../DTOs/unmake_collective_product.dart';
+import '../../constants/constants.dart';
 import '../../fetches/about_product_fetch.dart';
 import '../../model/aboutProductModel.dart';
 import '../../model/productModel.dart';
@@ -124,7 +125,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                           child: CircleAvatar(
                             radius: 53,
                             backgroundImage: NetworkImage(
-                                'http://${AuthClient.ip}/${(path.images!.isEmpty ? 'images/default.png' : path.images?[0]) ?? 'images/default.png'}'),
+                                Constants.addPathToBaseUrl((path.images!.isEmpty ? 'images/default.png' : path.images?[0]) ?? 'images/default.png').toString(),
+                            ),
                           )),
                     ),
                     SizedBox(width: 15),
@@ -553,7 +555,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                               image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image: NetworkImage(
-                                      'http://${AuthClient.ip}/${path.images![index]}'))),
+                                      Constants.addPartToBaseUrl(path.images![index]),
                         ),
                       );
                     },

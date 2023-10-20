@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:upai_app/constants/constants.dart';
 
 import '../auth/server/service.dart';
 
@@ -43,7 +44,7 @@ class _FullScreenAlbumState extends State<FullScreenAlbum> {
 
               disableGestures: false,
               imageProvider:
-              NetworkImage('http://${AuthClient.ip}/${widget.images[index]}')
+              NetworkImage(Constants.addPartToBaseUrl(widget.images[index]))
             ),
           );
         },
