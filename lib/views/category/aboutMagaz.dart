@@ -551,11 +551,14 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                         child: Container(
                           width: 146,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                      Constants.addPartToBaseUrl(path.images![index]),
+                            borderRadius: BorderRadius.circular(10),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                Constants.addPartToBaseUrl(path.images![index]),
+                              ),
+                            ),
+                          ),
                         ),
                       );
                     },

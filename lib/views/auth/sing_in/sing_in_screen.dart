@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:upai_app/constants/constants.dart';
 import 'package:upai_app/views/auth/sing_up/sing_up_screen.dart';
 import 'package:upai_app/views/home/home_screen.dart';
 
@@ -22,7 +23,9 @@ class _SingInScreenState extends State<SingInScreen> {
   TextEditingController email =
       TextEditingController(text: "first@example.com");
   TextEditingController password = TextEditingController(text: "password");
-  TextEditingController ip = TextEditingController(text: "192.168.1.104");
+  TextEditingController ip = TextEditingController(text: "localhost");
+  TextEditingController port = TextEditingController(text: "80");
+  TextEditingController scheme = TextEditingController(text: "http");
   bool showPassword = false;
   bool circular = false;
 
@@ -85,6 +88,78 @@ class _SingInScreenState extends State<SingInScreen> {
             color: Color(0xFF225196).withOpacity(0.5),
           ),
           hintText: 'IP adress',
+          border: InputBorder.none,
+          prefixIcon: Padding(
+              padding: const EdgeInsets.only(
+                  left: 18, top: 11, right: 13, bottom: 12),
+              child: Icon(
+                Icons.settings,
+                color: Color(0xFF225196),
+                size: 19,
+              )),
+        ),
+      ),
+    );
+  }
+
+  portField() {
+    return Container(
+      width: 300,
+      height: 55,
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: 1,
+          color: Color(0xFF225196),
+        ),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: TextField(
+        controller: port,
+        style: TextStyle(
+          color: Color(0xFF225196),
+          fontSize: 16,
+        ),
+        decoration: InputDecoration(
+          hintStyle: TextStyle(
+            color: Color(0xFF225196).withOpacity(0.5),
+          ),
+          hintText: 'Port number',
+          border: InputBorder.none,
+          prefixIcon: Padding(
+              padding: const EdgeInsets.only(
+                  left: 18, top: 11, right: 13, bottom: 12),
+              child: Icon(
+                Icons.settings,
+                color: Color(0xFF225196),
+                size: 19,
+              )),
+        ),
+      ),
+    );
+  }
+
+  schemeField() {
+    return Container(
+      width: 300,
+      height: 55,
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: 1,
+          color: Color(0xFF225196),
+        ),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: TextField(
+        controller: scheme,
+        style: TextStyle(
+          color: Color(0xFF225196),
+          fontSize: 16,
+        ),
+        decoration: InputDecoration(
+          hintStyle: TextStyle(
+            color: Color(0xFF225196).withOpacity(0.5),
+          ),
+          hintText: 'Port number',
           border: InputBorder.none,
           prefixIcon: Padding(
               padding: const EdgeInsets.only(
@@ -257,9 +332,17 @@ class _SingInScreenState extends State<SingInScreen> {
               SizedBox(
                 height: 20,
               ),
+              portField(),
+              SizedBox(
+                height: 20,
+              ),
+              schemeField(),
               InkWell(
                 onTap: () async {
                   AuthClient.ip = ip.text;
+                  Constants.host = ip.text;
+                  Constants.port = int.parse(port.text);
+                  Constants.scheme = scheme.text;
                   circular = true;
                   setState(() {});
                   String ans =
