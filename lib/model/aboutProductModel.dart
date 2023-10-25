@@ -1,4 +1,7 @@
+import 'package:upai_app/model/auction/auction_detail_model.dart';
+import 'package:upai_app/model/auction/auction_state.dart';
 import 'package:upai_app/model/productModel.dart';
+
 
 class AboutProductModel {
   bool? isFavorite;
@@ -13,6 +16,8 @@ class AboutProductModel {
   CollectiveInfo? collectiveInfo;
   bool? isSetCollective;
   late bool isSeller;
+  late AuctionState auctionState;
+  late AuctionDetailModel? auctionDetail;
 
   AboutProductModel({
     this.isFavorite,
@@ -26,7 +31,9 @@ class AboutProductModel {
     this.images,
     this.collectiveInfo,
     this.isSetCollective,
+    required this.auctionDetail,
     required this.isSeller,
+    required AuctionState auctionState,
   });
 
   AboutProductModel.fromJson(Map<String, dynamic> jsonBody) {
@@ -43,6 +50,8 @@ class AboutProductModel {
     collectiveInfo = json['collectiveInfo'] == null ? null : CollectiveInfo.fromJson(json['collectiveInfo']);
     isSetCollective = json['isSetCollective'];
     isSeller = json['isSeller'];
+    auctionState = AuctionState.values[json['auctionState']];
+    auctionDetail = json['auctionDetail'] == null ? null : AuctionDetailModel.fromJson(json['auctionDetail']);
   }
 
   Map<String, dynamic> toJson() {

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upai_app/views/auth/sing_in/sing_in_screen.dart';
 import 'package:upai_app/views/home/home_screen.dart';
+
+import '../../provider/selectCatProvider.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -13,8 +17,20 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 3), () {
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => SingInScreen()));
+      SharedPreferences.getInstance().then((prefs) {
+        var email = prefs.getString('email');
+        if(email != null){
+          Provider.of<SelectCatProvider>(context, listen: false)
+              .setEmail(email);
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => Home()));
+        }
+        else {
+          Navigator.of(context)
+              .pushReplacement(MaterialPageRoute(builder: (_) => SingInScreen()));
+        }
+      });
+
     });
   }
   @override
