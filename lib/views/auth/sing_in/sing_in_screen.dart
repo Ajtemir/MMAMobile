@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upai_app/constants/constants.dart';
 import 'package:upai_app/views/auth/sing_up/sing_up_screen.dart';
 import 'package:upai_app/views/home/home_screen.dart';
@@ -24,7 +25,7 @@ class _SingInScreenState extends State<SingInScreen> {
       TextEditingController(text: "first@example.com");
   TextEditingController password = TextEditingController(text: "password");
   TextEditingController ip = TextEditingController(text: "localhost");
-  TextEditingController port = TextEditingController(text: "80");
+  TextEditingController port = TextEditingController(text: "8080");
   TextEditingController scheme = TextEditingController(text: "http");
   bool showPassword = false;
   bool circular = false;
@@ -351,6 +352,8 @@ class _SingInScreenState extends State<SingInScreen> {
                     circular = false;
                     setState(() {});
                     showToast('Вход выполнен!');
+                    var prefs = await SharedPreferences.getInstance();
+                    prefs.setString('email', email.text);
                     Provider.of<SelectCatProvider>(context, listen: false)
                         .setEmail(email.text);
                     Navigator.of(context).pushReplacement(
