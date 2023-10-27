@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:upai_app/DTOs/make_collective_post.dart';
 import 'package:upai_app/DTOs/submit_collective_argument.dart';
+import 'package:upai_app/model/auction/auction_widget.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 
 import '../../DTOs/unmake_collective_product.dart';
@@ -599,6 +600,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                     ),
                   ),
                 SizedBox(height: 100),
+                AuctionWidget(state: productInfo.auctionState, auctionDetail: productInfo.auctionDetail)
               ],
             );
           } else if (snapshot.hasError) {
