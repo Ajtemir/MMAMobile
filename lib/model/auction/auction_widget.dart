@@ -6,12 +6,12 @@ import 'states/buyer_apply_widget.dart';
 
 class AuctionWidget extends StatefulWidget {
   final AuctionState state;
-  final AuctionDetailModel auctionDetail;
+  final AuctionDetailModel? auctionDetail;
   const AuctionWidget({Key? key, required this.state, required this.auctionDetail}) : super(key: key);
 
   @override
   State<AuctionWidget> createState(){
-    return BuyerApplyWidget(auctionDetail);
+    return BuyerApplyWidget(auctionDetail!);
     switch(state){
       case AuctionState.buyerApply:
 
