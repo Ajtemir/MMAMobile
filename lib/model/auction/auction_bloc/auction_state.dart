@@ -14,20 +14,16 @@ abstract class BaseDetailAuctionState extends BaseAuctionState{
   List<Object?> get props => [detail];
 }
 
-class SellerProductNotAuctioned extends BaseDetailAuctionState {
-  SellerProductNotAuctioned(AuctionDetailModel detail) : super(detail);
+class SellerProductNotAuctioned extends BaseAuctionState {
 }
 
-class SellerProductAuctioned extends BaseDetailAuctionState {
-  SellerProductAuctioned(AuctionDetailModel detail) : super(detail);
+class SellerProductAuctioned extends BaseAuctionState {
 }
 
-class BuyerAuctionApplied extends BaseDetailAuctionState {
-  BuyerAuctionApplied(AuctionDetailModel detail) : super(detail);
+class BuyerAuctionApplied extends BaseAuctionState {
 }
 
-class BuyerAuctionNotApplied extends BaseDetailAuctionState {
-  BuyerAuctionNotApplied(AuctionDetailModel detail) : super(detail);
+class BuyerAuctionNotApplied extends BaseAuctionState {
 }
 
 class BuyerProductNotAuctioned extends BaseAuctionState {}
