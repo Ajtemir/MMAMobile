@@ -79,7 +79,6 @@ class _AboutMagazState extends State<AboutMagaz> {
 
   @override
   Widget build(BuildContext context) {
-    // AuctionBloc _bloc = BlocProvider.of<AuctionBloc>(context);
     String aboutUs =
         '''Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ''';
@@ -102,8 +101,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
               isSeller = path.isSeller;
               isMadeCollectiveOrDefaultNotSeller =
                   isSeller ? path.collectiveInfo != null : null;
-              BlocProvider.of<AuctionBloc>(context, listen: false)
-                .add(InitialRenderingAuctionEvent(path.auctionDetail!));
+              AuctionBloc _bloc = BlocProvider.of<AuctionBloc>(context);
+              // BlocProvider.of<AuctionBloc>(context, listen: false)
+              _bloc.add(InitialRenderingAuctionEvent(path.auctionDetail!));
               return ListView(
                 padding: EdgeInsets.symmetric(horizontal: 14),
                 children: [
@@ -447,78 +447,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                   ),
                                 ),
                               ),
-                              // InkWell(
-                              //   onTap: () async {
-                              //     try {
-                              //       if (isSetCollective!) {
-                              //         await AuthClient().removeCollective(
-                              //             path.id!, widget.email);
-                              //       } else {
-                              //         await AuthClient()
-                              //             .addCollective(path.id!, widget.email);
-                              //       }
-                              //       setState(() {});
-                              //     } on Exception catch (err) {
-                              //       print(err);
-                              //     }
-                              //   },
-                              //   child: Ink(
-                              //     height: 45,
-                              //     decoration: BoxDecoration(
-                              //       borderRadius: BorderRadius.circular(10),
-                              //       color: Color(0xFFFF6B00),
-                              //     ),
-                              //     child: Row(
-                              //       children: [
-                              //         Flexible(
-                              //             flex: 1,
-                              //             child: isSetCollective!
-                              //                 ? Icon(
-                              //                     Icons.arrow_downward_outlined,
-                              //                     color: Colors.white,
-                              //                   )
-                              //                 : Icon(
-                              //                     Icons.arrow_upward_outlined,
-                              //                     color: Colors.white,
-                              //                   )),
-                              //         Flexible(
-                              //           flex: 3,
-                              //           child: Text(
-                              //             isSetCollective!
-                              //                 ? 'Убрать'
-                              //                 : 'Добавить',
-                              //             style: TextStyle(
-                              //                 color: Colors.white, fontSize: 15),
-                              //           ),
-                              //         ),
-                              //         Flexible(
-                              //           flex: 3,
-                              //           child: Text(
-                              //             '${path.collectiveInfo!.currentBuyerCount} / ${path.collectiveInfo!.minBuyerCount}',
-                              //             style: const TextStyle(
-                              //                 color: Colors.white, fontSize: 15),
-                              //           ),
-                              //         ),
-                              //         Flexible(
-                              //           flex: 3,
-                              //           child: Text(
-                              //             '${path.collectiveInfo!.collectivePrice} сом',
-                              //             style: const TextStyle(
-                              //                 color: Colors.white, fontSize: 15),
-                              //           ),
-                              //         ),
-                              //         Flexible(
-                              //           flex: 3,
-                              //           child: Text(
-                              //             'Конец ${path.collectiveInfo!.endDate}',
-                              //             style: const TextStyle(
-                              //                 color: Colors.white, fontSize: 15),
-                              //           ),
-                              //         ),
-                              //       ],
-                              //     ),
-                              //   ),
-                              // ),
+
                             ],
                           ),
                         ),
@@ -616,8 +545,18 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                       if(state is AuctionLoadingState){
                         return const Text("loading");
                       }else if(state is AuctionInitialState){
-                        return state.build();
-                      }else{
+                          return Column(
+                            children: [
+                              Text(state.detail.startDate.toString()),
+                              Text(state.detail.endDate.toString()),
+                              Text(state.detail.currentMaxPrice.toString()),
+                              Text(state.detail.startPrice.toString()),
+                              FloatingActionButton(onPressed: (){_bloc.add(AuctionMadeEvent(path.id!,productInfo.sellerEmail! ));},child: Text("Make"),)
+                            ],
+                          );
+
+                      }
+                      else{
                         return Text("Empty");
                       }
                     },
