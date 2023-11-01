@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:upai_app/model/auction/auction_detail_model.dart';
 
 abstract class BaseAuctionEvent extends Equatable {
   const BaseAuctionEvent();
@@ -12,6 +13,12 @@ abstract class BaseMakingAuctionEvent extends BaseAuctionEvent {
   const BaseMakingAuctionEvent(this.productId, this.email);
   @override
   List<Object?> get props => [productId, email];
+}
+
+class InitialRenderingAuctionEvent extends BaseAuctionEvent {
+  final AuctionDetailModel detail;
+
+  const InitialRenderingAuctionEvent(this.detail);
 }
 
 class AuctionMadeEvent extends BaseMakingAuctionEvent {

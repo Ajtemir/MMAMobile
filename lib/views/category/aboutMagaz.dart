@@ -86,7 +86,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
     return Scaffold(
       appBar: AllAppBar2(),
       body: BlocProvider(
-        create: (context) => AuctionBloc(),
+        create: (context) => AuctionBloc(AuctionLoadingState()),
         child: FutureBuilder<AboutProductModel>(
           future: fetchProductData(widget.productId, widget.email),
           builder: (context, snapshot) {
@@ -102,6 +102,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
               isSeller = path.isSeller;
               isMadeCollectiveOrDefaultNotSeller =
                   isSeller ? path.collectiveInfo != null : null;
+              BlocProvider.of<AuctionBloc>(context, listen: false)
+                .add(InitialRenderingAuctionEvent(path.auctionDetail!));
               return ListView(
                 padding: EdgeInsets.symmetric(horizontal: 14),
                 children: [
@@ -610,24 +612,13 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                   SizedBox(height: 100),
                   // AuctionWidget(state: productInfo.auctionState, auctionDetail: productInfo.auctionDetail),
                   BlocBuilder<AuctionBloc, BaseAuctionState>(
-
                     builder: (context, state) {
-                      // if(state is AuctionLoading){
-                      //   return const Text("loading");
-                      // }
-                      print('\n\n\n');
-                      print(state.runtimeType.toString());
-                      switch (state.runtimeType) {
-                        case SellerProductNotAuctioned:
-                          return const Text("-1");
-                        case SellerProductAuctioned:
-                          return const Text("+1");
-                        case AuctionError:
-                          return const Text("error");
-                        case AuctionLoading:
-                          return const Text("loading");
-                        default:
-                          return const Text("default");
+                      if(state is AuctionLoadingState){
+                        return const Text("loading");
+                      }else if(state is AuctionInitialState){
+                        return state.build();
+                      }else{
+                        return Text("Empty");
                       }
                     },
                   )

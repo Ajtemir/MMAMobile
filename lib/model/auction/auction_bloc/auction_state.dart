@@ -17,8 +17,8 @@ abstract class BaseDetailAuctionState extends BaseAuctionState{
   List<Object?> get props => [detail];
 }
 
-class AuctionInitial extends BaseDetailAuctionState {
-  AuctionInitial(AuctionDetailModel detail) : super(detail);
+class AuctionInitialState extends BaseDetailAuctionState {
+  AuctionInitialState(AuctionDetailModel detail) : super(detail);
 
   @override
   Widget build() {
@@ -34,20 +34,20 @@ class AuctionInitial extends BaseDetailAuctionState {
   }
 
 }
-class SellerProductNotAuctioned extends BaseAuctionState {
+class SellerProductNotAuctionedState extends BaseAuctionState {
 }
 
-class SellerProductAuctioned extends BaseAuctionState {
+class SellerProductAuctionedState extends BaseAuctionState {
 }
 
-class BuyerAuctionApplied extends BaseAuctionState {
+class BuyerAuctionAppliedState extends BaseAuctionState {
 }
 
-class BuyerAuctionNotApplied extends BaseAuctionState {
+class BuyerAuctionNotAppliedState extends BaseAuctionState {
 }
 
-class BuyerProductNotAuctioned extends BaseAuctionState {}
+class BuyerProductNotAuctionedState extends BaseAuctionState {}
 
-class AuctionLoading extends BaseAuctionState {}
+class AuctionLoadingState extends BaseAuctionState {}
 
-class AuctionError extends BaseAuctionState {}
+class AuctionErrorState extends BaseAuctionState {}
