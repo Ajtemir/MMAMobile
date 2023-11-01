@@ -51,7 +51,7 @@ class AboutProductModel {
     isSetCollective = json['isSetCollective'];
     isSeller = json['isSeller'];
     auctionState = AuctionState.values[json['auctionState']];
-    auctionDetail = AuctionDetailModel.fromJson(json['auctionDetail']);
+    auctionDetail = json['auctionDetail'] == null ? null : AuctionDetailModel.fromJson(json['auctionDetail']);
   }
 
   Map<String, dynamic> toJson() {

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:upai_app/DTOs/make_collective_post.dart';
 import 'package:upai_app/DTOs/submit_collective_argument.dart';
+import 'package:upai_app/model/auction/auction_bloc/Events/base_auction_event.dart';
+import 'package:upai_app/model/auction/auction_bloc/auction_bloc.dart';
+import 'package:upai_app/model/auction/auction_bloc/auction_state.dart';
+import 'package:upai_app/model/auction/auction_state.dart';
 import 'package:upai_app/model/auction/auction_widget.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 
@@ -74,6 +79,7 @@ class _AboutMagazState extends State<AboutMagaz> {
 
   @override
   Widget build(BuildContext context) {
+    // AuctionBloc _bloc = BlocProvider.of<AuctionBloc>(context);
     String aboutUs =
         '''Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ''';
@@ -600,7 +606,30 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                     ),
                   ),
                 SizedBox(height: 100),
-                AuctionWidget(state: productInfo.auctionState, auctionDetail: productInfo.auctionDetail)
+                // AuctionWidget(state: productInfo.auctionState, auctionDetail: productInfo.auctionDetail),
+                // BlocProvider(
+                //   create: (context) => AuctionBloc(),
+                //   child: BlocBuilder<AuctionBloc, BaseAuctionState>(
+                //
+                //     builder: (context, state) {
+                //       if(state is AuctionLoading){
+                //         return const Text("loading");
+                //       }
+                //       switch (state.runtimeType) {
+                //         case SellerProductNotAuctioned:
+                //           return const Text("-1");
+                //         case SellerProductAuctioned:
+                //           return const Text("+1");
+                //         case AuctionError:
+                //           return const Text("error");
+                //         case AuctionLoading:
+                //           return const Text("loading");
+                //         default:
+                //           return const Text("default");
+                //       }
+                //     },
+                //   ),
+                // )
               ],
             );
           } else if (snapshot.hasError) {
