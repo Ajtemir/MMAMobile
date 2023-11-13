@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:upai_app/model/auction/auction_detail_model.dart';
 
+import '../auction_state.dart';
+
 abstract class BaseAuctionState extends Equatable{
   @override
   List<Object?> get props => [];
@@ -17,7 +19,8 @@ abstract class BaseDetailAuctionState extends BaseAuctionState{
 }
 
 class AuctionInitialState extends BaseDetailAuctionState {
-  AuctionInitialState(AuctionDetailModel detail) : super(detail);
+  final AuctionState state;
+  AuctionInitialState(AuctionDetailModel detail, this.state) : super(detail);
 
 
 
@@ -26,9 +29,11 @@ class SellerProductNotAuctionedState extends BaseAuctionState {
 }
 
 class SellerProductAuctionedState extends BaseAuctionState {
+
 }
 
-class BuyerAuctionAppliedState extends BaseAuctionState {
+class BuyerAuctionAppliedState extends BaseDetailAuctionState {
+  BuyerAuctionAppliedState(AuctionDetailModel detail) : super(detail);
 }
 
 class BuyerAuctionNotAppliedState extends BaseAuctionState {

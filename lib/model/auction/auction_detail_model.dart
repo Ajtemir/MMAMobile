@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class AuctionDetailModel{
     final DateTime startDate;
     final DateTime endDate;
@@ -5,6 +7,12 @@ class AuctionDetailModel{
     late final double? currentMaxPrice;
 
   AuctionDetailModel(this.startDate, this.endDate, this.startPrice, this.currentMaxPrice);
+
+  List<Widget> get widgets => [
+    Text(startDate.toString()),
+    Text(endDate.toString()),
+    Text(currentMaxPrice.toString()),
+    Text(startPrice.toString())];
 
   AuctionDetailModel.fromJson(Map<String, dynamic> json) :
       endDate =DateTime.parse(json['endDate']),

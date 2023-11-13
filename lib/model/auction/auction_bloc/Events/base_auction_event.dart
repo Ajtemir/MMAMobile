@@ -1,10 +1,17 @@
 import 'package:equatable/equatable.dart';
 import 'package:upai_app/model/auction/auction_detail_model.dart';
+import 'package:upai_app/model/auction/auction_state.dart';
 
 abstract class BaseAuctionEvent extends Equatable {
   const BaseAuctionEvent();
   @override
   List<Object?> get props => [];
+}
+
+abstract class BaseDetailAuctionEvent extends BaseAuctionEvent {
+  final AuctionDetailModel detail;
+
+  const BaseDetailAuctionEvent(this.detail);
 }
 
 abstract class BaseMakingAuctionEvent extends BaseAuctionEvent {
@@ -17,8 +24,9 @@ abstract class BaseMakingAuctionEvent extends BaseAuctionEvent {
 
 class InitialRenderingAuctionEvent extends BaseAuctionEvent {
   final AuctionDetailModel detail;
+  final AuctionState state;
 
-  const InitialRenderingAuctionEvent(this.detail);
+  const InitialRenderingAuctionEvent(this.detail, this.state);
 }
 
 class AuctionMadeEvent extends BaseMakingAuctionEvent {
@@ -27,5 +35,7 @@ class AuctionMadeEvent extends BaseMakingAuctionEvent {
 class AuctionUnmadeEvent extends BaseMakingAuctionEvent {
   const AuctionUnmadeEvent(int productId, String email) : super(productId, email);
 }
-class AuctionAppliedEvent extends BaseAuctionEvent {}
+class AuctionAppliedEvent extends BaseDetailAuctionEvent {
+  const AuctionAppliedEvent(AuctionDetailModel detail) : super(detail);
+}
 class AuctionDenyEvent extends BaseAuctionEvent {}

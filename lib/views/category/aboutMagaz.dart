@@ -103,7 +103,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                   isSeller ? path.collectiveInfo != null : null;
               AuctionBloc _bloc = BlocProvider.of<AuctionBloc>(context);
               // BlocProvider.of<AuctionBloc>(context, listen: false)
-              _bloc.add(InitialRenderingAuctionEvent(path.auctionDetail!));
+              _bloc.add(InitialRenderingAuctionEvent(path.auctionDetail!, path.auctionState));
               return ListView(
                 padding: EdgeInsets.symmetric(horizontal: 14),
                 children: [
@@ -544,17 +544,38 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                     builder: (context, state) {
                       if(state is AuctionLoadingState){
                         return const Text("loading");
-                      }else if(state is AuctionInitialState){
-                          return Column(
-                            children: [
-                              Text(state.detail.startDate.toString()),
-                              Text(state.detail.endDate.toString()),
-                              Text(state.detail.currentMaxPrice.toString()),
-                              Text(state.detail.startPrice.toString()),
-                              FloatingActionButton(onPressed: (){_bloc.add(AuctionMadeEvent(path.id!,productInfo.sellerEmail! ));},child: Text("Make"),)
-                            ],
-                          );
-
+                      }
+                      // else if(state is AuctionInitialState){
+                      //     return Column(
+                      //       children: [
+                      //         Text(state.detail.startDate.toString()),
+                      //         Text(state.detail.endDate.toString()),
+                      //         Text(state.detail.currentMaxPrice.toString()),
+                      //         Text(state.detail.startPrice.toString()),
+                      //         FloatingActionButton(onPressed: (){_bloc.add(AuctionMadeEvent(path.id!,productInfo.sellerEmail! ));},child: Text("Make"),)
+                      //       ],
+                      //     );
+                      //
+                      // }
+                      else if(state is BuyerAuctionAppliedState){
+                        return Column(
+                          children: [
+                            ...state.detail.widgets,
+                            FloatingActionButton(onPressed: (){_bloc.add(AuctionMadeEvent(path.id!,productInfo.sellerEmail! ));},child: Text("Make"),)
+                          ],
+                        );
+                      }
+                      else if(state is BuyerAuctionNotAppliedState){
+                        return Text(state.toString());
+                      }
+                      else if(state is BuyerAuctionNotAppliedState){
+                        return Text(state.toString());
+                      }
+                      else if(state is SellerProductAuctionedState){
+                        return Text(state.toString());
+                      }
+                      else if(state is SellerProductNotAuctionedState){
+                        return Text(state.toString());
                       }
                       else{
                         return Text("Empty");
