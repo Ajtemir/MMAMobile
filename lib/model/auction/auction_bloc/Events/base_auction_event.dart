@@ -22,15 +22,21 @@ abstract class BaseMakingAuctionEvent extends BaseAuctionEvent {
   List<Object?> get props => [productId, email];
 }
 
-class InitialRenderingAuctionEvent extends BaseAuctionEvent {
+abstract class BaseDetailMakingAuctionEvent extends BaseMakingAuctionEvent {
   final AuctionDetailModel detail;
+  const BaseDetailMakingAuctionEvent(int productId, String email, this.detail) : super(productId, email);
+
+}
+
+class InitialRenderingAuctionEvent extends BaseAuctionEvent {
+  final AuctionDetailModel? detail;
   final AuctionState state;
 
   const InitialRenderingAuctionEvent(this.detail, this.state);
 }
 
-class AuctionMadeEvent extends BaseMakingAuctionEvent {
-  const AuctionMadeEvent(int productId, String email) : super(productId, email);
+class AuctionMadeEvent extends BaseDetailAuctionEvent {
+  const AuctionMadeEvent(AuctionDetailModel detail) : super(detail);
 }
 class AuctionUnmadeEvent extends BaseMakingAuctionEvent {
   const AuctionUnmadeEvent(int productId, String email) : super(productId, email);

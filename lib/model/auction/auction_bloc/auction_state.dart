@@ -28,7 +28,8 @@ class AuctionInitialState extends BaseDetailAuctionState {
 class SellerProductNotAuctionedState extends BaseAuctionState {
 }
 
-class SellerProductAuctionedState extends BaseAuctionState {
+class SellerProductAuctionedState extends BaseDetailAuctionState {
+  SellerProductAuctionedState(AuctionDetailModel detail) : super(detail);
 
 }
 

@@ -6,7 +6,7 @@ class AuctionDetailModel{
     final double startPrice;
     late final double? currentMaxPrice;
 
-  AuctionDetailModel(this.startDate, this.endDate, this.startPrice, this.currentMaxPrice);
+  AuctionDetailModel(this.startDate, this.endDate, this.startPrice, {this.currentMaxPrice});
 
   List<Widget> get widgets => [
     Text(startDate.toString()),

@@ -5,17 +5,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../auction_state.dart';
 
 class AuctionBloc extends Bloc<BaseAuctionEvent, BaseAuctionState> {
-  AuctionBloc(initialState) : super(initialState) {
+  final int _productId;
+  final String _email;
+  AuctionBloc(initialState, this._email, this._productId) : super(initialState) {
     on<InitialRenderingAuctionEvent>((event, emit){
       switch(event.state){
         case AuctionState.sellerMadeAuction:
-          emit(SellerProductAuctionedState());
+          emit(SellerProductAuctionedState(event.detail!));
           break;
         case AuctionState.sellerUnmadeAuction:
           emit(SellerProductNotAuctionedState());
           break;
         case AuctionState.buyerApply:
-          emit(BuyerAuctionAppliedState(event.detail));
+          emit(BuyerAuctionAppliedState(event.detail!));
           break;
         case AuctionState.buyerUnapply:
           emit(BuyerAuctionNotAppliedState());
@@ -29,8 +31,8 @@ class AuctionBloc extends Bloc<BaseAuctionEvent, BaseAuctionState> {
     on<AuctionMadeEvent>((event, emit) async {
       try {
         emit(AuctionLoadingState());
-        await AuctionApi.makeAuctioned(event.productId, event.email);
-        emit(SellerProductAuctionedState());
+        await AuctionApi.makeAuctioned(_productId, _email);
+        emit(SellerProductAuctionedState(event.detail));
       }
       catch (e){
         emit(AuctionErrorState());

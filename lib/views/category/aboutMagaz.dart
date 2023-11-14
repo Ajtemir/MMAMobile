@@ -10,6 +10,7 @@ import 'package:upai_app/DTOs/submit_collective_argument.dart';
 import 'package:upai_app/model/auction/auction_bloc/Events/base_auction_event.dart';
 import 'package:upai_app/model/auction/auction_bloc/auction_bloc.dart';
 import 'package:upai_app/model/auction/auction_bloc/auction_state.dart';
+import 'package:upai_app/model/auction/auction_detail_model.dart';
 import 'package:upai_app/model/auction/auction_state.dart';
 import 'package:upai_app/model/auction/auction_widget.dart';
 import 'package:upai_app/widgets/appBar2.dart';
@@ -85,7 +86,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
     return Scaffold(
       appBar: AllAppBar2(),
       body: BlocProvider(
-        create: (context) => AuctionBloc(AuctionLoadingState()),
+        create: (context) => AuctionBloc(AuctionLoadingState(), widget.email, int.parse(widget.productId)),
         child: FutureBuilder<AboutProductModel>(
           future: fetchProductData(widget.productId, widget.email),
           builder: (context, snapshot) {
@@ -103,7 +104,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                   isSeller ? path.collectiveInfo != null : null;
               AuctionBloc _bloc = BlocProvider.of<AuctionBloc>(context);
               // BlocProvider.of<AuctionBloc>(context, listen: false)
-              _bloc.add(InitialRenderingAuctionEvent(path.auctionDetail!, path.auctionState));
+              _bloc.add(InitialRenderingAuctionEvent(path.auctionDetail, path.auctionState));
               return ListView(
                 padding: EdgeInsets.symmetric(horizontal: 14),
                 children: [
@@ -561,7 +562,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                         return Column(
                           children: [
                             ...state.detail.widgets,
-                            FloatingActionButton(onPressed: (){_bloc.add(AuctionMadeEvent(path.id!,productInfo.sellerEmail! ));},child: Text("Make"),)
+                            // FloatingActionButton(onPressed: (){_bloc.add(AuctionMadeEvent(path.id!,productInfo.sellerEmail!, state.detail));},child: Text("Make"),)
                           ],
                         );
                       }
@@ -572,10 +573,29 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                         return Text(state.toString());
                       }
                       else if(state is SellerProductAuctionedState){
-                        return Text(state.toString());
+                        return Column(children: [
+                          Text(state.toString()),
+                          ...state.detail.widgets,
+                          FloatingActionButton(onPressed: (){_bloc.add(AuctionUnmadeEvent(path.id!,productInfo.sellerEmail!));},child: Text("Make"),),
+                        ],);
                       }
                       else if(state is SellerProductNotAuctionedState){
-                        return Text(state.toString());
+                        return Column(children: [
+                          Text(state.toString()),
+                          FloatingActionButton(onPressed: (){
+                            showMaterialModalBottomSheet(
+                              context: context,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                              ),
+                              builder: (contextInner) => SingleChildScrollView(
+                                controller: ModalScrollController.of(contextInner),
+                                child: MakeAuctionedForm().getWidget(context),
+                              ),
+                            );
+                          },
+                            child: Text("Запустить аукцион"),),
+                        ],);
                       }
                       else{
                         return Text("Empty");
@@ -960,4 +980,141 @@ class _FormBottomModalState extends State<FormBottomModal> {
       ),
     );
   }
+}
+
+class MakeAuctionedForm {
+    Widget getWidget(BuildContext context){
+      final _formKey = GlobalKey<FormBuilderState>();
+
+      return Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: FormBuilder(
+          key: _formKey,
+          child: Column(
+            children: [
+              Text(
+                'Выставить обьявление на групповую скидку',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              FormBuilderDateTimePicker(
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please enter start Date';
+                  }
+                  return null;
+                },
+                currentDate: DateTime.now(),
+                inputType: InputType.both,
+                format: DateFormat("yyyy-MM-dd hh:mm"),
+                initialDate: DateTime.now(),
+                decoration: InputDecoration(
+                  labelText: "Дата начала",
+                  border: OutlineInputBorder(),
+                ),
+                name: 'startDate',
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              FormBuilderDateTimePicker(
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please enter end Date';
+                  }
+                  return null;
+                },
+                inputType: InputType.both,
+                format: DateFormat("yyyy-MM-dd hh:mm"),
+                initialDate: DateTime.now(),
+                decoration: InputDecoration(
+                  labelText: "Дата конца",
+                  border: OutlineInputBorder(),
+                ),
+                name: 'endDate',
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              FormBuilderTextField(
+                name: 'startPrice',
+                enabled: true,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                    labelText: 'Коллективная цена', border: OutlineInputBorder()),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              FormBuilderTextField(
+                validator: (value) {
+                  if (value == null || int.parse(value) < 2) {
+                    return 'Please enter min 2';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                    labelText: "Минимальное количество покупателей",
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(2)))),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                name: 'minBuyerCount',
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              MaterialButton(
+                color: AppColors.red1,
+                onPressed: () async {
+                  if (_formKey.currentState!.saveAndValidate()) {
+                    Map<String, dynamic> keyValuePairs = _formKey.currentState!.value;
+                    print(keyValuePairs);
+                    BlocProvider.of<AuctionBloc>(context).add(AuctionMadeEvent(AuctionDetailModel(
+                        keyValuePairs['startDate'],
+                        keyValuePairs['endDate'],
+                      double.parse(keyValuePairs['startPrice']),
+                    )));
+                    // if (keyValuePairs != null) {
+                    //   var data = MakingCollectiveProduct(
+                    //     startDate: keyValuePairs['startDate'],
+                    //     endDate: keyValuePairs['endDate'],
+                    //     collectivePrice:
+                    //     double.parse(keyValuePairs['collectivePrice']),
+                    //     minBuyerCount: int.parse(keyValuePairs['minBuyerCount']),
+                    //     email: _dto.sellerEmail,
+                    //     productId: _dto.productId,
+                    //   );
+                    //   try {
+                    //     await AuthClient().makeCollective(data);
+                    //     Navigator.pop(context);
+                    //
+                    //     _dto.update();
+                    //   } catch (err) {
+                    //     print(err.toString());
+                    //   }
+                    // }
+                  }
+                },
+                child: const Text(
+                  'Опубликовать скидку',
+                  style: TextStyle(
+                    color: AppColors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
 }
