@@ -20,7 +20,7 @@ class AuctionBloc extends Bloc<BaseAuctionEvent, BaseAuctionState> {
           emit(BuyerAuctionAppliedState(event.detail!));
           break;
         case AuctionState.buyerUnapply:
-          emit(BuyerAuctionNotAppliedState());
+          emit(BuyerAuctionNotAppliedState(event.detail!));
           break;
         case AuctionState.notMadeAuctioned:
           emit(BuyerProductNotAuctionedState());
@@ -31,11 +31,11 @@ class AuctionBloc extends Bloc<BaseAuctionEvent, BaseAuctionState> {
     on<AuctionMadeEvent>((event, emit) async {
       try {
         emit(AuctionLoadingState());
-        await AuctionApi.makeAuctioned(_productId, _email);
+        await AuctionApi.makeAuctioned(_productId, _email, event.detail);
         emit(SellerProductAuctionedState(event.detail));
       }
       catch (e){
-        emit(AuctionErrorState());
+        emit(AuctionErrorState(e.toString()));
       }
     });
 
@@ -43,15 +43,25 @@ class AuctionBloc extends Bloc<BaseAuctionEvent, BaseAuctionState> {
     on<AuctionUnmadeEvent>((event, emit) async {
       try {
         emit(AuctionLoadingState());
-        await AuctionApi.unmakeAuctioned(event.productId, event.email);
+        await AuctionApi.unmakeAuctioned(_productId, _email);
         emit(SellerProductNotAuctionedState());
       }
       catch (e){
-        emit(AuctionErrorState());
+        emit(AuctionErrorState(e.toString()));
       }
     });
 
-    on<AuctionAppliedEvent>((event, emit) => emit(BuyerAuctionAppliedState(event.detail)));
+    on<AuctionAppliedEvent>((event, emit) async {
+      try {
+        emit(AuctionLoadingState());
+        await AuctionApi.applyAuctioned(_productId, _email, event.suggestedPrice);
+        var response = await AuctionApi.getAuctionDetail(_productId, _email);
+        emit(BuyerAuctionAppliedState(response.auctionDetail));
+      }
+      catch (e){
+        emit(AuctionErrorState(e.toString()));
+      }
+    });
     on<AuctionDenyEvent>((event, emit) => emit(BuyerProductNotAuctionedState()));
   }
 }

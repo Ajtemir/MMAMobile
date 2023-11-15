@@ -467,6 +467,142 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                           ],
                         ),
                   SizedBox(height: 60),
+                  BlocBuilder<AuctionBloc, BaseAuctionState>(
+                    builder: (context, state) {
+                      print(state);
+                      if(state is AuctionLoadingState){
+                        return const Text("loading");
+                      }
+                      else if(state is BuyerAuctionAppliedState){
+                        return Column(
+                          children: [
+                            ...state.detail.widgets,
+                          ],
+                        );
+                      }
+                      else if (state is BuyerAuctionNotAppliedState) {
+                        return Column(
+                          children: [
+                            _auctionDetail(state.detail),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            FormBuilderTextField(
+                              name: 'startPrice',
+                              enabled: true,
+                              keyboardType: TextInputType.number,
+                              decoration: const InputDecoration(
+                                  labelText: 'Предложенная цена', border: OutlineInputBorder()),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStatePropertyAll(AppColors.red1),
+                                  padding: const MaterialStatePropertyAll(
+                                      EdgeInsets.symmetric(vertical: 10)),
+                                ),
+                                onPressed: () {
+                                  _bloc.add(AuctionAppliedEvent(20));
+                                },
+                                child: Text(
+                                  "Подать заявку на аукцион",
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      } else if(state is BuyerProductNotAuctionedState){
+                        return const SizedBox();
+                      }
+                      else if(state is SellerProductAuctionedState){
+                        return Column(children: [
+                            _auctionDetail(state.detail),
+                            state.detail.currentMaxPrice == null
+                                ? const SizedBox()
+                                : SizedBox(
+                                    width: double.infinity,
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStatePropertyAll(true
+                                                ? AppColors.red1
+                                                : AppColors.grey),
+                                        padding: const MaterialStatePropertyAll(
+                                            EdgeInsets.symmetric(vertical: 10)),
+                                      ),
+                                      onPressed: () {},
+                                      child: Text(
+                                        "Подтвердить аукцион",
+                                      ),
+                                    ),
+                                  ),
+                            SizedBox(height: 20,),
+                            SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStatePropertyAll(
+                                     true ? AppColors.red1 : AppColors.grey),
+                                padding: const MaterialStatePropertyAll(
+                                    EdgeInsets.symmetric(vertical: 10)),
+                              ),
+                              onPressed: (){
+                                _bloc.add(AuctionUnmadeEvent());
+                              },
+                              child: Text(
+                                "Отменить аукцион",
+                              ),
+                            ),
+                          ),
+                        ],);
+                      }
+                      else if(state is AuctionErrorState){
+                        return Text(state.errorMessage);
+                      }
+                      else if (state is SellerProductNotAuctionedState) {
+                        return Column(
+                          children: [
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStatePropertyAll(AppColors.red1),
+                                  padding: const MaterialStatePropertyAll(
+                                      EdgeInsets.symmetric(vertical: 10)),
+                                ),
+                                onPressed: () {
+                                  showMaterialModalBottomSheet(
+                                    context: context,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(20)),
+                                    ),
+                                    builder: (contextInner) =>
+                                        SingleChildScrollView(
+                                      controller: ModalScrollController.of(
+                                          contextInner),
+                                      child: MakeAuctionedForm()
+                                          .getWidget(context),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  "Запустить аукцион",
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      } else{
+                        return Text("Empty");
+                      }
+                    },
+                  ),
                   Text(
                     'Галерея',
                     style: TextStyle(
@@ -541,67 +677,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                     ),
                   SizedBox(height: 100),
                   // AuctionWidget(state: productInfo.auctionState, auctionDetail: productInfo.auctionDetail),
-                  BlocBuilder<AuctionBloc, BaseAuctionState>(
-                    builder: (context, state) {
-                      if(state is AuctionLoadingState){
-                        return const Text("loading");
-                      }
-                      // else if(state is AuctionInitialState){
-                      //     return Column(
-                      //       children: [
-                      //         Text(state.detail.startDate.toString()),
-                      //         Text(state.detail.endDate.toString()),
-                      //         Text(state.detail.currentMaxPrice.toString()),
-                      //         Text(state.detail.startPrice.toString()),
-                      //         FloatingActionButton(onPressed: (){_bloc.add(AuctionMadeEvent(path.id!,productInfo.sellerEmail! ));},child: Text("Make"),)
-                      //       ],
-                      //     );
-                      //
-                      // }
-                      else if(state is BuyerAuctionAppliedState){
-                        return Column(
-                          children: [
-                            ...state.detail.widgets,
-                            // FloatingActionButton(onPressed: (){_bloc.add(AuctionMadeEvent(path.id!,productInfo.sellerEmail!, state.detail));},child: Text("Make"),)
-                          ],
-                        );
-                      }
-                      else if(state is BuyerAuctionNotAppliedState){
-                        return Text(state.toString());
-                      }
-                      else if(state is BuyerAuctionNotAppliedState){
-                        return Text(state.toString());
-                      }
-                      else if(state is SellerProductAuctionedState){
-                        return Column(children: [
-                          Text(state.toString()),
-                          ...state.detail.widgets,
-                          FloatingActionButton(onPressed: (){_bloc.add(AuctionUnmadeEvent(path.id!,productInfo.sellerEmail!));},child: Text("Make"),),
-                        ],);
-                      }
-                      else if(state is SellerProductNotAuctionedState){
-                        return Column(children: [
-                          Text(state.toString()),
-                          FloatingActionButton(onPressed: (){
-                            showMaterialModalBottomSheet(
-                              context: context,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                              ),
-                              builder: (contextInner) => SingleChildScrollView(
-                                controller: ModalScrollController.of(contextInner),
-                                child: MakeAuctionedForm().getWidget(context),
-                              ),
-                            );
-                          },
-                            child: Text("Запустить аукцион"),),
-                        ],);
-                      }
-                      else{
-                        return Text("Empty");
-                      }
-                    },
-                  )
                 ],
               );
             } else if (snapshot.hasError) {
@@ -643,60 +718,71 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
   }
 
   Widget _makingCollective(bool isMadeCollective) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60.0),
-      child: InkWell(
-        onTap: () {
-          setState(() {
-            if (isMadeCollective) {
-              AuthClient()
-                  .unmakeCollective(UnmakeCollectiveArgument(productInfo.id!))
-                  .then((value) => _productParentSetState());
-            } else {
-              showMaterialModalBottomSheet(
-                context: context,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                ),
-                builder: (context) => SingleChildScrollView(
-                  controller: ModalScrollController.of(context),
-                  child: FormBottomModal(
-                    dto: SellerEmailAndProductId(productInfo.id!,
-                        productInfo.sellerEmail!, _productParentSetState),
-                  ),
-                ),
-              );
-            }
-          });
-        },
-        child: Ink(
-          height: 45,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: AppColors.red1,
-          ),
-          child: Row(
-            children: [
-              const Expanded(
-                flex: 1,
-                child: Icon(
-                  Icons.add_card_sharp,
-                  color: AppColors.white,
-                ),
-              ),
-              Expanded(
-                flex: 3,
-                child: Text(
-                  isMadeCollective
-                      ? 'Убрать обьявление с групповой скидки'
-                      : 'Выставить обьявление на групповую скидку',
-                  style: const TextStyle(color: Colors.white, fontSize: 15),
-                ),
-              ),
-            ],
+    return Column(
+      children: [
+        Text(
+          'Коллективная покупка',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
           ),
         ),
-      ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 60.0),
+          child: InkWell(
+            onTap: () {
+              setState(() {
+                if (isMadeCollective) {
+                  AuthClient()
+                      .unmakeCollective(UnmakeCollectiveArgument(productInfo.id!))
+                      .then((value) => _productParentSetState());
+                } else {
+                  showMaterialModalBottomSheet(
+                    context: context,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                    ),
+                    builder: (context) => SingleChildScrollView(
+                      controller: ModalScrollController.of(context),
+                      child: FormBottomModal(
+                        dto: SellerEmailAndProductId(productInfo.id!,
+                            productInfo.sellerEmail!, _productParentSetState),
+                      ),
+                    ),
+                  );
+                }
+              });
+            },
+            child: Ink(
+              height: 45,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: AppColors.red1,
+              ),
+              child: Row(
+                children: [
+                  const Expanded(
+                    flex: 1,
+                    child: Icon(
+                      Icons.add_card_sharp,
+                      color: AppColors.white,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Text(
+                      isMadeCollective
+                          ? 'Убрать обьявление с групповой скидки'
+                          : 'Выставить обьявление на групповую скидку',
+                      style: const TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -833,6 +919,127 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
       );
     }
     return const SizedBox();
+  }
+
+  Widget _auctionDetail(AuctionDetailModel model){
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.transparent),
+        boxShadow: const [
+          BoxShadow(
+            color: AppColors.grey,
+            offset: Offset(12, 10),
+            blurRadius: 30,
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Icon(
+            Icons.add_business_rounded,
+            color: Colors.white,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Начало',
+                      style: styleTitleInCard,
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      dateFormat(model.startDate),
+                      style: styleSubtitleInCard,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Конец',
+                      style: styleTitleInCard,
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      dateFormat(model.endDate),
+                      style: styleSubtitleInCard,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  'Начальная цена товара:',
+                  style: styleTitleInCard,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  '${model.startPrice} сом',
+                  style: styleSubtitleInCard,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  'Нынешняя максимальная цена:',
+                  style: styleTitleInCard,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  model.currentMaxPrice == null
+                  ? "Нет покупателей"
+                  : '${model.currentMaxPrice} сом',
+                  style: styleSubtitleInCard,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+
+          // SizedBox(
+          //   width: double.infinity,
+          //   child: ElevatedButton(
+          //     style: ButtonStyle(
+          //       backgroundColor: MaterialStatePropertyAll(
+          //            true ? AppColors.red1 : AppColors.grey),
+          //       padding: const MaterialStatePropertyAll(
+          //           EdgeInsets.symmetric(vertical: 10)),
+          //     ),
+          //     onPressed: (){},
+          //     child: Text(
+          //       "Отменить аукцион",
+          //     ),
+          //   ),
+          // ),
+        ],
+      ),
+    );
   }
 }
 
@@ -993,7 +1200,7 @@ class MakeAuctionedForm {
           child: Column(
             children: [
               Text(
-                'Выставить обьявление на групповую скидку',
+                'Выставить обьявление на аукцион',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
@@ -1044,27 +1251,7 @@ class MakeAuctionedForm {
                 enabled: true,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                    labelText: 'Коллективная цена', border: OutlineInputBorder()),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              FormBuilderTextField(
-                validator: (value) {
-                  if (value == null || int.parse(value) < 2) {
-                    return 'Please enter min 2';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                    labelText: "Минимальное количество покупателей",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(2)))),
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
-                name: 'minBuyerCount',
+                    labelText: 'Стартовая цена', border: OutlineInputBorder()),
               ),
               SizedBox(
                 height: 10,
@@ -1074,31 +1261,12 @@ class MakeAuctionedForm {
                 onPressed: () async {
                   if (_formKey.currentState!.saveAndValidate()) {
                     Map<String, dynamic> keyValuePairs = _formKey.currentState!.value;
-                    print(keyValuePairs);
                     BlocProvider.of<AuctionBloc>(context).add(AuctionMadeEvent(AuctionDetailModel(
                         keyValuePairs['startDate'],
                         keyValuePairs['endDate'],
                       double.parse(keyValuePairs['startPrice']),
                     )));
-                    // if (keyValuePairs != null) {
-                    //   var data = MakingCollectiveProduct(
-                    //     startDate: keyValuePairs['startDate'],
-                    //     endDate: keyValuePairs['endDate'],
-                    //     collectivePrice:
-                    //     double.parse(keyValuePairs['collectivePrice']),
-                    //     minBuyerCount: int.parse(keyValuePairs['minBuyerCount']),
-                    //     email: _dto.sellerEmail,
-                    //     productId: _dto.productId,
-                    //   );
-                    //   try {
-                    //     await AuthClient().makeCollective(data);
-                    //     Navigator.pop(context);
-                    //
-                    //     _dto.update();
-                    //   } catch (err) {
-                    //     print(err.toString());
-                    //   }
-                    // }
+                    Navigator.pop(context);
                   }
                 },
                 child: const Text(

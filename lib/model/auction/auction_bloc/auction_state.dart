@@ -37,11 +37,16 @@ class BuyerAuctionAppliedState extends BaseDetailAuctionState {
   BuyerAuctionAppliedState(AuctionDetailModel detail) : super(detail);
 }
 
-class BuyerAuctionNotAppliedState extends BaseAuctionState {
+class BuyerAuctionNotAppliedState extends BaseDetailAuctionState {
+  BuyerAuctionNotAppliedState(AuctionDetailModel detail) : super(detail);
 }
 
 class BuyerProductNotAuctionedState extends BaseAuctionState {}
 
 class AuctionLoadingState extends BaseAuctionState {}
 
-class AuctionErrorState extends BaseAuctionState {}
+class AuctionErrorState extends BaseAuctionState {
+  final String errorMessage;
+
+  AuctionErrorState(this.errorMessage);
+}

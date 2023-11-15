@@ -38,10 +38,10 @@ class InitialRenderingAuctionEvent extends BaseAuctionEvent {
 class AuctionMadeEvent extends BaseDetailAuctionEvent {
   const AuctionMadeEvent(AuctionDetailModel detail) : super(detail);
 }
-class AuctionUnmadeEvent extends BaseMakingAuctionEvent {
-  const AuctionUnmadeEvent(int productId, String email) : super(productId, email);
+class AuctionUnmadeEvent extends BaseAuctionEvent {
 }
-class AuctionAppliedEvent extends BaseDetailAuctionEvent {
-  const AuctionAppliedEvent(AuctionDetailModel detail) : super(detail);
+class AuctionAppliedEvent extends BaseAuctionEvent {
+  final double suggestedPrice;
+  const AuctionAppliedEvent(this.suggestedPrice);
 }
 class AuctionDenyEvent extends BaseAuctionEvent {}
