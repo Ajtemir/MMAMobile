@@ -8,7 +8,7 @@ class ExecuteResult<T> {
   ExecuteResult(this.data, this.message, this.isOk, this.isError, this.stackTrace);
   factory ExecuteResult.fromJson(Map<String, dynamic> map,{T Function(Map<String, dynamic>)? dataConstructor}) {
     return ExecuteResult(
-      dataConstructor?.call(map['data']),
+      map['data'] == null ? null : dataConstructor?.call(map['data']),
       map['message'],
       map['isOk'],
       map['isError'],

@@ -13,16 +13,16 @@ class AuctionBloc extends Bloc<BaseAuctionEvent, BaseAuctionState> {
     BaseAuctionState initial;
     switch(event.state){
     case AuctionState.sellerMadeAuction:
-      initial = SellerProductAuctionedState(event.auctionDetail);
+      initial = SellerProductAuctionedState(event.auctionDetail!);
     break;
     case AuctionState.sellerUnmadeAuction:
       initial = SellerProductNotAuctionedState();
     break;
     case AuctionState.buyerApply:
-      initial = BuyerAuctionAppliedState(event.auctionDetail);
+      initial = BuyerAuctionAppliedState(event.auctionDetail!);
     break;
     case AuctionState.buyerUnapply:
-      initial = BuyerAuctionNotAppliedState(event.auctionDetail);
+      initial = BuyerAuctionNotAppliedState(event.auctionDetail!);
     break;
     case AuctionState.notMadeAuctioned:
       initial = BuyerProductNotAuctionedState();
@@ -90,7 +90,7 @@ class AuctionBloc extends Bloc<BaseAuctionEvent, BaseAuctionState> {
         emit(AuctionLoadingState());
         await AuctionApi.applyAuctioned(_productId, _email, event.suggestedPrice);
         var response = await AuctionApi.getAuctionDetail(_productId, _email);
-        emit(BuyerAuctionAppliedState(response.auctionDetail));
+        emit(BuyerAuctionAppliedState(response.auctionDetail!));
       }
       catch (e){
         emit(AuctionErrorState(e.toString()));
