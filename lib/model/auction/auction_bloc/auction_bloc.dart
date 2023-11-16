@@ -63,5 +63,16 @@ class AuctionBloc extends Bloc<BaseAuctionEvent, BaseAuctionState> {
       }
     });
     on<AuctionDenyEvent>((event, emit) => emit(BuyerProductNotAuctionedState()));
+    on<AuctionSubmitEvent>((event, emit) async {
+      try {
+        emit(AuctionLoadingState());
+        await AuctionApi.submitAuction(_productId, _email);
+        emit(SellerProductNotAuctionedState());
+      }
+      catch (e){
+        emit(AuctionErrorState(e.toString()));
+      }
+
+    });
   }
 }

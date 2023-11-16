@@ -471,49 +471,117 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                     builder: (context, state) {
                       print(state);
                       if(state is AuctionLoadingState){
-                        return const Text("loading");
+                        return const CircularProgressIndicator();
                       }
                       else if(state is BuyerAuctionAppliedState){
-                        return Column(
-                          children: [
-                            ...state.detail.widgets,
-                          ],
+                        final _formKey = GlobalKey<FormBuilderState>();
+                        return FormBuilder(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              _auctionDetail(state.detail),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              FormBuilderTextField(
+                                name: 'suggestedPrice',
+                                validator: (valueCandidate) {
+                                  if (valueCandidate?.isEmpty ?? true) {
+                                    return 'This field is required.';
+                                  }
+                                  if(state.detail.currentMaxPrice != null && state.detail.currentMaxPrice! > double.parse(valueCandidate!)){
+                                    return 'Suggested price must be more than current max price ${state.detail.currentMaxPrice}';
+                                  }
+                                  else if(double.parse(valueCandidate!) < state.detail.startPrice){
+                                    return 'Suggested price must be more than start price ${state.detail.startPrice}';
+                                  }
+                                  return null;
+                                },
+                                enabled: true,
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                    labelText: 'Предложенная цена', border: OutlineInputBorder()),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStatePropertyAll(AppColors.red1),
+                                    padding: const MaterialStatePropertyAll(
+                                        EdgeInsets.symmetric(vertical: 10)),
+                                  ),
+                                  onPressed: () {
+                                    if (_formKey.currentState!.saveAndValidate()) {
+                                      Map<String, dynamic> keyValuePairs = _formKey.currentState!.value;
+                                      var suggestedPrice = double.parse(keyValuePairs['suggestedPrice']);
+                                      _bloc.add(AuctionAppliedEvent(suggestedPrice));
+                                    }
+
+                                  },
+                                  child: Text(
+                                    "Повысить заявку на аукцион",
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         );
                       }
                       else if (state is BuyerAuctionNotAppliedState) {
-                        return Column(
-                          children: [
-                            _auctionDetail(state.detail),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            FormBuilderTextField(
-                              name: 'startPrice',
-                              enabled: true,
-                              keyboardType: TextInputType.number,
-                              decoration: const InputDecoration(
-                                  labelText: 'Предложенная цена', border: OutlineInputBorder()),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStatePropertyAll(AppColors.red1),
-                                  padding: const MaterialStatePropertyAll(
-                                      EdgeInsets.symmetric(vertical: 10)),
-                                ),
-                                onPressed: () {
-                                  _bloc.add(AuctionAppliedEvent(20));
+                        final _formKey = GlobalKey<FormBuilderState>();
+                        return FormBuilder(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              _auctionDetail(state.detail),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              FormBuilderTextField(
+                                name: 'suggestedPrice',
+                                validator: (valueCandidate) {
+                                  if (valueCandidate?.isEmpty ?? true) {
+                                    return 'This field is required.';
+                                  }
+                                  if(double.parse(valueCandidate!) < state.detail.startPrice){
+                                    return 'Suggested price must be more than start price';
+                                  }
+                                  return null;
                                 },
-                                child: Text(
-                                  "Подать заявку на аукцион",
+                                enabled: true,
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                    labelText: 'Предложенная цена', border: OutlineInputBorder()),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStatePropertyAll(AppColors.red1),
+                                    padding: const MaterialStatePropertyAll(
+                                        EdgeInsets.symmetric(vertical: 10)),
+                                  ),
+                                  onPressed: () {
+                                    if (_formKey.currentState!.saveAndValidate()) {
+                                      Map<String, dynamic> keyValuePairs = _formKey.currentState!.value;
+                                      var suggestedPrice = double.parse(keyValuePairs['suggestedPrice']);
+                                      _bloc.add(AuctionAppliedEvent(suggestedPrice));
+                                    }
+
+                                  },
+                                  child: Text(
+                                    "Подать заявку на аукцион",
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         );
                       } else if(state is BuyerProductNotAuctionedState){
                         return const SizedBox();
@@ -528,13 +596,13 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                     child: ElevatedButton(
                                       style: ButtonStyle(
                                         backgroundColor:
-                                            MaterialStatePropertyAll(true
-                                                ? AppColors.red1
-                                                : AppColors.grey),
+                                            MaterialStatePropertyAll(AppColors.red1),
                                         padding: const MaterialStatePropertyAll(
                                             EdgeInsets.symmetric(vertical: 10)),
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        _bloc.add(AuctionSubmitEvent());
+                                      },
                                       child: Text(
                                         "Подтвердить аукцион",
                                       ),
@@ -1192,7 +1260,6 @@ class _FormBottomModalState extends State<FormBottomModal> {
 class MakeAuctionedForm {
     Widget getWidget(BuildContext context){
       final _formKey = GlobalKey<FormBuilderState>();
-
       return Padding(
         padding: const EdgeInsets.all(20.0),
         child: FormBuilder(

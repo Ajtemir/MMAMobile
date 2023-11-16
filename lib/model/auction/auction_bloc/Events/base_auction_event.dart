@@ -45,3 +45,4 @@ class AuctionAppliedEvent extends BaseAuctionEvent {
   const AuctionAppliedEvent(this.suggestedPrice);
 }
 class AuctionDenyEvent extends BaseAuctionEvent {}
+class AuctionSubmitEvent extends BaseAuctionEvent {}

@@ -61,6 +61,17 @@ class AuctionApi {
     return result.data!;
   }
 
+  static Future<AuctionDetailWithStateModel> submitAuction(int productId, String email) async {
+    var url = Constants.addPathToBaseUrl('/Auction/SubmitAuction');
+    var response = await http.Client().post(url,body: jsonEncode({'productId': productId, 'Email': email,}), headers: {"Content-Type":"application/json","Accept":"*/*"});
+    var json = jsonDecode(response.body);
+    var result = ExecuteResult.fromJson(json);
+    if(result.isBad){
+      throw Exception(result.message);
+    }
+    return result.data!;
+  }
+
 }
 
 
