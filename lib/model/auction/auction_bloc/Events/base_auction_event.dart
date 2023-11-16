@@ -40,6 +40,8 @@ class AuctionMadeEvent extends BaseDetailAuctionEvent {
 }
 class AuctionUnmadeEvent extends BaseAuctionEvent {
 }
+class InitEvent extends BaseAuctionEvent {
+}
 class AuctionAppliedEvent extends BaseAuctionEvent {
   final double suggestedPrice;
   const AuctionAppliedEvent(this.suggestedPrice);

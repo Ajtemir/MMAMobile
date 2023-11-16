@@ -86,7 +86,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
     return Scaffold(
       appBar: AllAppBar2(),
       body: BlocProvider(
-        create: (context) => AuctionBloc(AuctionLoadingState(), widget.email, int.parse(widget.productId)),
+        create: (context) => AuctionBloc(widget.email, int.parse(widget.productId))..add(InitEvent()),
         child: FutureBuilder<AboutProductModel>(
           future: fetchProductData(widget.productId, widget.email),
           builder: (context, snapshot) {
@@ -102,9 +102,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
               isSeller = path.isSeller;
               isMadeCollectiveOrDefaultNotSeller =
                   isSeller ? path.collectiveInfo != null : null;
-              AuctionBloc _bloc = BlocProvider.of<AuctionBloc>(context);
+              // AuctionBloc _bloc = BlocProvider.of<AuctionBloc>(context);
               // BlocProvider.of<AuctionBloc>(context, listen: false)
-              _bloc.add(InitialRenderingAuctionEvent(path.auctionDetail, path.auctionState));
+              // _bloc.add(InitialRenderingAuctionEvent(path.auctionDetail, path.auctionState));
               return ListView(
                 padding: EdgeInsets.symmetric(horizontal: 14),
                 children: [
