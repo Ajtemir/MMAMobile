@@ -267,7 +267,7 @@ class BuyerProductNotAuctionedState extends BaseAuctionState {
 class AuctionLoadingState extends BaseAuctionState {
   @override
   Widget build(BuildContext context) {
-    return const CircularProgressIndicator();
+    return const Center(child: CircularProgressIndicator(color: Colors.orange,));
   }
 }
 

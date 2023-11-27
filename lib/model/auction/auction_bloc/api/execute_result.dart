@@ -1,14 +1,15 @@
 class ExecuteResult<T> {
-  late T? data;
+  late List<T?>? data;
   late bool isOk;
   late String? message;
   late String? stackTrace;
   late bool isError = false;
   bool get isBad => !isOk;
+  T? get single => data?.first;
   ExecuteResult(this.data, this.message, this.isOk, this.isError, this.stackTrace);
-  factory ExecuteResult.fromJson(Map<String, dynamic> map,{T Function(Map<String, dynamic>)? dataConstructor}) {
+  factory ExecuteResult.fromJson(Map<String, dynamic> map, {bool isList = false, T Function(Map<String, dynamic>)? dataConstructor}) {
     return ExecuteResult(
-      map['data'] == null ? null : dataConstructor?.call(map['data']),
+      map['data'] == null ? null : dataConstructor == null ? null : isList ? map['data']?.map<T>((x) => dataConstructor.call(x))?.toList() : [dataConstructor.call(map['data'])],
       map['message'],
       map['isOk'],
       map['isError'],

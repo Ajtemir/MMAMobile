@@ -7,6 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:upai_app/DTOs/make_collective_post.dart';
 import 'package:upai_app/DTOs/submit_collective_argument.dart';
+import 'package:upai_app/bloc/reduction_bloc/reduction_bloc.dart';
+import 'package:upai_app/bloc/reduction_bloc/states/base_reduction_state.dart';
 import 'package:upai_app/model/auction/auction_bloc/Events/base_auction_event.dart';
 import 'package:upai_app/model/auction/auction_bloc/auction_bloc.dart';
 import 'package:upai_app/model/auction/auction_bloc/auction_state.dart';
@@ -16,6 +18,7 @@ import 'package:upai_app/model/auction/auction_widget.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 
 import '../../DTOs/unmake_collective_product.dart';
+import '../../bloc/reduction_bloc/reduction_event.dart';
 import '../../constants/constants.dart';
 import '../../fetches/about_product_fetch.dart';
 import '../../model/aboutProductModel.dart';
@@ -85,8 +88,16 @@ class _AboutMagazState extends State<AboutMagaz> {
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ''';
     return Scaffold(
       appBar: AllAppBar2(),
-      body: BlocProvider(
-        create: (context) => AuctionBloc(widget.email, int.parse(widget.productId))..add(InitEvent()),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider<AuctionBloc>(
+            create: (context) => AuctionBloc(widget.email, int.parse(widget.productId))..add(InitEvent()),
+          ),
+          BlocProvider<ReductionBloc>(
+            create: (context) => ReductionBloc(int.parse(widget.productId))..add(InitReductionEvent()),
+          ),
+        ],
+
         child: FutureBuilder<AboutProductModel>(
           future: fetchProductData(widget.productId, widget.email),
           builder: (context, snapshot) {
@@ -467,11 +478,35 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                           ],
                         ),
                   SizedBox(height: 60),
+                  Center(
+                    child: Text(
+                      'Аукцион',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
                   BlocBuilder<AuctionBloc, BaseAuctionState>(
                     builder: (context, state) {
                       print(state);
                       return state.build(context);
                     },
+                  ),
+                  SizedBox(height: 60),
+                  Center(
+                    child: Text(
+                      'Тендер',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  BlocBuilder<ReductionBloc, BaseReductionState>(
+                    builder: (context, state) => state.build(context),
                   ),
                   Text(
                     'Галерея',

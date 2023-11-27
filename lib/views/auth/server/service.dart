@@ -4,8 +4,10 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upai_app/DTOs/submit_collective_argument.dart';
 import 'package:upai_app/constants/constants.dart';
+import 'package:upai_app/utilities/app_http_client.dart';
 
 import '../../../DTOs/make_collective_post.dart';
 import '../../../DTOs/unmake_collective_product.dart';
@@ -202,6 +204,10 @@ class AuthClient{
     var response = await client.post(uri,body: jsonEncode(json), headers: {"Content-Type":"application/json","Accept":"*/*"});
     print(response.statusCode);
     if (response.statusCode == 201 || response.statusCode == 200) {
+      var prefs = await SharedPreferences.getInstance();
+      var json = jsonDecode(response.body);
+      prefs.setString(AppHttpClient.accessToken, json[AppHttpClient.accessToken]);
+      prefs.setString(AppHttpClient.refreshToken, json[AppHttpClient.refreshToken]);
       print(response.statusCode);
       return 'true';
     } else if(response.statusCode==400){
