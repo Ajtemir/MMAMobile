@@ -58,7 +58,7 @@ class AuctionApi {
     if(result.isBad){
       throw Exception(result.message);
     }
-    return result.data!;
+    return result.single!;
   }
 
   static Future<AuctionDetailWithStateModel> submitAuction(int productId, String email) async {
@@ -69,7 +69,7 @@ class AuctionApi {
     if(result.isBad){
       throw Exception(result.message);
     }
-    return result.data!;
+    return result.single!;
   }
 
 }

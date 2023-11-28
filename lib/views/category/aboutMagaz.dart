@@ -467,6 +467,16 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                           ],
                         ),
                   SizedBox(height: 60),
+                  Center(
+                    child: Text(
+                      'Аукцион',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
                   BlocBuilder<AuctionBloc, BaseAuctionState>(
                     builder: (context, state) {
                       print(state);
