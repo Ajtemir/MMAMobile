@@ -9,7 +9,7 @@ import '../model/auction/auction_bloc/api/execute_result.dart';
 class AppHttpClient{
   static const accessToken = "accessToken";
   static const refreshToken = "refreshToken";
-  static Future<ExecuteResult> execute<T>(
+  static Future<ExecuteResult<T>> execute<T>(
       HttpMethod method,
       String path,
       Map<String, dynamic> map,
