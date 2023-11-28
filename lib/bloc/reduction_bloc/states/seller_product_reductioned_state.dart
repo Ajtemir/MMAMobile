@@ -47,7 +47,7 @@ class SellerProductReductionedState extends BaseDetailReductionState {
             BlocProvider.of<ReductionBloc>(context).add(ReductionUnmakeEvent());
           },
           child: Text(
-            "Отменить аукцион",
+            "Отменить тендер",
           ),
         ),
       ),

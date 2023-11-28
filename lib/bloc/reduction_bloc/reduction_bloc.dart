@@ -94,7 +94,7 @@ class ReductionBloc extends Bloc<BaseReductionEvent, BaseReductionState> {
 
   static Future<BaseReductionState> getInitialState(int productId) async {
     ExecuteResult<ReductionDetailWithStateModel> response = await AppHttpClient.execute(HttpMethod.get, '/Reduction/Get', {'productId': productId.toString()}, dataConstructor: ReductionDetailWithStateModel.fromJson);
-    var event = response.single!;
+    ReductionDetailWithStateModel event = response.single!;
     BaseReductionState initial;
     switch(event.state) {
       case ReductionState.sellerMadeReduction:

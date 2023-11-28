@@ -19,7 +19,7 @@ class AppHttpClient{
         hasToken = true
       }) async {
     var url = Constants.addPathToBaseUrl(path, queryParameters: method == HttpMethod.get ? map : null);
-    const headers = {"Content-Type":"application/json", "Accept":"*/*"};
+    var headers = {"Content-Type":"application/json", "Accept":"*/*"};
 
     if(hasToken){
       var sharedPreferences = await SharedPreferences.getInstance();
@@ -36,7 +36,7 @@ class AppHttpClient{
         response = await http.Client().post(url, body: jsonEncode(map), headers: headers);
         break;
       case HttpMethod.get:
-        response = await http.Client().get(url);
+        response = await http.Client().get(url, headers: headers);
         break;
       case HttpMethod.delete:
         response = await http.Client().delete(url, body: jsonEncode(map), headers: headers);
