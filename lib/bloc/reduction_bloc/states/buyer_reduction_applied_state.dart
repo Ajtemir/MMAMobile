@@ -33,8 +33,8 @@ class BuyerReductionAppliedState extends BaseDetailReductionState {
               if(state.detail.currentMinPrice != null && state.detail.currentMinPrice! < double.parse(valueCandidate!)){
                 return 'Suggested price must be less than current min price ${state.detail.currentMinPrice}';
               }
-              else if(double.parse(valueCandidate!) < state.detail.startPrice){
-                return 'Suggested price must be more than start price ${state.detail.startPrice}';
+              else if(double.parse(valueCandidate!) > state.detail.startPrice){
+                return 'Suggested price must be less than start price ${state.detail.startPrice}';
               }
               return null;
             },
@@ -63,7 +63,7 @@ class BuyerReductionAppliedState extends BaseDetailReductionState {
 
               },
               child: Text(
-                "Повысить заявку на аукцион",
+                "Понизить заявку на тендер",
               ),
             ),
           ),

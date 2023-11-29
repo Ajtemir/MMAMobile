@@ -99,7 +99,7 @@ class ReductionDetailModel{
           children: [
             Expanded(
               child: Text(
-                'Нынешняя максимальная цена:',
+                'Нынешняя минимальная цена:',
                 style: styleTitleInCard,
               ),
             ),

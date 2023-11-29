@@ -61,7 +61,7 @@ class ReductionBloc extends Bloc<BaseReductionEvent, BaseReductionState> {
           'productId': productId,
           'suggestedPrice': event.suggestedPrice
         });
-        ExecuteResult<ReductionDetailWithStateModel> response = await AppHttpClient.execute(HttpMethod.get, '/Reduction/Get', {'productId': productId,},dataConstructor: ReductionDetailWithStateModel.fromJson);
+        ExecuteResult<ReductionDetailWithStateModel> response = await AppHttpClient.execute(HttpMethod.get, '/Reduction/Get', {'productId': productId.toString(),},dataConstructor: ReductionDetailWithStateModel.fromJson);
         emit(BuyerReductionAppliedState(response.single!.reductionDetail!));
       }
       catch (e){

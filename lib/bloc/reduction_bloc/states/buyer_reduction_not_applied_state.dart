@@ -30,8 +30,8 @@ class BuyerReductionNotAppliedState extends BaseDetailReductionState {
               if (valueCandidate?.isEmpty ?? true) {
                 return 'This field is required.';
               }
-              if(double.parse(valueCandidate!) < state.detail.startPrice){
-                return 'Suggested price must be more than start price';
+              if(double.parse(valueCandidate!) > state.detail.startPrice){
+                return 'Suggested price must be less than start price';
               }
               return null;
             },
@@ -60,7 +60,7 @@ class BuyerReductionNotAppliedState extends BaseDetailReductionState {
 
               },
               child: Text(
-                "Подать заявку на аукцион",
+                "Подать заявку на тендер",
               ),
             ),
           ),

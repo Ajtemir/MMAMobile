@@ -46,8 +46,7 @@ class AppHttpClient{
     if(response.statusCode == 401) {
       var sharedPreferences = await SharedPreferences.getInstance();
       var refreshToken = sharedPreferences.getString(AppHttpClient.refreshToken);
-      var url = Constants.addPathToBaseUrl('/User/SignIn');
-      var response = await http.Client().post(url, headers: {
+      var response = await http.Client().post(Constants.addPathToBaseUrl('/User/GetAccessTokenByRefreshToken'), headers: {
         "Content-Type":"application/json",
         "Accept":"*/*",
         "Authorization": refreshToken!,

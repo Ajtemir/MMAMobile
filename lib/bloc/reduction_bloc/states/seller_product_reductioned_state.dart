@@ -29,7 +29,7 @@ class SellerProductReductionedState extends BaseDetailReductionState {
             BlocProvider.of<ReductionBloc>(context).add(ReductionSubmitEvent());
           },
           child: Text(
-            "Подтвердить аукцион",
+            "Подтвердить тендер",
           ),
         ),
       ),
