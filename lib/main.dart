@@ -10,6 +10,8 @@ import 'package:upai_app/views/splash_page/splash_page.dart';
 import 'package:upai_app/provider/selectCatProvider.dart';
 import 'package:upai_app/provider/selectTabProvider.dart';
 
+import 'bloc/create_product_bloc/create_product_page.dart';
+
 
 void main(){
 runApp(  Upai());
@@ -41,7 +43,11 @@ class Upai extends StatelessWidget {
             );
           },
           theme: AppTheme.themeData,
-          home: const SplashPage()
+          // home: const SplashPage(),
+          routes: {
+        '/': (context) => SplashPage(),
+        '/create-product': (context) => CreateProductPage(),
+        },
         ),
       ),
     );

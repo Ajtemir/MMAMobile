@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:upai_app/bloc/create_product_bloc/base_create_product_state.dart';
 
 import 'package:upai_app/provider/selectTabProvider.dart';
 import 'package:upai_app/views/drawer/hotKeshAdd.dart';
@@ -8,6 +10,8 @@ import 'package:upai_app/views/pages/messeg.dart';
 import 'package:upai_app/views/pages/dashboard.dart';
 import 'package:upai_app/views/pages/profile/profile.dart';
 
+import '../../bloc/create_product_bloc/create_product_page.dart';
+import '../../bloc/create_product_bloc/create_product_bloc.dart';
 import '../../shared/app_colors.dart';
 import '../pages/map/globalMap.dart';
 
@@ -76,7 +80,7 @@ class _HomeState extends State<Home> {
               child: MaterialButton(
                 onPressed: () {
                   Provider.of<SelectTabProvider>(context, listen: false)
-                      .toggleSelect(HotKeshAdd(),
+                      .toggleSelect(CreateProductPage(),
                           2); // if user taps on this dashboard tab will be active
                 },
                 child: Icon(

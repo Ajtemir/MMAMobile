@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:upai_app/provider/selectCatProvider.dart';
 import 'package:upai_app/views/auth/server/service.dart';
 import 'package:upai_app/views/category/selectCategoty.dart';
+import 'package:upai_app/views/drawer/selectCategoryField.dart';
 import 'package:upai_app/widgets/appBar.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 import '../../provider/selectTabProvider.dart';
@@ -16,7 +18,8 @@ import '../pages/dashboard.dart';
 import 'utils.dart';
 
 class HotKeshAdd extends StatefulWidget {
-  const HotKeshAdd({Key? key}) : super(key: key);
+  late int? currentCategoryId;
+  HotKeshAdd({Key? key, this.currentCategoryId}) : super(key: key);
 
   @override
   _HotKeshAddState createState() => _HotKeshAddState();
@@ -254,43 +257,7 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                   ),
                 ),
                 SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.only(left: 19.0),
-                  child: Text('Категория',
-                      style: TextStyle(
-                          color: Color(0xFF515151),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400)),
-                ),
-                SizedBox(height: 7),
-                GestureDetector(
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => SelectCategory())),
-                  child: Container(
-                      padding: EdgeInsets.only(left: 19,top: 13),
-                      width: double.infinity,
-                      height: 45,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: AppColors.blue),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child:
-                          Provider.of<SelectCatProvider>(context).category == ''
-                              ? Text('Выберите категорию',
-                                  style: TextStyle(
-                                    color: Color(0xFFA6A6A6),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                  ))
-                              : Text(
-                                  Provider.of<SelectCatProvider>(context)
-                                      .category,
-                                  style: TextStyle(
-                                    color: AppColors.blue,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                  ))),
-                ),
+               SelectCategoryField(),
                 SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.only(left: 19.0),
