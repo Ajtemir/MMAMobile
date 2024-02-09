@@ -11,12 +11,12 @@ import '../../../shared/app_colors.dart';
 
 class CategoryChosenState extends BaseCreateProductState {
   final int categoryId;
+  var set = <int>{};
 
   CategoryChosenState(this.categoryId);
 
   @override
   Widget build(BuildContext context) {
-    var set = <int>{1,2};
 
     return FutureBuilder<ExecuteResult<CategoryPropertyDetail>>(
         future: AppHttpClient.execute(
@@ -31,116 +31,11 @@ class CategoryChosenState extends BaseCreateProductState {
             var elements = snapshot.data!.single!.propertyKeys.map((element) {
               switch (element.isMultiple) {
                 case true:
-                  return [
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 19.0),
-                      child: Text(element.name,
-                        style: const TextStyle(
-                            color: Color(0xFF515151),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
-                    MultiSelectDropDown(
-                      onOptionSelected: (List<ValueItem> selectedOptions) {},
-                      options:element.propertyKeyValues.map((e) => ValueItem(label: e.name, value: e.id.toString())).toList(),
-                      selectionType: SelectionType.multi,
-                      chipConfig: const ChipConfig(wrapType: WrapType.wrap),
-                      dropdownHeight: 300,
-                      optionTextStyle: const TextStyle(fontSize: 16),
-                      selectedOptionIcon: const Icon(Icons.check_circle),
-                    ),
-                  ];
+                  return multipleSelect(element);
                 case false:
-                  return [
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 19.0),
-                      child: Text(element.name,
-                        style: TextStyle(
-                            color: Color(0xFF515151),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
-                    DropdownButtonFormField(
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 0,
-                          vertical: 0,
-                        ),
-                        border: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                          width: 1,
-                          color: AppColors.blue,
-                        )),
-                        hintText: element.name,
-                        hintStyle: TextStyle(
-                          color: Color(0xFFA6A6A6),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      items: [
-                        DropdownMenuItem(
-                          child: Text("Не выбран"),
-                          value: 0,
-                        ),
-                        ...element.propertyKeyValues.map(
-                          (e) => DropdownMenuItem(
-                            child: Text(e.name),
-                            value: e.id,
-                          ),
-                        )
-                      ],
-                      onChanged: (e) {},
-                    )
-                  ];
+                  return singleSelect(element);
                 case null:
-                  return [
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 19.0),
-                      child: Text(element.name,
-                          style: const TextStyle(
-                              color: Color(0xFF515151),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                          ),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 19),
-                      height: 45,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: AppColors.blue),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: TextField(
-                        // controller: name,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          // for below version 2 use this
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-// for version 2 and greater youcan also use this
-                          FilteringTextInputFormatter.digitsOnly
-
-                        ],
-                        decoration: InputDecoration(
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                          border: InputBorder.none,
-                          hintText: element.name,
-                          hintStyle: TextStyle(
-                            color: Color(0xFFA6A6A6),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                    )
-                  ];
+                  return literal(element);
                 default:
                   throw Exception("");
               }
@@ -170,10 +65,13 @@ class CategoryChosenState extends BaseCreateProductState {
         ),
       ),
       MultiSelectDropDown(
-        onOptionSelected: (List<ValueItem> selectedOptions) {},
-        options: element.propertyKeyValues
-            .map((e) => ValueItem(label: e.name, value: e.id.toString()))
-            .toList(),
+        onOptionSelected: (List<ValueItem> selectedOptions) {
+          for (var option in selectedOptions) { set.add(int.parse(option.value!)); }
+          print('start');
+          set.forEach((element) {print(element);});
+          print('end');
+        },
+        options: element.propertyKeyValues.map((e) => ValueItem(label: e.name, value: e.id.toString())).toList(),
         selectionType: SelectionType.multi,
         chipConfig: const ChipConfig(wrapType: WrapType.wrap),
         dropdownHeight: 300,
@@ -184,7 +82,102 @@ class CategoryChosenState extends BaseCreateProductState {
   }
 
   List<Widget> singleSelect(PropertyKey element){
-    return [];
+    return [
+      const SizedBox(height: 10),
+      Padding(
+        padding: const EdgeInsets.only(left: 19.0),
+        child: Text(element.name,
+          style: TextStyle(
+              color: Color(0xFF515151),
+              fontSize: 16,
+              fontWeight: FontWeight.w400),
+        ),
+      ),
+      DropdownButtonFormField(
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 0,
+            vertical: 0,
+          ),
+          border: const OutlineInputBorder(
+              borderSide: BorderSide(
+                width: 1,
+                color: AppColors.blue,
+              )),
+          hintText: element.name,
+          hintStyle: TextStyle(
+            color: Color(0xFFA6A6A6),
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        items: [
+          DropdownMenuItem(
+            child: Text("Не выбран"),
+            value: 0,
+          ),
+          ...element.propertyKeyValues.map(
+                (e) => DropdownMenuItem(
+              child: Text(e.name),
+              value: e.id,
+            ),
+          )
+        ],
+        onChanged: (e)
+        {
+          set.add(e as int);
+          print('start');
+          set.forEach((element) {print(element);});
+          print('end');
+        },
+      )
+    ];
+  }
+
+  List<Widget> literal(PropertyKey element){
+    return [
+      const SizedBox(height: 10),
+      Padding(
+        padding: const EdgeInsets.only(left: 19.0),
+        child: Text(element.name,
+          style: const TextStyle(
+            color: Color(0xFF515151),
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ),
+      Container(
+        padding: EdgeInsets.symmetric(horizontal: 19),
+        height: 45,
+        decoration: BoxDecoration(
+          border: Border.all(width: 1, color: AppColors.blue),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: TextField(
+          // controller: name,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            // for below version 2 use this
+            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+// for version 2 and greater youcan also use this
+            FilteringTextInputFormatter.digitsOnly
+
+          ],
+          decoration: InputDecoration(
+            contentPadding:
+            EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+            border: InputBorder.none,
+            hintText: element.name,
+            hintStyle: TextStyle(
+              color: Color(0xFFA6A6A6),
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
+      )
+    ];
   }
 }
 
