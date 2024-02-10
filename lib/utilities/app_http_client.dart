@@ -1,10 +1,14 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:upai_app/main.dart';
+import 'package:upai_app/views/category/custom_navigation.dart';
 
 import '../constants/constants.dart';
 import '../model/auction/auction_bloc/api/execute_result.dart';
+import '../views/auth/sing_in/sing_in_screen.dart';
 
 class AppHttpClient{
   static const accessToken = "accessToken";
@@ -51,7 +55,8 @@ class AppHttpClient{
         "Accept":"*/*",
         "Authorization": refreshToken!,
       });
-      if(response.statusCode == 401){
+      if(response.statusCode != 200){
+        navigatorKey.currentState?.pushReplacement(MyCustomRoute(builder: (context) => SingInScreen(),));
         throw Exception("Refresh Token expired");
       }
 

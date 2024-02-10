@@ -11,8 +11,9 @@ import 'package:upai_app/provider/selectCatProvider.dart';
 import 'package:upai_app/provider/selectTabProvider.dart';
 
 import 'bloc/create_product_bloc/create_product_page.dart';
+import 'views/auth/sing_in/sing_in_screen.dart';
 
-
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main(){
 runApp(  Upai());
 }
@@ -32,6 +33,7 @@ class Upai extends StatelessWidget {
         minTextAdapt: true,
         // splitScreenMode: ,
         builder: (context,widget) => MaterialApp(
+          navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           builder: (context, widget) {
             //add this line
@@ -47,6 +49,7 @@ class Upai extends StatelessWidget {
           routes: {
         '/': (context) => SplashPage(),
         '/create-product': (context) => CreateProductPage(),
+            '/login': (context) => SingInScreen(),
         },
         ),
       ),
