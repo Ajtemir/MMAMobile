@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:upai_app/bloc/create_product_bloc/create_product_page.dart';
 import 'package:upai_app/bloc/create_product_bloc/create_product_bloc.dart';
 import 'package:upai_app/bloc/create_product_bloc/create_product_events.dart';
@@ -9,6 +10,7 @@ import 'package:upai_app/bloc/create_product_bloc/create_product_events.dart';
 import '../../constants/constants.dart';
 import '../../model/auction/auction_bloc/api/execute_result.dart';
 import '../../model/categoriesModel.dart';
+import '../../provider/selectCatProvider.dart';
 import '../../shared/app_colors.dart';
 import '../../utilities/app_http_client.dart';
 import '../../widgets/appBar2.dart';
@@ -42,6 +44,10 @@ class Category {
 class _SelectCategoryFieldState extends State<SelectCategoryField> {
   late int _popCount = 0;
   Category? currentCategory;
+  @override
+  void setState(VoidCallback fn) {
+    super.setState(fn);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,8 +146,11 @@ class _SelectCategoryFieldState extends State<SelectCategoryField> {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => CategoriesList(currentCategoryId: catId,)));
         }
         else{
+          currentCategory = Category(catId, name, [], image);
+          Provider.of<SelectCatProvider>(context,listen: false).toggleSelect(name,catId.toString());
           for(int i=0;i<=_popCount;i++) Navigator.of(context).pop();
-          BlocProvider.of<CreateProductBloc>(context).add(ChooseCategoryEvent(catId));
+          setState(() { });
+          // BlocProvider.of<CreateProductBloc>(context).add(ChooseCategoryEvent(catId));
         }
       },
       child: Container(

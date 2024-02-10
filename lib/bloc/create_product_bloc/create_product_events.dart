@@ -8,6 +8,7 @@ abstract class BaseCreateProductEvent extends Equatable {
 
 class ChooseCategoryEvent extends BaseCreateProductEvent{
   final int categoryId;
+  final int productId;
 
-  const ChooseCategoryEvent(this.categoryId);
+  const ChooseCategoryEvent(this.categoryId, this.productId);
 }

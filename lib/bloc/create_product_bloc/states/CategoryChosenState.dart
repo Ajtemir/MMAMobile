@@ -11,9 +11,10 @@ import '../../../shared/app_colors.dart';
 
 class CategoryChosenState extends BaseCreateProductState {
   final int categoryId;
+  final int productId;
   var set = <int>{};
 
-  CategoryChosenState(this.categoryId);
+  CategoryChosenState(this.categoryId, this.productId);
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +28,11 @@ class CategoryChosenState extends BaseCreateProductState {
             },
             dataConstructor: CategoryPropertyDetail.fromJson),
         builder: (context, snapshot) {
+          if(snapshot.hasError){
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          }
           if (snapshot.hasData) {
             var elements = snapshot.data!.single!.propertyKeys.map((element) {
               switch (element.isMultiple) {

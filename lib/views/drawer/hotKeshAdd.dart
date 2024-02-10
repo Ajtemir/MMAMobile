@@ -5,12 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:upai_app/bloc/create_product_bloc/create_product_bloc.dart';
 import 'package:upai_app/provider/selectCatProvider.dart';
 import 'package:upai_app/views/auth/server/service.dart';
 import 'package:upai_app/views/category/selectCategoty.dart';
 import 'package:upai_app/views/drawer/selectCategoryField.dart';
 import 'package:upai_app/widgets/appBar.dart';
 import 'package:upai_app/widgets/appBar2.dart';
+import '../../bloc/create_product_bloc/create_product_events.dart';
 import '../../provider/selectTabProvider.dart';
 import '../../shared/app_colors.dart';
 import 'package:image_picker/image_picker.dart';
@@ -479,6 +481,8 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                           bool ans2 = await AuthClient()
                               .postProductPhotoAdd(imageFile, ans);
                           if (ans2) {
+                            BlocProvider.of<CreateProductBloc>(context).add(ChooseCategoryEvent(int.parse(Provider.of<SelectCatProvider>(context,listen: false).categoryId),ans));
+                            return;
                             Fluttertoast.showToast(
                                 msg: 'Успешно добавлено!',
                                 fontSize: 18,

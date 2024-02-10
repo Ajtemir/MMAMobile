@@ -10,7 +10,7 @@ class CreateProductBloc extends Bloc<BaseCreateProductEvent, BaseCreateProductSt
   CreateProductBloc() : super(CreateProductInitialState()) {
     on<ChooseCategoryEvent>((event, emit) {
       categoryId = event.categoryId;
-      emit(CategoryChosenState(event.categoryId));
+      emit(CategoryChosenState(event.categoryId, event.productId));
     });
   }
 
