@@ -69,11 +69,11 @@ class ProductsModel {
 class CollectiveInfo {
   final int minBuyerCount;
   final int currentBuyerCount;
-  final double collectivePrice;
+  final double groupDiscountPrice;
   final DateTime startDate;
   final DateTime endDate;
-  CollectiveInfo(this.minBuyerCount, this.currentBuyerCount, this.collectivePrice, this.startDate, this.endDate);
+  CollectiveInfo(this.minBuyerCount, this.currentBuyerCount, this.groupDiscountPrice, this.startDate, this.endDate);
   static CollectiveInfo fromJson(Map<String, dynamic> json) =>
-      CollectiveInfo(json['minBuyerCount'], json['currentBuyerCount'], json['discountedPrice'], DateTime.parse(json['startDate']), DateTime.parse(json['endDate']));
+      CollectiveInfo(json['minBuyerCount'], json['currentBuyerCount'], json['groupDiscountPrice'], DateTime.parse(json['startDate']), DateTime.parse(json['endDate']));
 
 }

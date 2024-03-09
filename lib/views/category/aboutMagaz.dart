@@ -424,7 +424,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                   ),
                                   Expanded(
                                     child: Text(
-                                      '${path.collectiveInfo!.collectivePrice} сом',
+                                      '${path.collectiveInfo!.groupDiscountPrice} сом',
                                       style: styleSubtitleInCard,
                                     ),
                                   ),
@@ -784,7 +784,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                 ),
                 Expanded(
                   child: Text(
-                    '${productInfo.collectiveInfo!.collectivePrice} сом',
+                    '${productInfo.collectiveInfo!.groupDiscountPrice} сом',
                     style: styleSubtitleInCard,
                   ),
                 ),
@@ -1022,7 +1022,7 @@ class _FormBottomModalState extends State<FormBottomModal> {
               height: 10,
             ),
             FormBuilderTextField(
-              name: 'collectivePrice',
+              name: 'groupDiscountPrice',
               enabled: true,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
@@ -1060,8 +1060,8 @@ class _FormBottomModalState extends State<FormBottomModal> {
                     var data = MakingCollectiveProduct(
                       startDate: keyValuePairs['startDate'],
                       endDate: keyValuePairs['endDate'],
-                      collectivePrice:
-                          double.parse(keyValuePairs['collectivePrice']),
+                      groupDiscountPrice:
+                          double.parse(keyValuePairs['groupDiscountPrice']),
                       minBuyerCount: int.parse(keyValuePairs['minBuyerCount']),
                       email: _dto.sellerEmail,
                       productId: _dto.productId,

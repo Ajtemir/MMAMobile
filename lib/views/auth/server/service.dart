@@ -21,13 +21,10 @@ class AuthClient{
 
     var response = await client.get(uri);
     if (response.statusCode == 200 || response.statusCode == 201) {
-      print(response.body);
       return response.body;
     } else {
       //throw exception and catch it in UI
       print('error not found');
-      print(response.statusCode);
-      print(response.body);
     }
   }
 
@@ -420,7 +417,7 @@ class AuthClient{
   }
 
   Future addCollective(int productId, String buyerEmail) async {
-    var uri = Constants.addPathToBaseUrl('CollectiveTrade/AddCollectiveProduct');
+    var uri = Constants.addPathToBaseUrl('GroupDiscount/AddGroupDiscountProduct');
     Map<String, dynamic> obj = {
       'productId': productId,
       'buyerEmail': buyerEmail,
@@ -438,7 +435,7 @@ class AuthClient{
   }
 
   Future removeCollective(int productId, String buyerEmail) async {
-    var uri = Constants.addPathToBaseUrl('CollectiveTrade/RemoveCollectiveProduct');
+    var uri = Constants.addPathToBaseUrl('GroupDiscount/RemoveGroupDiscountProduct');
     Map<String, dynamic> data = {
       'productId': productId,
       'buyerEmail': buyerEmail,
@@ -455,7 +452,7 @@ class AuthClient{
 
 
   Future makeCollective(MakingCollectiveProduct argument) async {
-    var uri = Constants.addPathToBaseUrl('CollectiveTrade/MakeProductCollective');
+    var uri = Constants.addPathToBaseUrl('GroupDiscount/MakeProductGroupDiscount');
 
     var json = jsonEncode(argument.toMap());
     // Map<String, dynamic> data = argument.toMap();
@@ -470,7 +467,7 @@ class AuthClient{
   }
 
   Future unmakeCollective(UnmakeCollectiveArgument argument) async {
-    var uri = Constants.addPathToBaseUrl('CollectiveTrade/UnmakeProductCollective');
+    var uri = Constants.addPathToBaseUrl('GroupDiscount/UnmakeProductGroupDiscount');
     // Map<String, dynamic> data = argument.toMap();
     var response = await client.delete(
       uri,
@@ -483,7 +480,7 @@ class AuthClient{
   }
 
   Future submitCollective(SubmitCollectiveArgument argument) async {
-    var uri = Constants.addPathToBaseUrl('CollectiveTrade/SubmitDeal');
+    var uri = Constants.addPathToBaseUrl('GroupDiscount/SubmitDeal');
     var response = await client.post(
       uri,
       body: argument.toJson(),

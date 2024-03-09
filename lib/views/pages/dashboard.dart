@@ -909,7 +909,7 @@ class _DashboardState extends State<Dashboard> {
                         textAlign: TextAlign.start,
                       ),
                       Text(
-                        "коллективная цена:${args.collectivePrice.toStringAsFixed(2)}",
+                        "коллективная цена:${args.groupDiscountPrice.toStringAsFixed(2)}",
                         style: const TextStyle(color: Colors.red, fontSize: 16),
                         overflow: TextOverflow.clip,
                       ),
@@ -925,7 +925,7 @@ class _DashboardState extends State<Dashboard> {
 class ProductReadViewModel {
   late int minBuyerAmount;
   late int currentBuyerAmount;
-  late double collectivePrice;
+  late double groupDiscountPrice;
 
   static Widget collectiveWidget(ProductReadViewModel? model) {
     return model == null
@@ -933,7 +933,7 @@ class ProductReadViewModel {
             height: 0,
           )
         : Text(
-            "${model.currentBuyerAmount} / ${model.minBuyerAmount} ${model.collectivePrice} сом",
+            "${model.currentBuyerAmount} / ${model.minBuyerAmount} ${model.groupDiscountPrice} сом",
             style: const TextStyle(color: Color(0xFF313131), fontSize: 16),
             overflow: TextOverflow.clip,
           );
