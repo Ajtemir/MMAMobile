@@ -11,6 +11,7 @@ class CategoryChosenState extends BaseCreateProductState {
   final int categoryId;
   final int productId;
   var set = <int>{};
+  late List<PropertyKey?>? properties;
 
   CategoryChosenState(this.categoryId, this.productId);
 
@@ -34,6 +35,7 @@ class CategoryChosenState extends BaseCreateProductState {
             );
           }
           if (snapshot.hasData) {
+            properties = snapshot.data!.data;
             var elements = snapshot.data!.data!.map((element) {
               switch (element?.isMultipleOrLiteralDefault) {
                 case true:
@@ -65,6 +67,8 @@ class CategoryChosenState extends BaseCreateProductState {
       // selectedOptions: element.propertyKeyValues.where((x) => element.currentMultiValues.contains(x.id)).map((e) => ValueItem(label: e.name, value: e.id.toString())).toList(),
       // selectedOptions: element.propertyKeyValues.map((e) => ValueItem(label: e.name, value: e.id.toString())).toList().where((x) => element.currentMultiValues.contains(int.parse(x.value!))).toList(),
       onOptionSelected: (List<ValueItem> selectedOptions) {
+        properties!.where((e) => e!.id == element.id).first?.currentMultiValues =
+        selectedOptions.map((e) => int.parse(e.value!)).toList();
         for (var option in selectedOptions) { set.add(int.parse(option.value!)); }
         print('start');
         set.forEach((element) {print(element);});
@@ -139,6 +143,8 @@ class CategoryChosenState extends BaseCreateProductState {
         ],
         onChanged: (e)
         {
+          properties!.where((e) => e!.id == element.id).first?.currentSingleValue =
+              e as int;
           set.add(e as int);
           print('start');
           set.forEach((element) {print(element);});
@@ -172,6 +178,10 @@ class CategoryChosenState extends BaseCreateProductState {
         child: TextField(
           controller: emailController,
           // controller: name,
+          onChanged: (e) =>{
+          properties!.where((e) => e!.id == element.id).first?.currentNumberValue =
+          int.parse(e)
+          },
           keyboardType: TextInputType.number,
           inputFormatters: <TextInputFormatter>[
             // for below version 2 use this
@@ -216,9 +226,9 @@ class PropertyKey {
   final int id;
   final String name;
   final List<PropertyKeyValue> propertyKeyValues;
-  final List<int> currentMultiValues;
-  final int? currentSingleValue;
-  final int? currentNumberValue;
+  late List<int> currentMultiValues;
+  late int? currentSingleValue;
+  late int? currentNumberValue;
 
   PropertyKey.fromJson(Map<String, dynamic> json)
       : isMultipleOrLiteralDefault = json['isMultipleOrLiteralDefault'],
