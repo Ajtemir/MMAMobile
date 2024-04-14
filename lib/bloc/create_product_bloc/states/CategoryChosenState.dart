@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:multi_dropdown/multiselect_dropdown.dart';
+  import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:upai_app/bloc/create_product_bloc/base_create_product_state.dart';
 import 'package:upai_app/model/auction/auction_bloc/api/execute_result.dart';
 import 'package:upai_app/utilities/app_http_client.dart';
@@ -19,14 +17,16 @@ class CategoryChosenState extends BaseCreateProductState {
   @override
   Widget build(BuildContext context) {
 
-    return FutureBuilder<ExecuteResult<CategoryPropertyDetail>>(
+    return FutureBuilder<ExecuteResult<PropertyKey>>(
         future: AppHttpClient.execute(
             HttpMethod.get,
-            '/Categories/GetCategoryPropertiesAndTheirValues',
+            '/Products/GetProductPropertiesByProductId',
             {
-              'categoryId': categoryId.toString(),
+              'productId': productId.toString(),
             },
-            dataConstructor: CategoryPropertyDetail.fromJson),
+            dataConstructor: PropertyKey.fromJson,
+            isList: true,
+        ),
         builder: (context, snapshot) {
           if(snapshot.hasError){
             return Center(
@@ -34,14 +34,14 @@ class CategoryChosenState extends BaseCreateProductState {
             );
           }
           if (snapshot.hasData) {
-            var elements = snapshot.data!.single!.propertyKeys.map((element) {
-              switch (element.isMultiple) {
+            var elements = snapshot.data!.data!.map((element) {
+              switch (element?.isMultipleOrLiteralDefault) {
                 case true:
-                  return multipleSelect(element);
+                  return multipleSelect(element!);
                 case false:
-                  return singleSelect(element);
+                  return singleSelect(element!);
                 case null:
-                  return literal(element);
+                  return literal(element!);
                 default:
                   throw Exception("");
               }
@@ -58,6 +58,26 @@ class CategoryChosenState extends BaseCreateProductState {
   }
 
   List<Widget> multipleSelect(PropertyKey element) {
+    var options = element.propertyKeyValues.map((e) => ValueItem(label: e.name, value: e.id.toString())).toList();
+    var selected = options.where((x) => element.currentMultiValues.contains(int.parse(x.value!))).toList();
+    var multi = MultiSelectDropDown(
+      selectedOptions: selected,
+      // selectedOptions: element.propertyKeyValues.where((x) => element.currentMultiValues.contains(x.id)).map((e) => ValueItem(label: e.name, value: e.id.toString())).toList(),
+      // selectedOptions: element.propertyKeyValues.map((e) => ValueItem(label: e.name, value: e.id.toString())).toList().where((x) => element.currentMultiValues.contains(int.parse(x.value!))).toList(),
+      onOptionSelected: (List<ValueItem> selectedOptions) {
+        for (var option in selectedOptions) { set.add(int.parse(option.value!)); }
+        print('start');
+        set.forEach((element) {print(element);});
+        print('end');
+      },
+      options: options,
+      selectionType: SelectionType.multi,
+      chipConfig: const ChipConfig(wrapType: WrapType.wrap),
+      dropdownHeight: 300,
+      optionTextStyle: const TextStyle(fontSize: 16),
+      selectedOptionIcon: const Icon(Icons.check_circle),
+
+    );
     return [
       const SizedBox(height: 10),
       Padding(
@@ -70,20 +90,7 @@ class CategoryChosenState extends BaseCreateProductState {
               fontWeight: FontWeight.w400),
         ),
       ),
-      MultiSelectDropDown(
-        onOptionSelected: (List<ValueItem> selectedOptions) {
-          for (var option in selectedOptions) { set.add(int.parse(option.value!)); }
-          print('start');
-          set.forEach((element) {print(element);});
-          print('end');
-        },
-        options: element.propertyKeyValues.map((e) => ValueItem(label: e.name, value: e.id.toString())).toList(),
-        selectionType: SelectionType.multi,
-        chipConfig: const ChipConfig(wrapType: WrapType.wrap),
-        dropdownHeight: 300,
-        optionTextStyle: const TextStyle(fontSize: 16),
-        selectedOptionIcon: const Icon(Icons.check_circle),
-      ),
+      multi,
     ];
   }
 
@@ -100,6 +107,7 @@ class CategoryChosenState extends BaseCreateProductState {
         ),
       ),
       DropdownButtonFormField(
+        value: element.currentSingleValue,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 0,
@@ -141,6 +149,7 @@ class CategoryChosenState extends BaseCreateProductState {
   }
 
   List<Widget> literal(PropertyKey element){
+    final TextEditingController emailController = TextEditingController(text: element.currentNumberValue.toString());
     return [
       const SizedBox(height: 10),
       Padding(
@@ -161,6 +170,7 @@ class CategoryChosenState extends BaseCreateProductState {
           borderRadius: BorderRadius.circular(10),
         ),
         child: TextField(
+          controller: emailController,
           // controller: name,
           keyboardType: TextInputType.number,
           inputFormatters: <TextInputFormatter>[
@@ -202,20 +212,30 @@ class CategoryPropertyDetail {
 }
 
 class PropertyKey {
-  final bool? isMultiple;
+  final bool? isMultipleOrLiteralDefault;
   final int id;
   final String name;
   final List<PropertyKeyValue> propertyKeyValues;
+  final List<int> currentMultiValues;
+  final int? currentSingleValue;
+  final int? currentNumberValue;
 
   PropertyKey.fromJson(Map<String, dynamic> json)
-      : isMultiple = json['isMultiple'],
+      : isMultipleOrLiteralDefault = json['isMultipleOrLiteralDefault'],
         id = json['id'],
         name = json['name'],
-        propertyKeyValues = json['propertyKeyValues']
+        currentNumberValue = json['currentNumberValue'],
+        currentMultiValues = json['currentMultiValues'].map<int>((x)=>x as int).toList(),
+        currentSingleValue = json['currentSingleValue'],
+        propertyKeyValues = json['propertyValues']
             .map<PropertyKeyValue>((x) => PropertyKeyValue.fromJson(x))
             .toList();
 
-  PropertyKey(this.isMultiple, this.id, this.name, this.propertyKeyValues);
+  PropertyKey(this.isMultipleOrLiteralDefault, this.id, this.name,
+      this.currentNumberValue,
+      this.currentMultiValues,
+      this.currentSingleValue,
+      this.propertyKeyValues);
 }
 
 class PropertyKeyValue {

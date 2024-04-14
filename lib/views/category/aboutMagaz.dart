@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:upai_app/DTOs/make_collective_post.dart';
 import 'package:upai_app/DTOs/submit_collective_argument.dart';
 import 'package:upai_app/bloc/create_product_bloc/create_product_bloc.dart';
+import 'package:upai_app/bloc/create_product_bloc/states/CategoryChosenState.dart';
 import 'package:upai_app/bloc/reduction_bloc/reduction_bloc.dart';
 import 'package:upai_app/bloc/reduction_bloc/states/base_reduction_state.dart';
 import 'package:upai_app/model/auction/auction_bloc/Events/base_auction_event.dart';
@@ -508,6 +509,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                   SizedBox(height: 10),
                   BlocBuilder<ReductionBloc, BaseReductionState>(
                     builder: (context, state) => state.build(context),
+                  ),
+                  GestureDetector(
+                    onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder:(contexts)=>Material(child: CategoryChosenState(1, productInfo.id!).build(contexts)))),
+                    child: Text("dgdfh"),
                   ),
                   Text(
                     'Галерея',
