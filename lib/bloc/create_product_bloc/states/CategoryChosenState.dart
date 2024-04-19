@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
   import 'package:multi_dropdown/multiselect_dropdown.dart';
@@ -48,6 +50,36 @@ class CategoryChosenState extends BaseCreateProductState {
                   throw Exception("");
               }
             });
+            elements = [...elements, [InkWell(
+              onTap: (){
+                properties!.forEach((element) {
+                  switch(element?.isMultipleOrLiteralDefault){
+                    case true:
+                      print(element!.currentMultiValues.join(' '));
+                      break;
+                    case false:
+                      print(element!.currentSingleValue);
+                      break;
+                    case null:
+                      print(element!.currentNumberValue);
+                      break;
+                  }
+                  AppHttpClient.execute(HttpMethod.post, '/Products/UpdateProperties/${productId}', {'properties': properties?.map((e) => e!.toMap()).toList()});
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 110.0),
+                child: Container(
+                  width: 140,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppColors.red1,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(child: Text('Отправить',style: TextStyle(color: Colors.white,fontSize: 14),)),
+                ),
+              ),
+            )]];
             print(snapshot.data!.single.toString());
             return Column(
               children: elements.expand((element) => element).toList(),
@@ -155,7 +187,7 @@ class CategoryChosenState extends BaseCreateProductState {
   }
 
   List<Widget> literal(PropertyKey element){
-    final TextEditingController emailController = TextEditingController(text: element.currentNumberValue.toString());
+    final TextEditingController emailController = element.currentNumberValue == null ? TextEditingController() : TextEditingController(text: element.currentNumberValue.toString());
     return [
       const SizedBox(height: 10),
       Padding(
@@ -229,6 +261,21 @@ class PropertyKey {
   late List<int> currentMultiValues;
   late int? currentSingleValue;
   late int? currentNumberValue;
+
+  Map<String, dynamic> toMap(){
+    return {
+      'isMultipleOrLiteralDefault': isMultipleOrLiteralDefault,
+      'id': id,
+      'name':name,
+      'currentNumberValue': currentNumberValue,
+      'currentSingleValue': currentSingleValue,
+      'currentMultiValues': currentMultiValues,
+    };
+  }
+
+  String toJson(){
+    return jsonEncode(toMap());
+  }
 
   PropertyKey.fromJson(Map<String, dynamic> json)
       : isMultipleOrLiteralDefault = json['isMultipleOrLiteralDefault'],

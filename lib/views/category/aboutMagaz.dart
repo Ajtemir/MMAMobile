@@ -510,9 +510,27 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                   BlocBuilder<ReductionBloc, BaseReductionState>(
                     builder: (context, state) => state.build(context),
                   ),
+                  SizedBox(height: 10),
                   GestureDetector(
-                    onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder:(contexts)=>Material(child: CategoryChosenState(1, productInfo.id!).build(contexts)))),
-                    child: Text("dgdfh"),
+                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (contexts) => Material(
+                            child: CategoryChosenState(1, productInfo.id!)
+                                .build(contexts)))),
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 110.0),
+                        child: Container(
+                          width: 140,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: AppColors.red1,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Center(
+                              child: Text(
+                            'Свойства продукта',
+                            style: TextStyle(color: Colors.white, fontSize: 14),
+                          )),
+                        )),
                   ),
                   Text(
                     'Галерея',
