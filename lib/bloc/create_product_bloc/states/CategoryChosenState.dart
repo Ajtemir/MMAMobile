@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
   import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upai_app/bloc/create_product_bloc/base_create_product_state.dart';
 import 'package:upai_app/model/auction/auction_bloc/api/execute_result.dart';
 import 'package:upai_app/utilities/app_http_client.dart';
 
 import '../../../shared/app_colors.dart';
+import '../../../views/category/aboutMagaz.dart';
 
 class CategoryChosenState extends BaseCreateProductState {
   final int categoryId;
@@ -52,7 +54,7 @@ class CategoryChosenState extends BaseCreateProductState {
             });
             elements = [...elements, [InkWell(
               onTap: (){
-                properties!.forEach((element) {
+                properties!.forEach((element) async {
                   switch(element?.isMultipleOrLiteralDefault){
                     case true:
                       print(element!.currentMultiValues.join(' '));
@@ -64,7 +66,11 @@ class CategoryChosenState extends BaseCreateProductState {
                       print(element!.currentNumberValue);
                       break;
                   }
-                  AppHttpClient.execute(HttpMethod.post, '/Products/UpdateProperties/${productId}', {'properties': properties?.map((e) => e!.toMap()).toList()});
+                  await AppHttpClient.execute(HttpMethod.post, '/Products/UpdateProperties/${productId}', {'properties': properties?.map((e) => e!.toMap()).toList()});
+                  var prefs = await SharedPreferences.getInstance();
+                  var email = prefs.getString('email');
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => AboutMagaz(productId: productId.toString(),email: email,checkUserPage: false,)));
                 });
               },
               child: Padding(
