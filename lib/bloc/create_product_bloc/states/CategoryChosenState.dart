@@ -69,8 +69,9 @@ class CategoryChosenState extends BaseCreateProductState {
                   await AppHttpClient.execute(HttpMethod.post, '/Products/UpdateProperties/${productId}', {'properties': properties?.map((e) => e!.toMap()).toList()});
                   var prefs = await SharedPreferences.getInstance();
                   var email = prefs.getString('email');
+                  // print(email);
                   Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => AboutMagaz(productId: productId.toString(),email: email,checkUserPage: false,)));
+                      .push(MaterialPageRoute(builder: (context) => AboutMagaz(productId: productId.toString(),email: email!,checkUserPage: false,)));
                 });
               },
               child: Padding(
