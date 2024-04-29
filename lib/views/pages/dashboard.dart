@@ -326,7 +326,7 @@ class _DashboardState extends State<Dashboard> {
                     slideIndex = index;
                   });
                 },
-                height: 160,
+                height: 170,
                 viewportFraction: 1,
                 autoPlay: true,
                 autoPlayInterval: const Duration(seconds: 5),
@@ -379,7 +379,7 @@ class _DashboardState extends State<Dashboard> {
                   var path = snapshot.data!;
                   return Container(
                     padding: const EdgeInsets.only(left: 14),
-                    height: 110,
+                    height: 130,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       separatorBuilder: (context, _) =>

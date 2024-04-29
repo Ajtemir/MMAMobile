@@ -24,7 +24,7 @@ class _SingInScreenState extends State<SingInScreen> {
   TextEditingController email =
       TextEditingController(text: "first@example.com");
   TextEditingController password = TextEditingController(text: "password");
-  TextEditingController ip = TextEditingController(text: "localhost");
+  TextEditingController ip = TextEditingController(text: "192.168.50.24");
   TextEditingController port = TextEditingController(text: "8080");
   TextEditingController scheme = TextEditingController(text: "http");
   bool showPassword = false;

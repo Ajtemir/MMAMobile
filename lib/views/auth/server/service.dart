@@ -44,9 +44,13 @@ class AuthClient{
   }
 
   Future<dynamic> getSearchProducts(String search) async {
-    var uri = Constants.addPathToBaseUrl('Products/Search', queryParameters: {'param':search});
-
-    var response = await client.get(uri);
+    var uri = Constants.addPathToBaseUrl('Products/Search');
+    var json={
+      "description" : search
+    };
+    var response = await client.post(uri,body: jsonEncode(json),headers: {
+      'Content-Type' : 'application/json'
+    });
     if (response.statusCode == 200 || response.statusCode == 201) {
       print(response.body);
       return response.body;
