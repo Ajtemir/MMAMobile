@@ -317,59 +317,59 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),*/
             const SizedBox(height: 26),
-            CarouselSlider(
-              items: listN,
-              options: CarouselOptions(
-                pageSnapping: true,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    slideIndex = index;
-                  });
-                },
-                height: 160,
-                viewportFraction: 1,
-                autoPlay: true,
-                autoPlayInterval: const Duration(seconds: 5),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 14,
-                  height: 1,
-                  color: slideIndex == 0
-                      ? AppColors.red1
-                      : const Color(0xFFC4C4C4),
-                ),
-                const SizedBox(width: 9),
-                Container(
-                  width: 14,
-                  height: 1,
-                  color: slideIndex == 1
-                      ? AppColors.red1
-                      : const Color(0xFFC4C4C4),
-                ),
-                const SizedBox(width: 9),
-                Container(
-                  width: 14,
-                  height: 1,
-                  color: slideIndex == 2
-                      ? AppColors.red1
-                      : const Color(0xFFC4C4C4),
-                ),
-              ],
-            ),
+            // CarouselSlider(
+            //   items: listN,
+            //   options: CarouselOptions(
+            //     pageSnapping: true,
+            //     onPageChanged: (index, reason) {
+            //       setState(() {
+            //         slideIndex = index;
+            //       });
+            //     },
+            //     height: 160,
+            //     viewportFraction: 1,
+            //     autoPlay: true,
+            //     autoPlayInterval: const Duration(seconds: 5),
+            //   ),
+            // ),
+            // const SizedBox(height: 8),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     Container(
+            //       width: 14,
+            //       height: 1,
+            //       color: slideIndex == 0
+            //           ? AppColors.red1
+            //           : const Color(0xFFC4C4C4),
+            //     ),
+            //     const SizedBox(width: 9),
+            //     Container(
+            //       width: 14,
+            //       height: 1,
+            //       color: slideIndex == 1
+            //           ? AppColors.red1
+            //           : const Color(0xFFC4C4C4),
+            //     ),
+            //     const SizedBox(width: 9),
+            //     Container(
+            //       width: 14,
+            //       height: 1,
+            //       color: slideIndex == 2
+            //           ? AppColors.red1
+            //           : const Color(0xFFC4C4C4),
+            //     ),
+            //   ],
+            // ),
             const ListTile(
               leading: Text(
                 'Категории',
                 style: TextStyle(color: Color(0xFF313131), fontSize: 16),
               ),
-              trailing: Text(
-                'Всё',
-                style: TextStyle(color: Color(0xFF8D8D8D), fontSize: 12),
-              ),
+              // trailing: Text(
+              //   'Всё',
+              //   style: TextStyle(color: Color(0xFF8D8D8D), fontSize: 12),
+              // ),
             ),
             FutureBuilder<CategoriesModel>(
               future: fetchCategories(),
