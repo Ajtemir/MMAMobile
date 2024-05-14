@@ -348,6 +348,25 @@ class AuthClient{
     }
   }
 
+
+  Future<int> postProductUpdate(var json) async {
+    //var _payload = json.encode(object);
+
+
+    var uri = Constants.addPathToBaseUrl('/Products/Update');
+    var response = await client.post(uri,body: jsonEncode(json), headers: {"Content-Type":"application/json","Accept":"*/*"});
+    print(response.statusCode);
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      print(response.statusCode);
+      return 1;
+    } else {
+      print('error not found');
+      print(response.body);
+      return 0;
+      //throw exception and catch it in UI
+    }
+  }
+
   Future<bool> postProductPhotoAdd( List<XFile> file,int id) async {
     var uri = Constants.addPathToBaseUrl('ProductImage/AddImage/$id');
     var request = http.MultipartRequest('POST', uri);

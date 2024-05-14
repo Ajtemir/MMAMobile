@@ -17,6 +17,7 @@ import 'package:upai_app/model/auction/auction_bloc/auction_state.dart';
 import 'package:upai_app/model/auction/auction_detail_model.dart';
 import 'package:upai_app/model/auction/auction_state.dart';
 import 'package:upai_app/model/auction/auction_widget.dart';
+import 'package:upai_app/views/drawer/hotKeshAdd.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 
 import '../../DTOs/unmake_collective_product.dart';
@@ -28,6 +29,7 @@ import '../../model/productModel.dart';
 import '../../shared/app_colors.dart';
 import '../../widgets/date_format.dart';
 import '../auth/server/service.dart';
+import '../drawer/hotKeshAddEdit.dart';
 import '../pages/profileUsers/profileUsers.dart';
 import 'custom_navigation.dart';
 import 'full_screen_album.dart';
@@ -119,26 +121,18 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
               // BlocProvider.of<AuctionBloc>(context, listen: false)
               // _bloc.add(InitialRenderingAuctionEvent(path.auctionDetail, path.auctionState));
               return ListView(
-                padding: EdgeInsets.symmetric(horizontal: 14),
+                padding: const EdgeInsets.symmetric(horizontal: 14),
                 children: [
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        width: 122,
-                        height: 122,
-                        padding: EdgeInsets.all(9),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                  blurRadius: 5,
-                                  offset: Offset(0, 0),
-                                  color: Color(0x26000000))
-                            ]),
-                        child: Container(
-                            padding: EdgeInsets.all(9),
-                            decoration: BoxDecoration(
+                      Row(
+                        children: [
+                          Container(
+                            width: 122,
+                            height: 122,
+                            padding: const EdgeInsets.all(9),
+                            decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Colors.white,
                                 boxShadow: [
@@ -147,109 +141,137 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                       offset: Offset(0, 0),
                                       color: Color(0x26000000))
                                 ]),
-                            child: CircleAvatar(
-                              radius: 53,
-                              backgroundImage: NetworkImage(
-                                  Constants.addPathToBaseUrl((path.images!.isEmpty ? 'images/default.png' : path.images?[0]) ?? 'images/default.png').toString(),
-                              ),
-                            )),
-                      ),
-                      SizedBox(width: 15),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 150,
-                            child: Text(
-                              nameAndDescription[0],
-                              style: TextStyle(
-                                color: Color(0xFF313131),
-                                fontSize: 20,
-                                overflow: TextOverflow.clip,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 17),
-                          Row(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(5),
-                                width: 26,
-                                height: 26,
-                                decoration: BoxDecoration(
+                            child: Container(
+                                padding: const EdgeInsets.all(9),
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
                                     color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
                                     boxShadow: [
                                       BoxShadow(
-                                          color: Color(0x26000000),
-                                          offset: Offset(0, 1),
-                                          blurRadius: 4)
+                                          blurRadius: 5,
+                                          offset: Offset(0, 0),
+                                          color: Color(0x26000000))
                                     ]),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.email_outlined,
-                                    color: Colors.green,
-                                    size: 16,
+                                child: CircleAvatar(
+                                  radius: 53,
+                                  backgroundImage: NetworkImage(
+                                      Constants.addPathToBaseUrl((path.images!.isEmpty ? 'images/default.png' : path.images?[0]) ?? 'images/default.png').toString(),
                                   ),
-                                ),
-                              ),
-                              SizedBox(width: 12),
+                                )),
+                          ),
+                          const SizedBox(width: 15),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
                               Container(
                                 width: 150,
                                 child: Text(
-                                  path.sellerEmail ?? '',
-                                  overflow: TextOverflow.clip,
-                                  style: TextStyle(
-                                      color: Color(0xFF535353),
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(5),
-                                width: 26,
-                                height: 26,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Color(0x26000000),
-                                          offset: Offset(0, 1),
-                                          blurRadius: 4)
-                                    ]),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.monetization_on_outlined,
-                                    color: Colors.red,
-                                    size: 16,
+                                  nameAndDescription[0],
+                                  style: const TextStyle(
+                                    color: Color(0xFF313131),
+                                    fontSize: 20,
+                                    overflow: TextOverflow.clip,
+                                    fontWeight: FontWeight.w400,
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 12),
-                              Text(
-                                path?.price == null
-                                    ? 'Договорная цена'
-                                    : '${path.price!.round().toString()} сом',
-                                style: TextStyle(
-                                    color: Color(0xFF535353),
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
-                              )
+                              const SizedBox(height: 17),
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(5),
+                                    width: 26,
+                                    height: 26,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        boxShadow: [
+                                          const BoxShadow(
+                                              color: Color(0x26000000),
+                                              offset: Offset(0, 1),
+                                              blurRadius: 4)
+                                        ]),
+                                    child: const Center(
+                                      child: Icon(
+                                        Icons.email_outlined,
+                                        color: Colors.green,
+                                        size: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Container(
+                                    width: 150,
+                                    child: Text(
+                                      path.sellerEmail ?? '',
+                                      overflow: TextOverflow.clip,
+                                      style: const TextStyle(
+                                          color: Color(0xFF535353),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(height: 5),
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(5),
+                                    width: 26,
+                                    height: 26,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        boxShadow: [
+                                          const BoxShadow(
+                                              color: Color(0x26000000),
+                                              offset: Offset(0, 1),
+                                              blurRadius: 4)
+                                        ]),
+                                    child: const Center(
+                                      child: Icon(
+                                        Icons.monetization_on_outlined,
+                                        color: Colors.red,
+                                        size: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    path?.price == null
+                                        ? 'Договорная цена'
+                                        : '${path.price!.round().toString()} сом',
+                                    style: const TextStyle(
+                                        color: Color(0xFF535353),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400),
+                                  )
+                                ],
+                              ),
                             ],
                           ),
                         ],
                       ),
+                      const Spacer(),
+                      ElevatedButton(onPressed: (){
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                HotKeshAddEdit(email: path.sellerEmail ?? '',productId: path.id.toString(),currentCategoryId: path.categoryId,)
+                                /*AboutMagaz(
+                                  productId: productId,
+                                  email: email,
+                                  checkUserPage: false,
+                                )*/
+                        ));
+                      }, child: const Text('Редактировать',style: TextStyle(color: Colors.white),),style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFFF6B00)
+                      ),)
+
                     ],
                   ),
-                  SizedBox(height: 48),
-                  Text(
+                  const SizedBox(height: 48),
+                  const Text(
                     'Описание',
                     style: TextStyle(
                       color: Colors.black,
@@ -257,15 +279,15 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     nameAndDescription[1],
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFF515151),
                       fontSize: 14,
                     ),
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   if (!(widget.email == path.sellerEmail))
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 60.0),
@@ -328,16 +350,16 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                             height: 45,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Color(0xFFFF6B00),
+                              color: const Color(0xFFFF6B00),
                             ),
                             child: Row(
                               children: [
                                 Expanded(
                                     flex: 1,
                                     child: isFavorite
-                                        ? Icon(Icons.favorite,
+                                        ? const Icon(Icons.favorite,
                                             color: Colors.white)
-                                        : Icon(
+                                        : const Icon(
                                             Icons.favorite_border_outlined,
                                             color: Colors.white,
                                           )),
@@ -347,7 +369,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                     isFavorite
                                         ? 'Убрать из избранного'
                                         : 'Добавить в избранное',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.white, fontSize: 15),
                                   ),
                                 ),
@@ -376,7 +398,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                               ),
                             ],
                           ),
-                          padding: EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(20),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -479,8 +501,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                             _submitDeal(isMadeCollectiveOrDefaultNotSeller!),
                           ],
                         ),
-                  SizedBox(height: 60),
-                  Center(
+                  const SizedBox(height: 60),
+                  const Center(
                     child: Text(
                       'Аукцион',
                       style: TextStyle(
@@ -489,15 +511,15 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   BlocBuilder<AuctionBloc, BaseAuctionState>(
                     builder: (context, state) {
                       print(state);
                       return state.build(context);
                     },
                   ),
-                  SizedBox(height: 60),
-                  Center(
+                  const SizedBox(height: 60),
+                  const Center(
                     child: Text(
                       'Тендер',
                       style: TextStyle(
@@ -506,11 +528,11 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   BlocBuilder<ReductionBloc, BaseReductionState>(
                     builder: (context, state) => state.build(context),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   GestureDetector(
                     onTap: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (contexts) => Material(
@@ -525,27 +547,27 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                             color: AppColors.red1,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Center(
+                          child: const Center(
                               child: Text(
                             'Свойства продукта',
                             style: TextStyle(color: Colors.white, fontSize: 14),
                           )),
                         )),
                   ),
-                  Text(
+                  const Text(
                     'Галерея',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,
                     ),
                   ),
-                  SizedBox(height: 13),
+                  const SizedBox(height: 13),
                   Container(
                     height: 215,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemCount: path.images!.length,
-                      separatorBuilder: (context, index) => SizedBox(width: 10),
+                      separatorBuilder: (context, index) => const SizedBox(width: 10),
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                           onTap: () {
@@ -570,15 +592,15 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                       },
                     ),
                   ),
-                  SizedBox(height: 26),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  const SizedBox(height: 26),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.0),
                     child: Divider(
                       thickness: 1.1,
                       color: Color(0xFFdbdbdb),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   if (!widget.checkUserPage &&
                       !(widget.email == path.sellerEmail))
                     Padding(
@@ -593,10 +615,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                         child: Ink(
                           height: 40,
                           decoration: BoxDecoration(
-                            color: Color(0xFFFF6B00),
+                            color: const Color(0xFFFF6B00),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Center(
+                          child: const Center(
                               child: Text(
                             'Страница пользователя',
                             style: TextStyle(color: Colors.white, fontSize: 14),
@@ -604,7 +626,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                         ),
                       ),
                     ),
-                  SizedBox(height: 100),
+                  const SizedBox(height: 100),
                   // AuctionWidget(state: productInfo.auctionState, auctionDetail: productInfo.auctionDetail),
                 ],
               );
@@ -614,7 +636,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
             }
 
             // By default, show a loading spinner.
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           },
         ),
       ),
@@ -632,10 +654,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
               width: 19,
               height: 19,
             ),
-            SizedBox(width: 4),
+            const SizedBox(width: 4),
             Text(
               text,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Color(0xFF313131),
                 fontSize: 11,
               ),
@@ -649,7 +671,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
   Widget _makingCollective(bool isMadeCollective) {
     return Column(
       children: [
-        Text(
+        const Text(
           'Коллективная покупка',
           style: TextStyle(
             color: Colors.black,
@@ -736,7 +758,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
         ),
         child: Column(
           children: [
-            Icon(
+            const Icon(
               Icons.add_business_rounded,
               color: Colors.white,
             ),
@@ -751,7 +773,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                         'Начало',
                         style: styleTitleInCard,
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Text(
                         dateFormat(productInfo.collectiveInfo!.startDate),
                         style: styleSubtitleInCard,
@@ -768,7 +790,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                         'Конец',
                         style: styleTitleInCard,
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Text(
                         dateFormat(productInfo.collectiveInfo!.endDate),
                         style: styleSubtitleInCard,
@@ -778,7 +800,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                 ),
               ],
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -813,7 +835,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             SizedBox(
@@ -868,7 +890,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
       ),
       child: Column(
         children: [
-          Icon(
+          const Icon(
             Icons.add_business_rounded,
             color: Colors.white,
           ),
@@ -883,7 +905,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                       'Начало',
                       style: styleTitleInCard,
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(
                       dateFormat(model.startDate),
                       style: styleSubtitleInCard,
@@ -900,7 +922,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                       'Конец',
                       style: styleTitleInCard,
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(
                       dateFormat(model.endDate),
                       style: styleSubtitleInCard,
@@ -910,7 +932,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
               ),
             ],
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -947,7 +969,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
 
@@ -997,12 +1019,12 @@ class _FormBottomModalState extends State<FormBottomModal> {
         key: _formKey,
         child: Column(
           children: [
-            Text(
+            const Text(
               'Выставить обьявление на групповую скидку',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             FormBuilderDateTimePicker(
@@ -1016,13 +1038,13 @@ class _FormBottomModalState extends State<FormBottomModal> {
               inputType: InputType.both,
               format: DateFormat("yyyy-MM-dd hh:mm"),
               initialDate: DateTime.now(),
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Дата начала",
                 border: OutlineInputBorder(),
               ),
               name: 'startDate',
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             FormBuilderDateTimePicker(
@@ -1035,13 +1057,13 @@ class _FormBottomModalState extends State<FormBottomModal> {
               inputType: InputType.both,
               format: DateFormat("yyyy-MM-dd hh:mm"),
               initialDate: DateTime.now(),
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Дата конца",
                 border: OutlineInputBorder(),
               ),
               name: 'endDate',
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             FormBuilderTextField(
@@ -1051,7 +1073,7 @@ class _FormBottomModalState extends State<FormBottomModal> {
               decoration: const InputDecoration(
                   labelText: 'Коллективная цена', border: OutlineInputBorder()),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             FormBuilderTextField(
@@ -1061,7 +1083,7 @@ class _FormBottomModalState extends State<FormBottomModal> {
                 }
                 return null;
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   labelText: "Минимальное количество покупателей",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(2)))),
@@ -1071,7 +1093,7 @@ class _FormBottomModalState extends State<FormBottomModal> {
               ],
               name: 'minBuyerCount',
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             MaterialButton(
@@ -1108,7 +1130,7 @@ class _FormBottomModalState extends State<FormBottomModal> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
           ],
@@ -1127,12 +1149,12 @@ class MakeAuctionedForm {
           key: _formKey,
           child: Column(
             children: [
-              Text(
+              const Text(
                 'Выставить обьявление на аукцион',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               FormBuilderDateTimePicker(
@@ -1146,13 +1168,13 @@ class MakeAuctionedForm {
                 inputType: InputType.both,
                 format: DateFormat("yyyy-MM-dd hh:mm"),
                 initialDate: DateTime.now(),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Дата начала",
                   border: OutlineInputBorder(),
                 ),
                 name: 'startDate',
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               FormBuilderDateTimePicker(
@@ -1165,13 +1187,13 @@ class MakeAuctionedForm {
                 inputType: InputType.both,
                 format: DateFormat("yyyy-MM-dd hh:mm"),
                 initialDate: DateTime.now(),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Дата конца",
                   border: OutlineInputBorder(),
                 ),
                 name: 'endDate',
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               FormBuilderTextField(
@@ -1181,7 +1203,7 @@ class MakeAuctionedForm {
                 decoration: const InputDecoration(
                     labelText: 'Стартовая цена', border: OutlineInputBorder()),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               MaterialButton(
@@ -1205,7 +1227,7 @@ class MakeAuctionedForm {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
             ],

@@ -56,6 +56,7 @@ class _SelectCategoryFieldState extends State<SelectCategoryField> {
 
   Widget categoriesInput() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
           padding: EdgeInsets.only(left: 19.0),
