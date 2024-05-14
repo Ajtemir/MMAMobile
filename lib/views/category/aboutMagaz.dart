@@ -120,515 +120,521 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
               // AuctionBloc _bloc = BlocProvider.of<AuctionBloc>(context);
               // BlocProvider.of<AuctionBloc>(context, listen: false)
               // _bloc.add(InitialRenderingAuctionEvent(path.auctionDetail, path.auctionState));
-              return ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            width: 122,
-                            height: 122,
-                            padding: const EdgeInsets.all(9),
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                      blurRadius: 5,
-                                      offset: Offset(0, 0),
-                                      color: Color(0x26000000))
-                                ]),
-                            child: Container(
-                                padding: const EdgeInsets.all(9),
-                                decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          blurRadius: 5,
-                                          offset: Offset(0, 0),
-                                          color: Color(0x26000000))
-                                    ]),
-                                child: CircleAvatar(
-                                  radius: 53,
-                                  backgroundImage: NetworkImage(
-                                      Constants.addPathToBaseUrl((path.images!.isEmpty ? 'images/default.png' : path.images?[0]) ?? 'images/default.png').toString(),
-                                  ),
-                                )),
-                          ),
-                          const SizedBox(width: 15),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 150,
-                                child: Text(
-                                  nameAndDescription[0],
-                                  style: const TextStyle(
-                                    color: Color(0xFF313131),
-                                    fontSize: 20,
-                                    overflow: TextOverflow.clip,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 17),
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(5),
-                                    width: 26,
-                                    height: 26,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                        boxShadow: [
-                                          const BoxShadow(
-                                              color: Color(0x26000000),
-                                              offset: Offset(0, 1),
-                                              blurRadius: 4)
-                                        ]),
-                                    child: const Center(
-                                      child: Icon(
-                                        Icons.email_outlined,
-                                        color: Colors.green,
-                                        size: 16,
-                                      ),
+              return RefreshIndicator(
+                onRefresh: () async{
+                  setState(() {
+                  });
+                },
+                child: ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: 122,
+                              height: 122,
+                              padding: const EdgeInsets.all(9),
+                              decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        blurRadius: 5,
+                                        offset: Offset(0, 0),
+                                        color: Color(0x26000000))
+                                  ]),
+                              child: Container(
+                                  padding: const EdgeInsets.all(9),
+                                  decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                            blurRadius: 5,
+                                            offset: Offset(0, 0),
+                                            color: Color(0x26000000))
+                                      ]),
+                                  child: CircleAvatar(
+                                    radius: 53,
+                                    backgroundImage: NetworkImage(
+                                        Constants.addPathToBaseUrl((path.images!.isEmpty ? 'images/default.png' : path.images?[0]) ?? 'images/default.png').toString(),
+                                    ),
+                                  )),
+                            ),
+                            const SizedBox(width: 15),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 150,
+                                  child: Text(
+                                    nameAndDescription[0],
+                                    style: const TextStyle(
+                                      color: Color(0xFF313131),
+                                      fontSize: 20,
+                                      overflow: TextOverflow.clip,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
-                                  const SizedBox(width: 12),
-                                  Container(
-                                    width: 150,
-                                    child: Text(
-                                      path.sellerEmail ?? '',
-                                      overflow: TextOverflow.clip,
+                                ),
+                                const SizedBox(height: 17),
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(5),
+                                      width: 26,
+                                      height: 26,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10),
+                                          boxShadow: [
+                                            const BoxShadow(
+                                                color: Color(0x26000000),
+                                                offset: Offset(0, 1),
+                                                blurRadius: 4)
+                                          ]),
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.email_outlined,
+                                          color: Colors.green,
+                                          size: 16,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Container(
+                                      width: 150,
+                                      child: Text(
+                                        path.sellerEmail ?? '',
+                                        overflow: TextOverflow.clip,
+                                        style: const TextStyle(
+                                            color: Color(0xFF535353),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(height: 5),
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(5),
+                                      width: 26,
+                                      height: 26,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10),
+                                          boxShadow: [
+                                            const BoxShadow(
+                                                color: Color(0x26000000),
+                                                offset: Offset(0, 1),
+                                                blurRadius: 4)
+                                          ]),
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.monetization_on_outlined,
+                                          color: Colors.red,
+                                          size: 16,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Text(
+                                      path?.price == null
+                                          ? 'Договорная цена'
+                                          : '${path.price!.round().toString()} сом',
                                       style: const TextStyle(
                                           color: Color(0xFF535353),
                                           fontSize: 12,
                                           fontWeight: FontWeight.w400),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              const SizedBox(height: 5),
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(5),
-                                    width: 26,
-                                    height: 26,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                        boxShadow: [
-                                          const BoxShadow(
-                                              color: Color(0x26000000),
-                                              offset: Offset(0, 1),
-                                              blurRadius: 4)
-                                        ]),
-                                    child: const Center(
-                                      child: Icon(
-                                        Icons.monetization_on_outlined,
-                                        color: Colors.red,
-                                        size: 16,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Text(
-                                    path?.price == null
-                                        ? 'Договорная цена'
-                                        : '${path.price!.round().toString()} сом',
-                                    style: const TextStyle(
-                                        color: Color(0xFF535353),
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                      ElevatedButton(onPressed: (){
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                HotKeshAddEdit(email: path.sellerEmail ?? '',productId: path.id.toString(),currentCategoryId: path.categoryId,)
-                                /*AboutMagaz(
-                                  productId: productId,
-                                  email: email,
-                                  checkUserPage: false,
-                                )*/
-                        ));
-                      }, child: const Text('Редактировать',style: TextStyle(color: Colors.white),),style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFF6B00)
-                      ),)
-
-                    ],
-                  ),
-                  const SizedBox(height: 48),
-                  const Text(
-                    'Описание',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    nameAndDescription[1],
-                    style: const TextStyle(
-                      color: Color(0xFF515151),
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  if (!(widget.email == path.sellerEmail))
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 60.0),
-                      child: InkWell(
-                        onTap: () async {
-                          String ans = "null";
-                          String ans2 = "null";
-
-                          if (!isFavorite) {
-                            print('set');
-                            ans = await AuthClient()
-                                .getSetFavorite(widget.productId, widget.email);
-                          } else {
-                            print('unset');
-                            ans2 = await AuthClient()
-                                .getUnSetFavorite(widget.productId, widget.email);
-                          }
-                          print(ans + ' ' + ans2);
-                          if (ans == 'true') {
-                            Fluttertoast.showToast(
-                                msg: 'Добавлено',
-                                fontSize: 18,
-                                gravity: ToastGravity.BOTTOM,
-                                backgroundColor: Colors.green,
-                                textColor: Colors.white);
-
-                            setState(() {
-                              isFavorite = true;
-                            });
-                          } else if (ans == 'false') {
-                            Fluttertoast.showToast(
-                                msg: 'Вышла ошибка!',
-                                fontSize: 18,
-                                gravity: ToastGravity.BOTTOM,
-                                backgroundColor: Colors.red,
-                                textColor: Colors.white);
-                          }
-
-                          if (ans2 == 'true') {
-                            Fluttertoast.showToast(
-                                msg: 'Убрано',
-                                fontSize: 18,
-                                gravity: ToastGravity.BOTTOM,
-                                backgroundColor: Colors.green,
-                                textColor: Colors.white);
-
-                            setState(() {
-                              isFavorite = false;
-                            });
-                          } else if (ans2 == 'false') {
-                            Fluttertoast.showToast(
-                                msg: 'Вышла ошибка!',
-                                fontSize: 18,
-                                gravity: ToastGravity.BOTTOM,
-                                backgroundColor: Colors.red,
-                                textColor: Colors.white);
-                          }
-                        },
-                        child: Ink(
-                            height: 45,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: const Color(0xFFFF6B00),
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                    flex: 1,
-                                    child: isFavorite
-                                        ? const Icon(Icons.favorite,
-                                            color: Colors.white)
-                                        : const Icon(
-                                            Icons.favorite_border_outlined,
-                                            color: Colors.white,
-                                          )),
-                                Expanded(
-                                  flex: 3,
-                                  child: Text(
-                                    isFavorite
-                                        ? 'Убрать из избранного'
-                                        : 'Добавить в избранное',
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 15),
-                                  ),
+                                    )
+                                  ],
                                 ),
                               ],
-                            )),
+                            ),
+                          ],
+                        ),
+                        const Spacer(),
+                        ElevatedButton(onPressed: (){
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  HotKeshAddEdit(email: path.sellerEmail ?? '',productId: path.id.toString(),currentCategoryId: path.categoryId,)
+                                  /*AboutMagaz(
+                                    productId: productId,
+                                    email: email,
+                                    checkUserPage: false,
+                                  )*/
+                          ));
+                        }, child: const Text('Редактировать',style: TextStyle(color: Colors.white),),style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFFF6B00)
+                        ),)
+
+                      ],
+                    ),
+                    const SizedBox(height: 48),
+                    const Text(
+                      'Описание',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  isSetCollective == null
-                      ? const SizedBox(
-                          height: 0,
-                        )
-                      : Container(
-                          height: MediaQuery.of(context).size.height * 0.2,
-                          decoration: BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: AppColors.white),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0x40000000).withOpacity(0.25),
-                                blurRadius: 10,
-                                offset: const Offset(0, 6),
+                    const SizedBox(height: 10),
+                    Text(
+                      nameAndDescription[1],
+                      style: const TextStyle(
+                        color: Color(0xFF515151),
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    if (!(widget.email == path.sellerEmail))
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 60.0),
+                        child: InkWell(
+                          onTap: () async {
+                            String ans = "null";
+                            String ans2 = "null";
+
+                            if (!isFavorite) {
+                              print('set');
+                              ans = await AuthClient()
+                                  .getSetFavorite(widget.productId, widget.email);
+                            } else {
+                              print('unset');
+                              ans2 = await AuthClient()
+                                  .getUnSetFavorite(widget.productId, widget.email);
+                            }
+                            print(ans + ' ' + ans2);
+                            if (ans == 'true') {
+                              Fluttertoast.showToast(
+                                  msg: 'Добавлено',
+                                  fontSize: 18,
+                                  gravity: ToastGravity.BOTTOM,
+                                  backgroundColor: Colors.green,
+                                  textColor: Colors.white);
+
+                              setState(() {
+                                isFavorite = true;
+                              });
+                            } else if (ans == 'false') {
+                              Fluttertoast.showToast(
+                                  msg: 'Вышла ошибка!',
+                                  fontSize: 18,
+                                  gravity: ToastGravity.BOTTOM,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white);
+                            }
+
+                            if (ans2 == 'true') {
+                              Fluttertoast.showToast(
+                                  msg: 'Убрано',
+                                  fontSize: 18,
+                                  gravity: ToastGravity.BOTTOM,
+                                  backgroundColor: Colors.green,
+                                  textColor: Colors.white);
+
+                              setState(() {
+                                isFavorite = false;
+                              });
+                            } else if (ans2 == 'false') {
+                              Fluttertoast.showToast(
+                                  msg: 'Вышла ошибка!',
+                                  fontSize: 18,
+                                  gravity: ToastGravity.BOTTOM,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white);
+                            }
+                          },
+                          child: Ink(
+                              height: 45,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: const Color(0xFFFF6B00),
                               ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      flex: 1,
+                                      child: isFavorite
+                                          ? const Icon(Icons.favorite,
+                                              color: Colors.white)
+                                          : const Icon(
+                                              Icons.favorite_border_outlined,
+                                              color: Colors.white,
+                                            )),
+                                  Expanded(
+                                    flex: 3,
+                                    child: Text(
+                                      isFavorite
+                                          ? 'Убрать из избранного'
+                                          : 'Добавить в избранное',
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 15),
+                                    ),
+                                  ),
+                                ],
+                              )),
+                        ),
+                      ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    isSetCollective == null
+                        ? const SizedBox(
+                            height: 0,
+                          )
+                        : Container(
+                            height: MediaQuery.of(context).size.height * 0.2,
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: AppColors.white),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0x40000000).withOpacity(0.25),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 6),
+                                ),
+                              ],
+                            ),
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Конец:',
+                                        style: styleTitleInCard,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        dateFormat(path.collectiveInfo!.endDate),
+                                        style: styleSubtitleInCard,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Количество людей:',
+                                        style: styleTitleInCard,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        '${path.collectiveInfo!.currentBuyerCount} / ${path.collectiveInfo!.minBuyerCount}',
+                                        style: styleSubtitleInCard,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Цена товара:',
+                                        style: styleTitleInCard,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        '${path.collectiveInfo!.groupDiscountPrice} сом',
+                                        style: styleSubtitleInCard,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    style: const ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStatePropertyAll(AppColors.red1),
+                                      padding: MaterialStatePropertyAll(
+                                          EdgeInsets.symmetric(vertical: 10)),
+                                    ),
+                                    onPressed: () async {
+                                      try {
+                                        if (isSetCollective!) {
+                                          await AuthClient().removeCollective(
+                                              path.id!, widget.email);
+                                        } else {
+                                          await AuthClient().addCollective(
+                                              path.id!, widget.email);
+                                        }
+                                        setState(() {});
+                                      } on Exception catch (err) {
+                                        print(err);
+                                      }
+
+                                      ;
+                                    },
+                                    child: Text(
+                                      isSetCollective! ? 'Убрать' : 'Добавить',
+                                    ),
+                                  ),
+                                ),
+
+                              ],
+                            ),
+                          ),
+                    isMadeCollectiveOrDefaultNotSeller == null
+                        ? const SizedBox(
+                            height: 0,
+                          )
+                        : Column(
+                            children: <Widget>[
+                              _makingCollective(
+                                  isMadeCollectiveOrDefaultNotSeller!),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              _submitDeal(isMadeCollectiveOrDefaultNotSeller!),
                             ],
                           ),
-                          padding: const EdgeInsets.all(20),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      'Конец:',
-                                      style: styleTitleInCard,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      dateFormat(path.collectiveInfo!.endDate),
-                                      style: styleSubtitleInCard,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      'Количество людей:',
-                                      style: styleTitleInCard,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      '${path.collectiveInfo!.currentBuyerCount} / ${path.collectiveInfo!.minBuyerCount}',
-                                      style: styleSubtitleInCard,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      'Цена товара:',
-                                      style: styleTitleInCard,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      '${path.collectiveInfo!.groupDiscountPrice} сом',
-                                      style: styleSubtitleInCard,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                width: double.infinity,
-                                child: ElevatedButton(
-                                  style: const ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStatePropertyAll(AppColors.red1),
-                                    padding: MaterialStatePropertyAll(
-                                        EdgeInsets.symmetric(vertical: 10)),
-                                  ),
-                                  onPressed: () async {
-                                    try {
-                                      if (isSetCollective!) {
-                                        await AuthClient().removeCollective(
-                                            path.id!, widget.email);
-                                      } else {
-                                        await AuthClient().addCollective(
-                                            path.id!, widget.email);
-                                      }
-                                      setState(() {});
-                                    } on Exception catch (err) {
-                                      print(err);
-                                    }
-
-                                    ;
-                                  },
-                                  child: Text(
-                                    isSetCollective! ? 'Убрать' : 'Добавить',
+                    const SizedBox(height: 60),
+                    const Center(
+                      child: Text(
+                        'Аукцион',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    BlocBuilder<AuctionBloc, BaseAuctionState>(
+                      builder: (context, state) {
+                        print(state);
+                        return state.build(context);
+                      },
+                    ),
+                    const SizedBox(height: 60),
+                    const Center(
+                      child: Text(
+                        'Тендер',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    BlocBuilder<ReductionBloc, BaseReductionState>(
+                      builder: (context, state) => state.build(context),
+                    ),
+                    const SizedBox(height: 10),
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                          builder: (contexts) => Material(
+                              child: CategoryChosenState(1, productInfo.id!)
+                                  .build(contexts)))),
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 110.0),
+                          child: Container(
+                            width: 140,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: AppColors.red1,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Center(
+                                child: Text(
+                              'Свойства продукта',
+                              style: TextStyle(color: Colors.white, fontSize: 14),
+                            )),
+                          )),
+                    ),
+                    const Text(
+                      'Галерея',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
+                    ),
+                    const SizedBox(height: 13),
+                    Container(
+                      height: 215,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: path.images!.length,
+                        separatorBuilder: (context, index) => const SizedBox(width: 10),
+                        itemBuilder: (BuildContext context, int index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.of(context, rootNavigator: true).push(
+                                  MyCustomRoute(
+                                      builder: (context) =>
+                                          FullScreenAlbum(path.images!)));
+                            },
+                            child: Container(
+                              width: 146,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                    Constants.addPartToBaseUrl(path.images![index]),
                                   ),
                                 ),
                               ),
-
-                            ],
-                          ),
-                        ),
-                  isMadeCollectiveOrDefaultNotSeller == null
-                      ? const SizedBox(
-                          height: 0,
-                        )
-                      : Column(
-                          children: <Widget>[
-                            _makingCollective(
-                                isMadeCollectiveOrDefaultNotSeller!),
-                            const SizedBox(
-                              height: 20,
                             ),
-                            _submitDeal(isMadeCollectiveOrDefaultNotSeller!),
-                          ],
-                        ),
-                  const SizedBox(height: 60),
-                  const Center(
-                    child: Text(
-                      'Аукцион',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
+                          );
+                        },
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  BlocBuilder<AuctionBloc, BaseAuctionState>(
-                    builder: (context, state) {
-                      print(state);
-                      return state.build(context);
-                    },
-                  ),
-                  const SizedBox(height: 60),
-                  const Center(
-                    child: Text(
-                      'Тендер',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
+                    const SizedBox(height: 26),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Divider(
+                        thickness: 1.1,
+                        color: Color(0xFFdbdbdb),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  BlocBuilder<ReductionBloc, BaseReductionState>(
-                    builder: (context, state) => state.build(context),
-                  ),
-                  const SizedBox(height: 10),
-                  GestureDetector(
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (contexts) => Material(
-                            child: CategoryChosenState(1, productInfo.id!)
-                                .build(contexts)))),
-                    child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 110.0),
-                        child: Container(
-                          width: 140,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: AppColors.red1,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Center(
-                              child: Text(
-                            'Свойства продукта',
-                            style: TextStyle(color: Colors.white, fontSize: 14),
-                          )),
-                        )),
-                  ),
-                  const Text(
-                    'Галерея',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                    ),
-                  ),
-                  const SizedBox(height: 13),
-                  Container(
-                    height: 215,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: path.images!.length,
-                      separatorBuilder: (context, index) => const SizedBox(width: 10),
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
+                    const SizedBox(height: 20),
+                    if (!widget.checkUserPage &&
+                        !(widget.email == path.sellerEmail))
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 90.0),
+                        child: InkWell(
                           onTap: () {
                             Navigator.of(context, rootNavigator: true).push(
                                 MyCustomRoute(
                                     builder: (context) =>
-                                        FullScreenAlbum(path.images!)));
+                                        ProfileUser(emailUser: path.sellerEmail)));
                           },
-                          child: Container(
-                            width: 146,
+                          child: Ink(
+                            height: 40,
                             decoration: BoxDecoration(
+                              color: const Color(0xFFFF6B00),
                               borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                  Constants.addPartToBaseUrl(path.images![index]),
-                                ),
-                              ),
                             ),
+                            child: const Center(
+                                child: Text(
+                              'Страница пользователя',
+                              style: TextStyle(color: Colors.white, fontSize: 14),
+                            )),
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 26),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Divider(
-                      thickness: 1.1,
-                      color: Color(0xFFdbdbdb),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  if (!widget.checkUserPage &&
-                      !(widget.email == path.sellerEmail))
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 90.0),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context, rootNavigator: true).push(
-                              MyCustomRoute(
-                                  builder: (context) =>
-                                      ProfileUser(emailUser: path.sellerEmail)));
-                        },
-                        child: Ink(
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFF6B00),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Center(
-                              child: Text(
-                            'Страница пользователя',
-                            style: TextStyle(color: Colors.white, fontSize: 14),
-                          )),
                         ),
                       ),
-                    ),
-                  const SizedBox(height: 100),
-                  // AuctionWidget(state: productInfo.auctionState, auctionDetail: productInfo.auctionDetail),
-                ],
+                    const SizedBox(height: 100),
+                    // AuctionWidget(state: productInfo.auctionState, auctionDetail: productInfo.auctionDetail),
+                  ],
+                ),
               );
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');

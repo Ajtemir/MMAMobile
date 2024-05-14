@@ -414,7 +414,7 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
                   child: TextField(
                     controller: price,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         contentPadding: EdgeInsets.symmetric(
                             horizontal: 0, vertical: 0),
                         border: InputBorder.none,
@@ -446,7 +446,7 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
                           print('correct');
                           if(imageFile.isNotEmpty){
                             bool ans2 = await AuthClient()
-                                .postProductPhotoAdd(imageFile, ans);
+                                .postProductPhotoAdd(imageFile, int.parse(widget.productId));
                             if (ans2) {
                               BlocProvider.of<CreateProductBloc>(context)
                                   .add(ChooseCategoryEvent(
@@ -475,6 +475,7 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
                                   textColor: Colors.white);
                             }
                           }
+                          Navigator.pop(context);
                           /*bool ans2 = await AuthClient()
                               .postProductPhotoAdd(imageFile, ans);
                           if (ans2) {
