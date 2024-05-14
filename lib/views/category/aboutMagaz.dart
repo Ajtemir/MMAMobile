@@ -1175,6 +1175,7 @@ class MakeAuctionedForm {
                 height: 10,
               ),
               FormBuilderTextField(
+
                 name: 'startPrice',
                 enabled: true,
                 keyboardType: TextInputType.number,

@@ -242,10 +242,10 @@ class _SingUpScreenState extends State<SingUpScreen> {
                     bool ans = await AuthClient()
                         .postSingUp(email.text, password.text, 'User/SignUp');
                     if (ans) {
-                      await AuthClient().getConfirmEmail(email.text);
-                      Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (_) => EmailVerify(email: email.text)));
-
+                      Fluttertoast.showToast(
+                          msg: "Регистрация прошла!",
+                          fontSize: 18,
+                          gravity: ToastGravity.BOTTOM); // todo not work toast
                     } else {
                       cancelToast("Введите правильно email или пароль");
                     }

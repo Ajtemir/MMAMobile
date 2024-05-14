@@ -39,7 +39,6 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     emailGet = Provider.of<SelectCatProvider>(context, listen: false).email;
-    print(emailGet);
     super.initState();
     futureProducts = fetchProfileProducts(emailGet);
     futureUserData = fetchUserData(emailGet);
@@ -86,12 +85,13 @@ class _ProfileState extends State<Profile> {
                     FutureBuilder<UserDataModel>(
                       future: fetchUserData(emailGet),
                       builder: (context, snapshot) {
+                        print('inside builder 33333333333333333333333333333333333333333333333');
                         if (snapshot.hasData) {
                           var path = snapshot.data!;
                           imageProfile =
                               Constants.addPartToBaseUrl(path.avatar.toString());
                           name = path.username!;
-                          phone = path.phone!;
+                          phone = path.phone ?? '';
                           return Center(
                             child: path.avatar != null
                                 ? CircleAvatar(
@@ -105,26 +105,6 @@ class _ProfileState extends State<Profile> {
                                         AssetImage('assets/img/user.png'),
                                   ),
                           );
-                          /*Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                            width: 0.5,
-                            color: Color(0xFF929292).withOpacity(0.37)),
-                        boxShadow: [
-                          BoxShadow(
-                              blurRadius: 16,
-                              offset: Offset(0, 0),
-                              color: Color(0x33000000))
-                        ],
-                        image: path.avatar!=null ? DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage('http://${AuthClient().ip}/${path.avatar}')):DecorationImage(
-                            image: AssetImage('assets/img/user.png')) ,
-                      ),
-                    );*/
                         } else if (snapshot.hasError) {
                           return Text('${snapshot.error}');
                         }
@@ -141,7 +121,7 @@ class _ProfileState extends State<Profile> {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => UserEditing(
                                   image:
-                                      imageProfile != null ? imageProfile : '',
+                                      imageProfile ?? '',
                                   email: emailGet,
                                   name: name,
                                   number: phone)));
