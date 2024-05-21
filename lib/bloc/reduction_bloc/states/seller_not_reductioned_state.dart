@@ -16,6 +16,16 @@ class SellerNotReductionedState extends BaseReductionState {
   Widget build(context) {
     return Column(
       children: [
+        const SizedBox(height: 60),
+        const Center(
+          child: Text(
+            'Тендер',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+            ),
+          ),
+        ),
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
@@ -42,6 +52,7 @@ class SellerNotReductionedState extends BaseReductionState {
             },
             child: Text(
               "Запустить тендер",
+              style: TextStyle(color: Colors.white),
             ),
           ),
         ),

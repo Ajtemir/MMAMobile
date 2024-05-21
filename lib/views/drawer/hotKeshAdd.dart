@@ -56,21 +56,23 @@ class _HotKeshAddState extends State<HotKeshAdd> {
 
   Widget bottomSheet() {
     return Container(
-      height: 100.0,
+
+      height: 120,
       width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         horizontal: 20,
         vertical: 20,
       ),
       child: Column(
         children: <Widget>[
-          Text(
+
+          const Text(
             "Выберите фото",
             style: TextStyle(
               fontSize: 20.0,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
@@ -81,22 +83,22 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                 print(imageFileCamera.path);
               },
               child: Ink(
+                padding: EdgeInsets.all(5),
                 width: 100,
-                height: 50,
                 decoration: BoxDecoration(
                   color: AppColors.customButton,
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: Column(
+                child: const Column(
                   children: [
                     Icon(Icons.camera),
-                    SizedBox(height: 10),
+                    SizedBox(height: 7),
                     Text("Камера")
                   ],
                 ),
               ),
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             InkWell(
               onTap: () {
                 print('Galery');
@@ -104,16 +106,16 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                 print(imageFile[0].path);
               },
               child: Ink(
+                padding: EdgeInsets.all(5),
                 width: 100,
-                height: 50,
                 decoration: BoxDecoration(
                   color: AppColors.customButton,
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: Column(
+                child: const Column(
                   children: [
                     Icon(Icons.image),
-                    SizedBox(height: 10),
+                    SizedBox(height: 7),
                     Text("Гелерея")
                   ],
                 ),

@@ -9,19 +9,14 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:upai_app/bloc/create_product_bloc/create_product_bloc.dart';
 import 'package:upai_app/provider/selectCatProvider.dart';
 import 'package:upai_app/views/auth/server/service.dart';
-import 'package:upai_app/views/category/selectCategoty.dart';
-import 'package:upai_app/views/drawer/selectCategoryField.dart';
 import 'package:upai_app/widgets/appBar.dart';
-import 'package:upai_app/widgets/appBar2.dart';
 import '../../bloc/create_product_bloc/create_product_events.dart';
 import '../../constants/constants.dart';
-import '../../fetches/about_product_fetch.dart';
 import '../../model/aboutProductModel.dart';
 import '../../provider/selectTabProvider.dart';
 import '../../shared/app_colors.dart';
 import 'package:image_picker/image_picker.dart';
 import '../pages/dashboard.dart';
-import 'utils.dart';
 
 class HotKeshAddEdit extends StatefulWidget {
   final String productId;
@@ -42,6 +37,7 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
   late String emailGet;
   AboutProductModel? futureProductData;
   bool load=false;
+  var categoryId;
 
   @override
   void initState(){
@@ -64,18 +60,16 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
       ];
       name.text = nameAndDescription[0];
       description.text = nameAndDescription[1];
-      if (futureProductData!.price != null)
+      if (futureProductData!.price != null) {
         price.text = futureProductData!.price.toString();
+      }
       imageFromNetwork = futureProductData!.images!;
+      categoryId=futureProductData!.categoryId;
     }
     setState(() {
       load=true;
     });
   }
-
-  CalendarFormat _calendarFormat = CalendarFormat.month;
-  DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
   DateTime selectedDate1 = DateTime.now();
   DateTime selectedDate2 = DateTime.now();
 
@@ -92,21 +86,23 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
 
   Widget bottomSheet() {
     return Container(
-      height: 100.0,
+
+      height: 120,
       width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         horizontal: 20,
         vertical: 20,
       ),
       child: Column(
         children: <Widget>[
-          Text(
+          
+          const Text(
             "Выберите фото",
             style: TextStyle(
               fontSize: 20.0,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
@@ -117,22 +113,22 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
                 print(imageFileCamera.path);
               },
               child: Ink(
+                padding: EdgeInsets.all(5),
                 width: 100,
-                height: 50,
                 decoration: BoxDecoration(
                   color: AppColors.customButton,
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: Column(
+                child: const Column(
                   children: [
                     Icon(Icons.camera),
-                    SizedBox(height: 10),
+                    SizedBox(height: 7),
                     Text("Камера")
                   ],
                 ),
               ),
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             InkWell(
               onTap: () {
                 print('Galery');
@@ -140,16 +136,16 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
                 print(imageFile[0].path);
               },
               child: Ink(
+                padding: EdgeInsets.all(5),
                 width: 100,
-                height: 50,
                 decoration: BoxDecoration(
                   color: AppColors.customButton,
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: Column(
+                child: const Column(
                   children: [
                     Icon(Icons.image),
-                    SizedBox(height: 10),
+                    SizedBox(height: 7),
                     Text("Гелерея")
                   ],
                 ),
@@ -209,23 +205,23 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AllAppBar(),
+      appBar: const AllAppBar(),
       body: load ? ListView(
         children: [
-          SizedBox(height: 30),
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0),
+          const SizedBox(height: 30),
+          const Padding(
+            padding: EdgeInsets.only(left: 20.0),
             child: Text('Подать объявление',
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 24,
                     fontWeight: FontWeight.w400)),
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           ListTile(
             contentPadding:
-            EdgeInsets.only(left: 35, right: 20, bottom: 0),
-            leading: Text(
+            const EdgeInsets.only(left: 35, right: 20, bottom: 0),
+            leading: const Text(
               'Загрузите фото',
               style: TextStyle(
                   color: Color(0xFF515151),
@@ -238,7 +234,7 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
                   imageFromNetwork = [];
                   setState(() {});
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.delete_outline,
                   color: Colors.orange,
                 )),
@@ -254,7 +250,7 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       separatorBuilder: (context, _) =>
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                       itemCount: imageFromNetwork.length,
                       itemBuilder: (context, index) => Container(
                         width: 80,
@@ -281,7 +277,7 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       separatorBuilder: (context, _) =>
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                       itemCount: imageFile.length,
                       itemBuilder: (context, index) => Container(
                         width: 80,
@@ -301,7 +297,7 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
                       ),
                     ),
                   ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 GestureDetector(
@@ -322,22 +318,22 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Icon(Icons.add,
+                    child: const Icon(Icons.add,
                         color: Color(0xFFFF6B00), size: 25),
                   ),
                 ),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.only(left: 19.0),
+                const SizedBox(height: 20),
+                const Padding(
+                  padding: EdgeInsets.only(left: 19.0),
                   child: Text('Название',
                       style: TextStyle(
                           color: Color(0xFF515151),
                           fontSize: 16,
                           fontWeight: FontWeight.w400)),
                 ),
-                SizedBox(height: 7),
+                const SizedBox(height: 7),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 19),
+                  padding: const EdgeInsets.symmetric(horizontal: 19),
                   height: 45,
                   decoration: BoxDecoration(
                     border: Border.all(width: 1, color: AppColors.blue),
@@ -345,13 +341,7 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
                   ),
                   child: TextField(
                     controller: name,
-                    onSubmitted: (val){
-
-                      setState(() {
-                        name.text=val;
-                      });
-                    },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         contentPadding: EdgeInsets.symmetric(
                             horizontal: 0, vertical: 0),
                         border: InputBorder.none,
@@ -363,18 +353,18 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
                         )),
                   ),
                 ),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.only(left: 19.0),
+                const SizedBox(height: 20),
+                const Padding(
+                  padding: EdgeInsets.only(left: 19.0),
                   child: Text('Описания объявления',
                       style: TextStyle(
                           color: Color(0xFF515151),
                           fontSize: 16,
                           fontWeight: FontWeight.w400)),
                 ),
-                SizedBox(height: 7),
+                const SizedBox(height: 7),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 19),
+                  padding: const EdgeInsets.symmetric(horizontal: 19),
                   height: 90,
                   decoration: BoxDecoration(
                     border: Border.all(width: 1, color: AppColors.blue),
@@ -382,7 +372,7 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
                   ),
                   child: TextField(
                     controller: description,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         contentPadding: EdgeInsets.symmetric(
                             horizontal: 0, vertical: 0),
                         border: InputBorder.none,
@@ -394,18 +384,18 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
                         )),
                   ),
                 ),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.only(left: 19.0),
+                const SizedBox(height: 20),
+                const Padding(
+                  padding: EdgeInsets.only(left: 19.0),
                   child: Text('Цена',
                       style: TextStyle(
                           color: Color(0xFF515151),
                           fontSize: 16,
                           fontWeight: FontWeight.w400)),
                 ),
-                SizedBox(height: 7),
+                const SizedBox(height: 7),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 19),
+                  padding: const EdgeInsets.symmetric(horizontal: 19),
                   height: 45,
                   decoration: BoxDecoration(
                     border: Border.all(width: 1, color: AppColors.blue),
@@ -426,7 +416,7 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
                         )),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -444,37 +434,28 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
                         await AuthClient().postProductUpdate(json);
                         if (ans != 0) {
                           print('correct');
+                          if(imageFromNetwork.isEmpty){
+                            print('deleting');
+                            bool ans = await AuthClient()
+                                .postProductImagesDelete(widget.productId);
+                            if(ans) print('Удалено');
+                          }
                           if(imageFile.isNotEmpty){
                             bool ans2 = await AuthClient()
                                 .postProductPhotoAdd(imageFile, int.parse(widget.productId));
-                            if (ans2) {
-                              BlocProvider.of<CreateProductBloc>(context)
-                                  .add(ChooseCategoryEvent(
-                                  int.parse(
-                                      Provider.of<SelectCatProvider>(
-                                          context,
-                                          listen: false)
-                                          .categoryId),
-                                  ans));
-                              return;
-                              Fluttertoast.showToast(
-                                  msg: 'Успешно добавлено!',
-                                  fontSize: 18,
-                                  gravity: ToastGravity.BOTTOM,
-                                  backgroundColor: Colors.green,
-                                  textColor: Colors.white);
-                              Provider.of<SelectTabProvider>(context,
-                                  listen: false)
-                                  .toggleSelect(Dashboard(), 0);
-                            } else {
-                              Fluttertoast.showToast(
-                                  msg: 'Вышла ошибка!',
-                                  fontSize: 18,
-                                  gravity: ToastGravity.BOTTOM,
-                                  backgroundColor: Colors.red,
-                                  textColor: Colors.white);
-                            }
+
                           }
+                          /*BlocProvider.of<CreateProductBloc>(context)
+                              .add(ChooseCategoryEvent(
+                              categoryId,
+                              int.parse(widget.productId)));
+                          return;*/
+                          Fluttertoast.showToast(
+                              msg: 'Успешно изменено!',
+                              fontSize: 18,
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.green,
+                              textColor: Colors.white);
                           Navigator.pop(context);
                           /*bool ans2 = await AuthClient()
                               .postProductPhotoAdd(imageFile, ans);
@@ -518,10 +499,10 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
                         width: 125,
                         height: 45,
                         decoration: BoxDecoration(
-                          color: Color(0xFFFF6B00),
+                          color: const Color(0xFFFF6B00),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Center(
+                        child: const Center(
                             child: Text(
                               'Отправить',
                               style: TextStyle(
@@ -534,9 +515,9 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
               ],
             ),
           ),
-          SizedBox(height: 90),
+          const SizedBox(height: 90),
         ],
-      ) : Center(child: CircularProgressIndicator(),),
+      ) : const Center(child: CircularProgressIndicator(),),
     );
   }
 
@@ -547,10 +528,11 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
       firstDate: DateTime(2010),
       lastDate: DateTime(2025),
     );
-    if (selected != null && selected != selectedDate1)
+    if (selected != null && selected != selectedDate1) {
       setState(() {
         selectedDate1 = selected;
       });
+    }
   }
 
   _selectDate2(BuildContext context) async {
@@ -560,9 +542,10 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
       firstDate: DateTime(2010),
       lastDate: DateTime(2025),
     );
-    if (selected != null && selected != selectedDate2)
+    if (selected != null && selected != selectedDate2) {
       setState(() {
         selectedDate2 = selected;
       });
+    }
   }
 }

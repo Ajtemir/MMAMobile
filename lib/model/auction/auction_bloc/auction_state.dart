@@ -46,6 +46,15 @@ class SellerProductNotAuctionedState extends BaseAuctionState {
   Widget build(context) {
     return Column(
       children: [
+        const Center(
+          child: Text(
+            'Аукцион',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+            ),
+          ),
+        ),
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
@@ -56,23 +65,23 @@ class SellerProductNotAuctionedState extends BaseAuctionState {
                   EdgeInsets.symmetric(vertical: 10)),
             ),
             onPressed: () {
-              showMaterialModalBottomSheet(
+              showModalBottomSheet(
+                isScrollControlled: true,
                 context: context,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(
                       top: Radius.circular(20)),
                 ),
-                builder: (contextInner) =>
+                builder: (context) =>
                     SingleChildScrollView(
                       controller: ModalScrollController.of(
-                          contextInner),
-                      child: MakeAuctionedForm()
-                          .getWidget(context),
+                          context),
+                      child: MakeAuctionedForm(),
                     ),
               );
             },
             child: Text(
-              "Запустить аукцион",
+              "Запустить аукцион",style: TextStyle(color: Colors.white),
             ),
           ),
         ),

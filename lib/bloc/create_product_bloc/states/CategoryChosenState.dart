@@ -3,11 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
   import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upai_app/bloc/create_product_bloc/base_create_product_state.dart';
 import 'package:upai_app/model/auction/auction_bloc/api/execute_result.dart';
+import 'package:upai_app/user/userData.dart';
 import 'package:upai_app/utilities/app_http_client.dart';
 
+import '../../../provider/selectCatProvider.dart';
 import '../../../shared/app_colors.dart';
 import '../../../views/category/aboutMagaz.dart';
 
@@ -52,48 +55,62 @@ class CategoryChosenState extends BaseCreateProductState {
                   throw Exception("");
               }
             });
-            elements = [...elements, [InkWell(
-              onTap: (){
-                properties!.forEach((element) async {
-                  switch(element?.isMultipleOrLiteralDefault){
-                    case true:
-                      print(element!.currentMultiValues.join(' '));
-                      break;
-                    case false:
-                      print(element!.currentSingleValue);
-                      break;
-                    case null:
-                      print(element!.currentNumberValue);
-                      break;
-                  }
-                  await AppHttpClient.execute(HttpMethod.post, '/Products/UpdateProperties/${productId}', {'properties': properties?.map((e) => e!.toMap()).toList()});
-                  var prefs = await SharedPreferences.getInstance();
-                  var email = prefs.getString('email');
-                  // print(email);
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => AboutMagaz(productId: productId.toString(),email: email!,checkUserPage: false,)));
-                });
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 110.0),
-                child: Container(
-                  width: 140,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: AppColors.red1,
-                    borderRadius: BorderRadius.circular(10),
+            elements = [...elements,
+              [
+                if(Provider.of<SelectCatProvider>(context, listen: false).email==UserData.userEmail || UserData.userEmail=='')
+                Padding(
+              padding: const EdgeInsets.only(top: 70.0),
+              child: InkWell(
+                onTap: (){
+                  properties!.forEach((element) async {
+                    switch(element?.isMultipleOrLiteralDefault){
+                      case true:
+                        print(element!.currentMultiValues.join(' '));
+                        break;
+                      case false:
+                        print(element!.currentSingleValue);
+                        break;
+                      case null:
+                        print(element!.currentNumberValue);
+                        break;
+                    }
+                    await AppHttpClient.execute(HttpMethod.post, '/Products/UpdateProperties/${productId}', {'properties': properties?.map((e) => e!.toMap()).toList()});
+                    var prefs = await SharedPreferences.getInstance();
+                    var email = prefs.getString('email');
+                    // print(email);
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) => AboutMagaz(productId: productId.toString(),email: email!,checkUserPage: false,)));
+                  });
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 110.0),
+                  child: Container(
+                    width: 140,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: AppColors.red1,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(child: Text('Отправить',style: TextStyle(color: Colors.white,fontSize: 14),)),
                   ),
-                  child: Center(child: Text('Отправить',style: TextStyle(color: Colors.white,fontSize: 14),)),
                 ),
               ),
             )]];
             print(snapshot.data!.single.toString());
-            return Column(
-              children: elements.expand((element) => element).toList(),
+            return SafeArea(
+              child: Scaffold(
+                body: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 32),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: elements.expand((element) => element).toList(),
+                  ),
+                ),
+              ),
             );
           }
           return Center(
-            child: Text(categoryId.toString()),
+            child: CircularProgressIndicator(),
           );
         });
   }
@@ -122,14 +139,14 @@ class CategoryChosenState extends BaseCreateProductState {
 
     );
     return [
-      const SizedBox(height: 10),
+      const SizedBox(height: 30),
       Padding(
         padding: const EdgeInsets.only(left: 19.0),
         child: Text(
           element.name,
           style: const TextStyle(
               color: Color(0xFF515151),
-              fontSize: 16,
+              fontSize: 18,
               fontWeight: FontWeight.w400),
         ),
       ),
@@ -139,13 +156,13 @@ class CategoryChosenState extends BaseCreateProductState {
 
   List<Widget> singleSelect(PropertyKey element){
     return [
-      const SizedBox(height: 10),
+      const SizedBox(height: 30),
       Padding(
         padding: const EdgeInsets.only(left: 19.0),
         child: Text(element.name,
           style: TextStyle(
               color: Color(0xFF515151),
-              fontSize: 16,
+              fontSize: 18,
               fontWeight: FontWeight.w400),
         ),
       ),
@@ -153,8 +170,8 @@ class CategoryChosenState extends BaseCreateProductState {
         value: element.currentSingleValue,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(
-            horizontal: 0,
-            vertical: 0,
+            horizontal: 18,
+            vertical: 5,
           ),
           border: const OutlineInputBorder(
               borderSide: BorderSide(
@@ -196,13 +213,13 @@ class CategoryChosenState extends BaseCreateProductState {
   List<Widget> literal(PropertyKey element){
     final TextEditingController emailController = element.currentNumberValue == null ? TextEditingController() : TextEditingController(text: element.currentNumberValue.toString());
     return [
-      const SizedBox(height: 10),
+      const SizedBox(height: 30),
       Padding(
         padding: const EdgeInsets.only(left: 19.0),
         child: Text(element.name,
           style: const TextStyle(
             color: Color(0xFF515151),
-            fontSize: 16,
+            fontSize: 18,
             fontWeight: FontWeight.w400,
           ),
         ),

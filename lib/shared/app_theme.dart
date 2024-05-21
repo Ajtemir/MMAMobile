@@ -9,6 +9,11 @@ class AppTheme {
     primaryColor: AppColors.mainColor,
     scaffoldBackgroundColor: AppColors.white,
     appBarTheme: AppBarTheme(
+      // color: Colors.white,
+      // shadowColor: Colors.white,
+      // foregroundColor: Colors.white,
+      surfaceTintColor: Colors.white,
+      // backgroundColor: Colors.white,
       centerTitle: true,
       // elevation: 2,
       titleTextStyle: AppTextStyles.black18Semibold.copyWith(fontSize: 16.sp),

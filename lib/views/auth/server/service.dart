@@ -367,6 +367,23 @@ class AuthClient{
     }
   }
 
+  Future<bool> postProductImagesDelete(var productId) async {
+    //var _payload = json.encode(object);
+    var json={"productId" : productId};
+    var uri = Constants.addPathToBaseUrl('/ProductImage/DeleteImagesByProductId');
+    var response = await client.delete(uri,body: jsonEncode(json), headers: {"Content-Type":"application/json","Accept":"*/*"});
+    print(response.statusCode);
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      print(response.statusCode);
+      return true;
+    } else {
+      print('error not found');
+      print(response.body);
+      return false;
+      //throw exception and catch it in UI
+    }
+  }
+
   Future<bool> postProductPhotoAdd( List<XFile> file,int id) async {
     var uri = Constants.addPathToBaseUrl('ProductImage/AddImage/$id');
     var request = http.MultipartRequest('POST', uri);

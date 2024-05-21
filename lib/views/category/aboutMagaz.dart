@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:upai_app/DTOs/make_collective_post.dart';
 import 'package:upai_app/DTOs/submit_collective_argument.dart';
 import 'package:upai_app/bloc/create_product_bloc/create_product_bloc.dart';
@@ -17,6 +21,7 @@ import 'package:upai_app/model/auction/auction_bloc/auction_state.dart';
 import 'package:upai_app/model/auction/auction_detail_model.dart';
 import 'package:upai_app/model/auction/auction_state.dart';
 import 'package:upai_app/model/auction/auction_widget.dart';
+import 'package:upai_app/user/userData.dart';
 import 'package:upai_app/views/drawer/hotKeshAdd.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 
@@ -26,6 +31,7 @@ import '../../constants/constants.dart';
 import '../../fetches/about_product_fetch.dart';
 import '../../model/aboutProductModel.dart';
 import '../../model/productModel.dart';
+import '../../provider/selectCatProvider.dart';
 import '../../shared/app_colors.dart';
 import '../../widgets/date_format.dart';
 import '../auth/server/service.dart';
@@ -64,6 +70,7 @@ class _AboutMagazState extends State<AboutMagaz> {
 
   TextStyle styleSubtitleInCard =
       const TextStyle(color: AppColors.red1, fontSize: 14);
+
   void _productParentSetState() {
     setState(() {});
   }
@@ -77,10 +84,11 @@ class _AboutMagazState extends State<AboutMagaz> {
   ];
 
   late Future<AboutProductModel> futureProductData;
-
+  late String emailGet;
   @override
   void initState() {
     // TODO: implement initState
+    emailGet = Provider.of<SelectCatProvider>(context, listen: false).email;
     super.initState();
     futureProductData = fetchProductData(widget.productId, widget.email);
   }
@@ -95,23 +103,27 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
       body: MultiBlocProvider(
         providers: [
           BlocProvider<AuctionBloc>(
-            create: (context) => AuctionBloc(widget.email, int.parse(widget.productId))..add(InitEvent()),
+            create: (context) =>
+                AuctionBloc(widget.email, int.parse(widget.productId))
+                  ..add(InitEvent()),
           ),
           BlocProvider<ReductionBloc>(
-            create: (context) => ReductionBloc(int.parse(widget.productId))..add(InitReductionEvent()),
+            create: (context) => ReductionBloc(int.parse(widget.productId))
+              ..add(InitReductionEvent()),
           ),
         ],
-
         child: FutureBuilder<AboutProductModel>(
           future: fetchProductData(widget.productId, widget.email),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+
               List<String> nameAndDescription = [
                 snapshot.data!.description!.split('name').first,
                 snapshot.data!.description!.split('name').last
               ];
               AboutProductModel path = snapshot.data!;
               productInfo = path;
+              UserData.userEmail=path.sellerEmail!;
               isFavorite = path.isFavorite!;
               isSetCollective = path.isSetCollective;
               isSeller = path.isSeller;
@@ -121,9 +133,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
               // BlocProvider.of<AuctionBloc>(context, listen: false)
               // _bloc.add(InitialRenderingAuctionEvent(path.auctionDetail, path.auctionState));
               return RefreshIndicator(
-                onRefresh: () async{
-                  setState(() {
-                  });
+                onRefresh: () async {
+                  setState(() {});
                 },
                 child: ListView(
                   padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -160,7 +171,12 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                   child: CircleAvatar(
                                     radius: 53,
                                     backgroundImage: NetworkImage(
-                                        Constants.addPathToBaseUrl((path.images!.isEmpty ? 'images/default.png' : path.images?[0]) ?? 'images/default.png').toString(),
+                                      Constants.addPathToBaseUrl(
+                                              (path.images!.isEmpty
+                                                      ? 'images/default.png'
+                                                      : path.images?[0]) ??
+                                                  'images/default.png')
+                                          .toString(),
                                     ),
                                   )),
                             ),
@@ -189,7 +205,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                       height: 26,
                                       decoration: BoxDecoration(
                                           color: Colors.white,
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                           boxShadow: [
                                             const BoxShadow(
                                                 color: Color(0x26000000),
@@ -227,7 +244,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                       height: 26,
                                       decoration: BoxDecoration(
                                           color: Colors.white,
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                           boxShadow: [
                                             const BoxShadow(
                                                 color: Color(0x26000000),
@@ -258,22 +276,35 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                             ),
                           ],
                         ),
-                        const Spacer(),
-                        ElevatedButton(onPressed: (){
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  HotKeshAddEdit(email: path.sellerEmail ?? '',productId: path.id.toString(),currentCategoryId: path.categoryId,)
-                                  /*AboutMagaz(
+                      ],
+                    ),
+                    const SizedBox(height: 17),
+                    if(path.sellerEmail==emailGet)
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => HotKeshAddEdit(
+                                  email: path.sellerEmail ?? '',
+                                  productId: path.id.toString(),
+                                  currentCategoryId: path.categoryId,
+                                )
+                            /*AboutMagaz(
                                     productId: productId,
                                     email: email,
                                     checkUserPage: false,
                                   )*/
-                          ));
-                        }, child: const Text('Редактировать',style: TextStyle(color: Colors.white),),style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFFF6B00)
-                        ),)
-
-                      ],
+                            ));
+                      },
+                      child: const Text(
+                        'Редактировать',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStatePropertyAll(AppColors.red1),
+                padding: const MaterialStatePropertyAll(
+                    EdgeInsets.symmetric(vertical: 10)),
+              ),
                     ),
                     const SizedBox(height: 48),
                     const Text(
@@ -303,12 +334,12 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
                             if (!isFavorite) {
                               print('set');
-                              ans = await AuthClient()
-                                  .getSetFavorite(widget.productId, widget.email);
+                              ans = await AuthClient().getSetFavorite(
+                                  widget.productId, widget.email);
                             } else {
                               print('unset');
-                              ans2 = await AuthClient()
-                                  .getUnSetFavorite(widget.productId, widget.email);
+                              ans2 = await AuthClient().getUnSetFavorite(
+                                  widget.productId, widget.email);
                             }
                             print(ans + ' ' + ans2);
                             if (ans == 'true') {
@@ -390,14 +421,15 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                             height: 0,
                           )
                         : Container(
-                            height: MediaQuery.of(context).size.height * 0.2,
+                            // height: MediaQuery.of(context).size.height * 0.2,
                             decoration: BoxDecoration(
                               color: AppColors.white,
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(color: AppColors.white),
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color(0x40000000).withOpacity(0.25),
+                                  color:
+                                      const Color(0x40000000).withOpacity(0.25),
                                   blurRadius: 10,
                                   offset: const Offset(0, 6),
                                 ),
@@ -408,7 +440,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
                                       child: Text(
@@ -418,14 +451,16 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                     ),
                                     Expanded(
                                       child: Text(
-                                        dateFormat(path.collectiveInfo!.endDate),
+                                        dateFormat(
+                                            path.collectiveInfo!.endDate),
                                         style: styleSubtitleInCard,
                                       ),
                                     ),
                                   ],
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
                                       child: Text(
@@ -442,7 +477,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                   ],
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
                                       child: Text(
@@ -462,8 +498,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                   width: double.infinity,
                                   child: ElevatedButton(
                                     style: const ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStatePropertyAll(AppColors.red1),
+                                      backgroundColor: MaterialStatePropertyAll(
+                                          AppColors.red1),
                                       padding: MaterialStatePropertyAll(
                                           EdgeInsets.symmetric(vertical: 10)),
                                     ),
@@ -488,7 +524,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                     ),
                                   ),
                                 ),
-
                               ],
                             ),
                           ),
@@ -507,15 +542,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                             ],
                           ),
                     const SizedBox(height: 60),
-                    const Center(
-                      child: Text(
-                        'Аукцион',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
+
                     const SizedBox(height: 10),
                     BlocBuilder<AuctionBloc, BaseAuctionState>(
                       builder: (context, state) {
@@ -523,16 +550,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                         return state.build(context);
                       },
                     ),
-                    const SizedBox(height: 60),
-                    const Center(
-                      child: Text(
-                        'Тендер',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
+
                     const SizedBox(height: 10),
                     BlocBuilder<ReductionBloc, BaseReductionState>(
                       builder: (context, state) => state.build(context),
@@ -544,7 +562,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                               child: CategoryChosenState(1, productInfo.id!)
                                   .build(contexts)))),
                       child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 110.0),
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: 110.0),
                           child: Container(
                             width: 140,
                             height: 40,
@@ -555,7 +574,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                             child: const Center(
                                 child: Text(
                               'Свойства продукта',
-                              style: TextStyle(color: Colors.white, fontSize: 14),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
                             )),
                           )),
                     ),
@@ -572,7 +592,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemCount: path.images!.length,
-                        separatorBuilder: (context, index) => const SizedBox(width: 10),
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(width: 10),
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
                             onTap: () {
@@ -588,7 +609,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image: NetworkImage(
-                                    Constants.addPartToBaseUrl(path.images![index]),
+                                    Constants.addPartToBaseUrl(
+                                        path.images![index]),
                                   ),
                                 ),
                               ),
@@ -614,8 +636,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                           onTap: () {
                             Navigator.of(context, rootNavigator: true).push(
                                 MyCustomRoute(
-                                    builder: (context) =>
-                                        ProfileUser(emailUser: path.sellerEmail)));
+                                    builder: (context) => ProfileUser(
+                                        emailUser: path.sellerEmail)));
                           },
                           child: Ink(
                             height: 40,
@@ -626,7 +648,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                             child: const Center(
                                 child: Text(
                               'Страница пользователя',
-                              style: TextStyle(color: Colors.white, fontSize: 14),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
                             )),
                           ),
                         ),
@@ -691,19 +714,25 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
               setState(() {
                 if (isMadeCollective) {
                   AuthClient()
-                      .unmakeCollective(UnmakeCollectiveArgument(productInfo.id!))
+                      .unmakeCollective(
+                          UnmakeCollectiveArgument(productInfo.id!))
                       .then((value) => _productParentSetState());
                 } else {
-                  showMaterialModalBottomSheet(
+                  showModalBottomSheet(
+                    isScrollControlled: true,
                     context: context,
                     shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(20)),
                     ),
                     builder: (context) => SingleChildScrollView(
                       controller: ModalScrollController.of(context),
-                      child: FormBottomModal(
-                        dto: SellerEmailAndProductId(productInfo.id!,
-                            productInfo.sellerEmail!, _productParentSetState),
+                      child: Container(
+                        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                        child: FormBottomModal(
+                          dto: SellerEmailAndProductId(productInfo.id!,
+                              productInfo.sellerEmail!, _productParentSetState),
+                        ),
                       ),
                     ),
                   );
@@ -878,7 +907,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
     return const SizedBox();
   }
 
-  Widget _auctionDetail(AuctionDetailModel model){
+  Widget _auctionDetail(AuctionDetailModel model) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       alignment: Alignment.center,
@@ -968,8 +997,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
               Expanded(
                 child: Text(
                   model.currentMaxPrice == null
-                  ? "Нет покупателей"
-                  : '${model.currentMaxPrice} сом',
+                      ? "Нет покупателей"
+                      : '${model.currentMaxPrice} сом',
                   style: styleSubtitleInCard,
                 ),
               ),
@@ -1011,6 +1040,7 @@ class FormBottomModal extends StatefulWidget {
 class _FormBottomModalState extends State<FormBottomModal> {
   final _formKey = GlobalKey<FormBuilderState>();
   late SellerEmailAndProductId _dto;
+
   @override
   void initState() {
     super.initState();
@@ -1146,99 +1176,187 @@ class _FormBottomModalState extends State<FormBottomModal> {
   }
 }
 
-class MakeAuctionedForm {
-    Widget getWidget(BuildContext context){
-      final _formKey = GlobalKey<FormBuilderState>();
-      return Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: FormBuilder(
-          key: _formKey,
-          child: Column(
-            children: [
-              const Text(
-                'Выставить обьявление на аукцион',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+class MakeAuctionedForm extends StatefulWidget {
+
+  @override
+  State<MakeAuctionedForm> createState() => _MakeAuctionedFormState();
+}
+
+class _MakeAuctionedFormState extends State<MakeAuctionedForm> {
+  @override
+  Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormBuilderState>();
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: FormBuilder(
+        key: _formKey,
+        child: Column(
+          children: [
+            const Text(
+              'Выставить обьявление на аукцион',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            FormBuilderDateTimePicker(
+              validator: (value) {
+                if (value == null) {
+                  return 'Please enter start Date';
+                }
+                return null;
+              },
+              currentDate: DateTime.now(),
+              inputType: InputType.both,
+              format: DateFormat("yyyy-MM-dd hh:mm"),
+              initialDate: DateTime.now(),
+              decoration: const InputDecoration(
+                labelText: "Дата начала",
+                border: OutlineInputBorder(),
               ),
-              const SizedBox(
-                height: 10,
+              name: 'startDate',
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            FormBuilderDateTimePicker(
+              validator: (value) {
+                if (value == null) {
+                  return 'Please enter end Date';
+                }
+                return null;
+              },
+              inputType: InputType.both,
+              format: DateFormat("yyyy-MM-dd hh:mm"),
+              initialDate: DateTime.now(),
+              decoration: const InputDecoration(
+                labelText: "Дата конца",
+                border: OutlineInputBorder(),
               ),
-              FormBuilderDateTimePicker(
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please enter start Date';
-                  }
-                  return null;
-                },
-                currentDate: DateTime.now(),
-                inputType: InputType.both,
-                format: DateFormat("yyyy-MM-dd hh:mm"),
-                initialDate: DateTime.now(),
-                decoration: const InputDecoration(
-                  labelText: "Дата начала",
-                  border: OutlineInputBorder(),
+              name: 'endDate',
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            FormBuilderTextField(
+              name: 'startPrice',
+              enabled: true,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                  labelText: 'Стартовая цена', border: OutlineInputBorder()),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            MaterialButton(
+              color: AppColors.red1,
+              onPressed: () async {
+                if (_formKey.currentState!.saveAndValidate()) {
+                  Map<String, dynamic> keyValuePairs =
+                      _formKey.currentState!.value;
+                  BlocProvider.of<AuctionBloc>(context)
+                      .add(AuctionMadeEvent(AuctionDetailModel(
+                    keyValuePairs['startDate'],
+                    keyValuePairs['endDate'],
+                    keyValuePairs['startPrice'],
+                  )));
+                  Navigator.pop(context);
+                }
+              },
+              child: const Text(
+                'Опубликовать аукцион',
+                style: TextStyle(
+                  color: AppColors.white,
+                  fontSize: 16,
                 ),
-                name: 'startDate',
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              FormBuilderDateTimePicker(
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please enter end Date';
-                  }
-                  return null;
-                },
-                inputType: InputType.both,
-                format: DateFormat("yyyy-MM-dd hh:mm"),
-                initialDate: DateTime.now(),
-                decoration: const InputDecoration(
-                  labelText: "Дата конца",
-                  border: OutlineInputBorder(),
-                ),
-                name: 'endDate',
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              FormBuilderTextField(
-                name: 'startPrice',
-                enabled: true,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                    labelText: 'Стартовая цена', border: OutlineInputBorder()),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              MaterialButton(
-                color: AppColors.red1,
-                onPressed: () async {
-                  if (_formKey.currentState!.saveAndValidate()) {
-                    Map<String, dynamic> keyValuePairs = _formKey.currentState!.value;
-                    BlocProvider.of<AuctionBloc>(context).add(AuctionMadeEvent(AuctionDetailModel(
-                        keyValuePairs['startDate'],
-                        keyValuePairs['endDate'],
-                      double.parse(keyValuePairs['startPrice']),
-                    )));
-                    Navigator.pop(context);
-                  }
-                },
-                child: const Text(
-                  'Опубликовать скидку',
-                  style: TextStyle(
-                    color: AppColors.white,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+          ],
         ),
-      );
+      ),
+    );
+  }
+}
+
+
+
+class AllFieldsFormBloc extends FormBloc<String, String> {
+  final text1 = TextFieldBloc();
+
+  final boolean1 = BooleanFieldBloc();
+
+  final boolean2 = BooleanFieldBloc();
+
+  final select1 = SelectFieldBloc(
+    items: ['Option 1', 'Option 2'],
+    validators: [FieldBlocValidators.required],
+  );
+
+  final select2 = SelectFieldBloc(
+    items: ['Option 1', 'Option 2'],
+    validators: [FieldBlocValidators.required],
+  );
+
+  final multiSelect1 = MultiSelectFieldBloc<String, dynamic>(
+    items: [
+      'Option 1',
+      'Option 2',
+      'Option 3',
+      'Option 4',
+      'Option 5',
+    ],
+  );
+  final file = InputFieldBloc<File?, String>(initialValue: null);
+
+  final date1 = InputFieldBloc<DateTime?, Object>(initialValue: null);
+
+  final dateAndTime1 = InputFieldBloc<DateTime?, Object>(initialValue: null);
+
+  final time1 = InputFieldBloc<TimeOfDay?, Object>(initialValue: null);
+
+  final double1 = InputFieldBloc<double, dynamic>(
+    initialValue: 0.5,
+  );
+
+  AllFieldsFormBloc() : super(autoValidate: false) {
+    addFieldBlocs(fieldBlocs: [
+      text1,
+      boolean1,
+      boolean2,
+      select1,
+      select2,
+      multiSelect1,
+      date1,
+      dateAndTime1,
+      time1,
+      double1,
+    ]);
+  }
+
+  void addErrors() {
+    text1.addFieldError('Awesome Error!');
+    boolean1.addFieldError('Awesome Error!');
+    boolean2.addFieldError('Awesome Error!');
+    select1.addFieldError('Awesome Error!');
+    select2.addFieldError('Awesome Error!');
+    multiSelect1.addFieldError('Awesome Error!');
+    date1.addFieldError('Awesome Error!');
+    dateAndTime1.addFieldError('Awesome Error!');
+    time1.addFieldError('Awesome Error!');
+  }
+
+  @override
+  void onSubmitting() async {
+    try {
+      await Future<void>.delayed(const Duration(milliseconds: 500));
+
+      emitSuccess(canSubmitAgain: true);
+    } catch (e) {
+      emitFailure();
     }
+  }
 }
