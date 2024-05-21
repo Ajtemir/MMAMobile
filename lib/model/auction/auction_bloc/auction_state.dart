@@ -65,7 +65,9 @@ class SellerProductNotAuctionedState extends BaseAuctionState {
                   EdgeInsets.symmetric(vertical: 10)),
             ),
             onPressed: () {
-              showModalBottomSheet(
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => MakeAuctionedForm()));
+              /*showModalBottomSheet(
                 isScrollControlled: true,
                 context: context,
                 shape: const RoundedRectangleBorder(
@@ -77,8 +79,8 @@ class SellerProductNotAuctionedState extends BaseAuctionState {
                       controller: ModalScrollController.of(
                           context),
                       child: MakeAuctionedForm(),
-                    ),
-              );
+                    ),*/
+
             },
             child: Text(
               "Запустить аукцион",style: TextStyle(color: Colors.white),

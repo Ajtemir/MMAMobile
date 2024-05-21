@@ -118,6 +118,7 @@ class SellerNotReductionedState extends BaseReductionState {
             ),
             FormBuilderTextField(
               name: 'startPrice',
+              onChanged: (value){},
               enabled: true,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(

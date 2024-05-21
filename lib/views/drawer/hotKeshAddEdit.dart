@@ -272,30 +272,47 @@ class _HotKeshAddEditState extends State<HotKeshAddEdit> {
                     ),
                   ),
                 if (imageFile.length > 0)
-                  Container(
-                    height: 80,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      separatorBuilder: (context, _) =>
-                          const SizedBox(width: 5),
-                      itemCount: imageFile.length,
-                      itemBuilder: (context, index) => Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: AppColors.blue,
-                            ),
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: FileImage(
-                                  File(imageFile[index].path)),
-                            )),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (imageFromNetwork.length > 0)
+                      SizedBox(height: 20),
+                      if (imageFromNetwork.length > 0)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0),
+                        child: Text('Новые фото',style: TextStyle(
+                            color: Color(0xFF515151),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400)),
                       ),
-                    ),
+                      if (imageFromNetwork.length > 0)
+                      SizedBox(height: 20),
+                      Container(
+                        height: 80,
+                        child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          separatorBuilder: (context, _) =>
+                              const SizedBox(width: 5),
+                          itemCount: imageFile.length,
+                          itemBuilder: (context, index) => Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: AppColors.blue,
+                                ),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: FileImage(
+                                      File(imageFile[index].path)),
+                                )),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 const SizedBox(
                   height: 20,

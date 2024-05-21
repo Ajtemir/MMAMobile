@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:upai_app/constants/constants.dart';
 import 'package:upai_app/shared/app_colors.dart';
+import 'package:upai_app/views/pages/Filtr.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 
 import '../../fetches/search_products_fetch.dart';
@@ -10,6 +11,7 @@ import '../../provider/selectCatProvider.dart';
 
 import '../auth/server/service.dart';
 import '../category/aboutMagaz.dart';
+import 'filters_screen.dart';
 
 class SearchProducts extends StatefulWidget {
   const SearchProducts({Key? key}) : super(key: key);
@@ -167,6 +169,8 @@ class _SearchProductsState extends State<SearchProducts> {
         padding: const EdgeInsets.only(right: 10,top: 16),
       child: IconButton(
           onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => FiltersScreen()));
           },
           icon:
           Image.asset('assets/img/filter.png', width: 24, height: 24,color: const Color(0xFF225196),)),

@@ -167,100 +167,130 @@ class _UserEditingState extends State<UserEditing> {
       body: ListView(
         padding: EdgeInsets.only(left: 14, right: 14, top: 5),
         children: [
-          Container(
-            width: 142,
-            height: 142,
-            padding: EdgeInsets.all(9),
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                      blurRadius: 5,
-                      offset: Offset(0, 0),
-                      color: Color(0x26000000))
-                ]),
-            child: Container(
-              padding: EdgeInsets.all(9),
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                        blurRadius: 5,
-                        offset: Offset(0, 0),
-                        color: Color(0x26000000))
-                  ]),
-              child: Stack(
-                //overflow: Overflow.visible,
-                children: [
-
-                  Positioned(
-                    top: 0,
-                    left: 111,
-                    child: imageFileCheck? CircleAvatar(
-
-                      radius: 53,
-                      backgroundImage: FileImage(File(imageFile!.path)),
-                    ) : widget.image!.split('/').last!='null' ? CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 53,
-                      backgroundImage: NetworkImage(widget.image),
-                    ):CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 53,
-                      backgroundImage: AssetImage('assets/img/user.png'),
-                    )
-                  ),
-                  /*Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 142,
+                height: 142,
+                padding: EdgeInsets.all(9),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                          blurRadius: 5,
+                          offset: Offset(0, 0),
+                          color: Color(0x26000000))
+                    ]),
+                child: Container(
+                  padding: EdgeInsets.all(9),
+                  decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border: Border.all(
-                          width: 0.5,
-                          color: Color(0xFF929292).withOpacity(0.37)),
+                      color: Colors.white,
                       boxShadow: [
                         BoxShadow(
-                            blurRadius: 16,
+                            blurRadius: 5,
                             offset: Offset(0, 0),
-                            color: Color(0x33000000))
-                      ],
-                      image: imageFileCheck  ? DecorationImage(
-                        fit: BoxFit.cover,
+                            color: Color(0x26000000))
+                      ]),
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                            width: 0.5,
+                            color: Color(0xFF929292).withOpacity(0.37)),
+                        boxShadow: [
+                          BoxShadow(
+                              blurRadius: 16,
+                              offset: Offset(0, 0),
+                              color: Color(0x33000000))
+                        ],
+                        image: imageFileCheck  ? DecorationImage(
+                          fit: BoxFit.cover,
                           image:  FileImage(File(imageFile!.path)),
-                    ):DecorationImage(
-            image:  AssetImage('assets/img/user.png'),
-    )
+                        ):DecorationImage(
+                          image:  NetworkImage(widget.image),
+                        )
                     ),
-                  ),*/
-                  Positioned(
-                    top: 0,
-                    right: 72,
-                    child: GestureDetector(
-                      onTap: (){
-                        showModalBottomSheet(
-                          context: context,
-                          builder: ((builder) => bottomSheet()),
-                        );
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(9),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.red1,
-                        ),
-                        child: Image.asset(
-                          'assets/img/prof/editingIcon.png',
-                          width: 15,
-                          height: 15,
-                        ),
+                  ),
+
+                  /*Stack(
+
+                    //overflow: Overflow.visible,
+                    children: [
+
+                      Positioned(
+
+                        top: 0,
+                        left: 111,
+                        child: imageFileCheck ? CircleAvatar(
+
+                          radius: 53,
+                          backgroundImage: FileImage(File(imageFile!.path)),
+                        ) : widget.image!.split('/').last!='null' ? CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 53,
+                          backgroundImage: NetworkImage(widget.image),
+                        ):CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 53,
+                          backgroundImage: AssetImage('assets/img/user.png'),
+                        )
                       ),
-                    ),
-                  )
-                ],
+                      *//**//*
+                      Positioned(
+                        top: 0,
+                        right: 72,
+                        child: GestureDetector(
+                          onTap: (){
+                            showModalBottomSheet(
+                              context: context,
+                              builder: ((builder) => bottomSheet()),
+                            );
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(9),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.red1,
+                            ),
+                            child: Image.asset(
+                              'assets/img/prof/editingIcon.png',
+                              width: 15,
+                              height: 15,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),*/
+                ),
               ),
-            ),
+              GestureDetector(
+                onTap: (){
+                  showModalBottomSheet(
+                    context: context,
+                    builder: ((builder) => bottomSheet()),
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.all(9),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.red1,
+                  ),
+                  child: Image.asset(
+                    'assets/img/prof/editingIcon.png',
+                    width: 15,
+                    height: 15,
+                  ),
+                ),
+              ),
+            ],
           ),
           SizedBox(height: 65,),
           Container(

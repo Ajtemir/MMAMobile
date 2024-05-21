@@ -3,15 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:upai_app/DTOs/make_collective_post.dart';
 import 'package:upai_app/DTOs/submit_collective_argument.dart';
-import 'package:upai_app/bloc/create_product_bloc/create_product_bloc.dart';
 import 'package:upai_app/bloc/create_product_bloc/states/CategoryChosenState.dart';
 import 'package:upai_app/bloc/reduction_bloc/reduction_bloc.dart';
 import 'package:upai_app/bloc/reduction_bloc/states/base_reduction_state.dart';
@@ -19,10 +16,7 @@ import 'package:upai_app/model/auction/auction_bloc/Events/base_auction_event.da
 import 'package:upai_app/model/auction/auction_bloc/auction_bloc.dart';
 import 'package:upai_app/model/auction/auction_bloc/auction_state.dart';
 import 'package:upai_app/model/auction/auction_detail_model.dart';
-import 'package:upai_app/model/auction/auction_state.dart';
-import 'package:upai_app/model/auction/auction_widget.dart';
 import 'package:upai_app/user/userData.dart';
-import 'package:upai_app/views/drawer/hotKeshAdd.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 
 import '../../DTOs/unmake_collective_product.dart';
@@ -30,7 +24,6 @@ import '../../bloc/reduction_bloc/reduction_event.dart';
 import '../../constants/constants.dart';
 import '../../fetches/about_product_fetch.dart';
 import '../../model/aboutProductModel.dart';
-import '../../model/productModel.dart';
 import '../../provider/selectCatProvider.dart';
 import '../../shared/app_colors.dart';
 import '../../widgets/date_format.dart';
@@ -207,8 +200,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                           color: Colors.white,
                                           borderRadius:
                                               BorderRadius.circular(10),
-                                          boxShadow: [
-                                            const BoxShadow(
+                                          boxShadow: const [
+                                            BoxShadow(
                                                 color: Color(0x26000000),
                                                 offset: Offset(0, 1),
                                                 blurRadius: 4)
@@ -246,8 +239,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                                           color: Colors.white,
                                           borderRadius:
                                               BorderRadius.circular(10),
-                                          boxShadow: [
-                                            const BoxShadow(
+                                          boxShadow: const [
+                                            BoxShadow(
                                                 color: Color(0x26000000),
                                                 offset: Offset(0, 1),
                                                 blurRadius: 4)
@@ -545,6 +538,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
                     const SizedBox(height: 10),
                     BlocBuilder<AuctionBloc, BaseAuctionState>(
+                      key: UniqueKey(),
                       builder: (context, state) {
                         print(state);
                         return state.build(context);
@@ -1186,177 +1180,102 @@ class _MakeAuctionedFormState extends State<MakeAuctionedForm> {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormBuilderState>();
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: FormBuilder(
-        key: _formKey,
-        child: Column(
-          children: [
-            const Text(
-              'Выставить обьявление на аукцион',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            FormBuilderDateTimePicker(
-              validator: (value) {
-                if (value == null) {
-                  return 'Please enter start Date';
-                }
-                return null;
-              },
-              currentDate: DateTime.now(),
-              inputType: InputType.both,
-              format: DateFormat("yyyy-MM-dd hh:mm"),
-              initialDate: DateTime.now(),
-              decoration: const InputDecoration(
-                labelText: "Дата начала",
-                border: OutlineInputBorder(),
+    return Scaffold(
+      appBar: AllAppBar2(),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: FormBuilder(
+          key: _formKey,
+          child: Column(
+            children: [
+              const Text(
+                'Выставить обьявление на аукцион',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              name: 'startDate',
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            FormBuilderDateTimePicker(
-              validator: (value) {
-                if (value == null) {
-                  return 'Please enter end Date';
-                }
-                return null;
-              },
-              inputType: InputType.both,
-              format: DateFormat("yyyy-MM-dd hh:mm"),
-              initialDate: DateTime.now(),
-              decoration: const InputDecoration(
-                labelText: "Дата конца",
-                border: OutlineInputBorder(),
+              const SizedBox(
+                height: 10,
               ),
-              name: 'endDate',
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            FormBuilderTextField(
-              name: 'startPrice',
-              enabled: true,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                  labelText: 'Стартовая цена', border: OutlineInputBorder()),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            MaterialButton(
-              color: AppColors.red1,
-              onPressed: () async {
-                if (_formKey.currentState!.saveAndValidate()) {
-                  Map<String, dynamic> keyValuePairs =
-                      _formKey.currentState!.value;
-                  BlocProvider.of<AuctionBloc>(context)
-                      .add(AuctionMadeEvent(AuctionDetailModel(
-                    keyValuePairs['startDate'],
-                    keyValuePairs['endDate'],
-                    keyValuePairs['startPrice'],
-                  )));
-                  Navigator.pop(context);
-                }
-              },
-              child: const Text(
-                'Опубликовать аукцион',
-                style: TextStyle(
-                  color: AppColors.white,
-                  fontSize: 16,
+              FormBuilderDateTimePicker(
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please enter start Date';
+                  }
+                  return null;
+                },
+                currentDate: DateTime.now(),
+                inputType: InputType.both,
+                format: DateFormat("yyyy-MM-dd hh:mm"),
+                initialDate: DateTime.now(),
+                decoration: const InputDecoration(
+                  labelText: "Дата начала",
+                  border: OutlineInputBorder(),
+                ),
+                name: 'startDate',
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              FormBuilderDateTimePicker(
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please enter end Date';
+                  }
+                  return null;
+                },
+                inputType: InputType.both,
+                format: DateFormat("yyyy-MM-dd hh:mm"),
+                initialDate: DateTime.now(),
+                decoration: const InputDecoration(
+                  labelText: "Дата конца",
+                  border: OutlineInputBorder(),
+                ),
+                name: 'endDate',
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              FormBuilderTextField(
+                name: 'startPrice',
+                onChanged: (val){},
+                enabled: true,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                    labelText: 'Стартовая цена', border: OutlineInputBorder()),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              MaterialButton(
+                color: AppColors.red1,
+                onPressed: () async {
+                  if (_formKey.currentState!.saveAndValidate()) {
+                    Map<String, dynamic> keyValuePairs =
+                        _formKey.currentState!.value;
+                    BlocProvider.of<AuctionBloc>(context)
+                        .add(AuctionMadeEvent(AuctionDetailModel(
+                      keyValuePairs['startDate'],
+                      keyValuePairs['endDate'],
+                      keyValuePairs['startPrice'],
+                    )));
+                    Navigator.pop(context);
+                  }
+                },
+                child: const Text(
+                  'Опубликовать аукцион',
+                  style: TextStyle(
+                    color: AppColors.white,
+                    fontSize: 16,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-          ],
+              const SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
         ),
       ),
     );
-  }
-}
-
-
-
-class AllFieldsFormBloc extends FormBloc<String, String> {
-  final text1 = TextFieldBloc();
-
-  final boolean1 = BooleanFieldBloc();
-
-  final boolean2 = BooleanFieldBloc();
-
-  final select1 = SelectFieldBloc(
-    items: ['Option 1', 'Option 2'],
-    validators: [FieldBlocValidators.required],
-  );
-
-  final select2 = SelectFieldBloc(
-    items: ['Option 1', 'Option 2'],
-    validators: [FieldBlocValidators.required],
-  );
-
-  final multiSelect1 = MultiSelectFieldBloc<String, dynamic>(
-    items: [
-      'Option 1',
-      'Option 2',
-      'Option 3',
-      'Option 4',
-      'Option 5',
-    ],
-  );
-  final file = InputFieldBloc<File?, String>(initialValue: null);
-
-  final date1 = InputFieldBloc<DateTime?, Object>(initialValue: null);
-
-  final dateAndTime1 = InputFieldBloc<DateTime?, Object>(initialValue: null);
-
-  final time1 = InputFieldBloc<TimeOfDay?, Object>(initialValue: null);
-
-  final double1 = InputFieldBloc<double, dynamic>(
-    initialValue: 0.5,
-  );
-
-  AllFieldsFormBloc() : super(autoValidate: false) {
-    addFieldBlocs(fieldBlocs: [
-      text1,
-      boolean1,
-      boolean2,
-      select1,
-      select2,
-      multiSelect1,
-      date1,
-      dateAndTime1,
-      time1,
-      double1,
-    ]);
-  }
-
-  void addErrors() {
-    text1.addFieldError('Awesome Error!');
-    boolean1.addFieldError('Awesome Error!');
-    boolean2.addFieldError('Awesome Error!');
-    select1.addFieldError('Awesome Error!');
-    select2.addFieldError('Awesome Error!');
-    multiSelect1.addFieldError('Awesome Error!');
-    date1.addFieldError('Awesome Error!');
-    dateAndTime1.addFieldError('Awesome Error!');
-    time1.addFieldError('Awesome Error!');
-  }
-
-  @override
-  void onSubmitting() async {
-    try {
-      await Future<void>.delayed(const Duration(milliseconds: 500));
-
-      emitSuccess(canSubmitAgain: true);
-    } catch (e) {
-      emitFailure();
-    }
   }
 }
