@@ -33,6 +33,7 @@ class Upai extends StatelessWidget {
         minTextAdapt: true,
         // splitScreenMode: ,
         builder: (context,widget) => MaterialApp(
+
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           builder: (context, widget) {

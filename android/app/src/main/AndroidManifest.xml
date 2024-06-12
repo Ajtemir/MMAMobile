@@ -3,7 +3,9 @@
    <application
         android:label="Market Mall"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:enableOnBackInvokedCallback="true">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -31,6 +33,6 @@
             android:name="flutterEmbedding"
             android:value="2" />
        <meta-data android:name="com.google.android.geo.API_KEY"
-           android:value="AIzaSyDTEiFeB5dJ9MG6klKQ8ZkdGEJd8KohVfM"/>
+           android:value="AIzaSyAoPqRwz1QrQUMgBmSfB8Sagh1yxvQ0DQ0"/>
     </application>
 </manifest>

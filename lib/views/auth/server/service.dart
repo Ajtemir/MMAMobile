@@ -44,9 +44,13 @@ class AuthClient{
   }
 
   Future<dynamic> getSearchProducts(String search) async {
-    var uri = Constants.addPathToBaseUrl('Products/Search', queryParameters: {'param':search});
-
-    var response = await client.get(uri);
+    var uri = Constants.addPathToBaseUrl('Products/Search');
+    var json={
+      "description" : search
+    };
+    var response = await client.post(uri,body: jsonEncode(json),headers: {
+      'Content-Type' : 'application/json'
+    });
     if (response.statusCode == 200 || response.statusCode == 201) {
       print(response.body);
       return response.body;
@@ -340,6 +344,42 @@ class AuthClient{
       print('error not found');
       print(response.body);
       return 0;
+      //throw exception and catch it in UI
+    }
+  }
+
+
+  Future<int> postProductUpdate(var json) async {
+    //var _payload = json.encode(object);
+
+
+    var uri = Constants.addPathToBaseUrl('/Products/Update');
+    var response = await client.post(uri,body: jsonEncode(json), headers: {"Content-Type":"application/json","Accept":"*/*"});
+    print(response.statusCode);
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      print(response.statusCode);
+      return 1;
+    } else {
+      print('error not found');
+      print(response.body);
+      return 0;
+      //throw exception and catch it in UI
+    }
+  }
+
+  Future<bool> postProductImagesDelete(var productId) async {
+    //var _payload = json.encode(object);
+    var json={"productId" : productId};
+    var uri = Constants.addPathToBaseUrl('/ProductImage/DeleteImagesByProductId');
+    var response = await client.delete(uri,body: jsonEncode(json), headers: {"Content-Type":"application/json","Accept":"*/*"});
+    print(response.statusCode);
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      print(response.statusCode);
+      return true;
+    } else {
+      print('error not found');
+      print(response.body);
+      return false;
       //throw exception and catch it in UI
     }
   }

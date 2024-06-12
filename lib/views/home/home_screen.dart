@@ -54,9 +54,12 @@ class _HomeState extends State<Home> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        padding: EdgeInsets.all(5),
+        height: 60,
+        surfaceTintColor: Colors.white,
+        // padding: EdgeInsets.all(5),
         shape: CircularNotchedRectangle(),
-        notchMargin: 10,
+        // notchMargin: 10,
+        color: Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.end,

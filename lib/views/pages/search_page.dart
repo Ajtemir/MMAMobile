@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:upai_app/constants/constants.dart';
 import 'package:upai_app/shared/app_colors.dart';
+import 'package:upai_app/views/pages/Filtr.dart';
 import 'package:upai_app/widgets/appBar2.dart';
 
 import '../../fetches/search_products_fetch.dart';
@@ -10,6 +11,7 @@ import '../../provider/selectCatProvider.dart';
 
 import '../auth/server/service.dart';
 import '../category/aboutMagaz.dart';
+import 'filters_screen.dart';
 
 class SearchProducts extends StatefulWidget {
   const SearchProducts({Key? key}) : super(key: key);
@@ -32,7 +34,34 @@ class _SearchProductsState extends State<SearchProducts> {
   }
 
   phoneField() {
-    return Container(
+    return  TextField(
+      controller: search,
+      keyboardType: TextInputType.emailAddress,
+      style: const TextStyle(
+        color: Color(0xFF225196),
+        fontSize: 16,
+      ),
+      decoration: InputDecoration(
+        hintStyle: TextStyle(
+          color: const Color(0xFF225196).withOpacity(0.5),
+        ),
+        // prefixIcon: Icon(Icons.search),
+        hintText: 'Поиск',
+        suffixIcon: IconButton(onPressed: (){
+          futureSearchProducts=fetchSearchProducts(search.text);
+          searchActive=true;
+          setState(() {
+
+          });
+        },icon:Icon(Icons.search)),
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: Color(0xFF225196)),
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+    );
+
+      /*Container(
       width: 300,
       height: 55,
       decoration: BoxDecoration(
@@ -124,13 +153,29 @@ class _SearchProductsState extends State<SearchProducts> {
           ),
         ],
       ),
-    );
+    );*/
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AllAppBar2(),
+        appBar: AppBar(
+          iconTheme: const IconThemeData(
+            color: AppColors.blue1, //change your color here
+          ),
+          elevation: 0,
+          backgroundColor: Colors.white,
+          actions: [Padding(
+        padding: const EdgeInsets.only(right: 10,top: 16),
+      child: IconButton(
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => FiltersScreen()));
+          },
+          icon:
+          Image.asset('assets/img/filter.png', width: 24, height: 24,color: const Color(0xFF225196),)),
+    )],
+        ),
         backgroundColor: Colors.white,
         body: RefreshIndicator(
           onRefresh: () async {
@@ -139,8 +184,8 @@ class _SearchProductsState extends State<SearchProducts> {
           child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
               children: [
-                SizedBox(height: 10),
-                ListTile(
+                const SizedBox(height: 10),
+                const ListTile(
                   leading: Text('Поиск',
                       style: TextStyle(
                           color: Colors.black,
@@ -155,7 +200,7 @@ class _SearchProductsState extends State<SearchProducts> {
                   )*/
                 ),
                 phoneField(),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 if (searchActive)
                   FutureBuilder<ListProductsModel>(
                     future: futureSearchProducts,
@@ -202,7 +247,7 @@ class _SearchProductsState extends State<SearchProducts> {
                       }
 
                       // By default, show a loading spinner.
-                      return Center(child: const CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     },
                   ),
               ]),
@@ -265,9 +310,9 @@ class _SearchProductsState extends State<SearchProducts> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
-                      width: 2.5, color: Color(0xFF929292).withOpacity(0.37)),
+                      width: 2.5, color: const Color(0xFF929292).withOpacity(0.37)),
                   boxShadow: [
-                    BoxShadow(
+                    const BoxShadow(
                         blurRadius: 7,
                         offset: Offset(0, 6),
                         color: Color(0x33000000))
@@ -276,11 +321,11 @@ class _SearchProductsState extends State<SearchProducts> {
                       ? DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(Constants.addPartToBaseUrl(image)))
-                      : DecorationImage(
+                      : const DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage('assets/img/hotKesh/kesh0.jpg'))),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             /*Row(
                       children: [
                         RatingBar.builder(
@@ -303,18 +348,18 @@ class _SearchProductsState extends State<SearchProducts> {
                         ),
                       ],
                     ),*/
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Container(
               child: Text(
                 nameAndDescription[0],
-                style: TextStyle(color: Color(0xFF313131), fontSize: 16),
+                style: const TextStyle(color: Color(0xFF313131), fontSize: 16),
                 overflow: TextOverflow.clip,
               ),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Text(
               cat == 'null' ? "Договорная" : cat.split('.').first + ' сом',
-              style: TextStyle(color: Colors.orange, fontSize: 14),
+              style: const TextStyle(color: Colors.orange, fontSize: 14),
             )
           ],
         ),

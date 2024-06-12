@@ -10,6 +10,7 @@ class AboutProductModel {
   String? description;
   double? price;
   int? categoryId;
+  String? categoryName;
   String? userId;
   String? sellerEmail;
   List<String>? images;
@@ -26,6 +27,7 @@ class AboutProductModel {
     this.description,
     this.price,
     this.categoryId,
+    this.categoryName,
     this.userId,
     this.sellerEmail,
     this.images,
@@ -44,6 +46,7 @@ class AboutProductModel {
     description = json['description'];
     price = json['price'];
     categoryId = json['categoryId'];
+    categoryName = json['categoryName'];
     userId = json['userId'];
     sellerEmail = json['sellerEmail'];
     images = json['images'].cast<String>();

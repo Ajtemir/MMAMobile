@@ -1,27 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:intl/src/intl/date_format.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:upai_app/bloc/reduction_bloc/reduction_bloc.dart';
 import 'package:upai_app/bloc/reduction_bloc/reduction_event.dart';
-import 'package:intl/src/intl/date_format.dart';
 
 import '../../../shared/app_colors.dart';
-import '../../../views/category/aboutMagaz.dart';
+import '../../../user/userData.dart';
+import '../../../views/pages/filters_screen.dart';
 import '../reduction_detail_model.dart';
 import 'base_reduction_state.dart';
 
 class SellerNotReductionedState extends BaseReductionState {
+  RangeValues _values = RangeValues(0, UserData.price ?? 600);
   @override
   Widget build(context) {
     return Column(
       children: [
+        const SizedBox(height: 60),
+        const Center(
+          child: Text(
+            'Тендер',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+            ),
+          ),
+        ),
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
             style: ButtonStyle(
-              backgroundColor:
-              MaterialStatePropertyAll(AppColors.red1),
+              backgroundColor: MaterialStatePropertyAll(AppColors.red1),
               padding: const MaterialStatePropertyAll(
                   EdgeInsets.symmetric(vertical: 10)),
             ),
@@ -29,19 +40,17 @@ class SellerNotReductionedState extends BaseReductionState {
               showMaterialModalBottomSheet(
                 context: context,
                 shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20)),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                 ),
-                builder: (contextInner) =>
-                    SingleChildScrollView(
-                      controller: ModalScrollController.of(
-                          contextInner),
-                      child: getForm(context),
-                    ),
+                builder: (contextInner) => SingleChildScrollView(
+                  controller: ModalScrollController.of(contextInner),
+                  child: getForm(context),
+                ),
               );
             },
             child: Text(
               "Запустить тендер",
+              style: TextStyle(color: Colors.white),
             ),
           ),
         ),
@@ -49,8 +58,7 @@ class SellerNotReductionedState extends BaseReductionState {
     );
   }
 
-
-  Widget getForm(BuildContext context){
+  Widget getForm(BuildContext context) {
     final _formKey = GlobalKey<FormBuilderState>();
     return Padding(
       padding: const EdgeInsets.all(20.0),
@@ -105,12 +113,12 @@ class SellerNotReductionedState extends BaseReductionState {
             SizedBox(
               height: 10,
             ),
-            FormBuilderTextField(
-              name: 'startPrice',
-              enabled: true,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                  labelText: 'Стартовая цена', border: OutlineInputBorder()),
+            RangeSliderView(
+              type: 'tender',
+              values: _values,
+              onChangeRangeValues: (RangeValues values) {
+                _values = values;
+              },
             ),
             SizedBox(
               height: 10,
@@ -119,11 +127,13 @@ class SellerNotReductionedState extends BaseReductionState {
               color: AppColors.red1,
               onPressed: () async {
                 if (_formKey.currentState!.saveAndValidate()) {
-                  Map<String, dynamic> keyValuePairs = _formKey.currentState!.value;
-                  BlocProvider.of<ReductionBloc>(context).add(ReductionMakeEvent(ReductionDetailModel(
+                  Map<String, dynamic> keyValuePairs =
+                      _formKey.currentState!.value;
+                  BlocProvider.of<ReductionBloc>(context)
+                      .add(ReductionMakeEvent(ReductionDetailModel(
                     keyValuePairs['startDate'],
                     keyValuePairs['endDate'],
-                    double.parse(keyValuePairs['startPrice']),
+                    _values.end,
                   )));
                   Navigator.pop(context);
                 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,8 +8,6 @@ import 'package:upai_app/views/auth/sing_up/sing_up_screen.dart';
 import 'package:upai_app/views/home/home_screen.dart';
 
 import '../../../provider/selectCatProvider.dart';
-import '../../../provider/selectTabProvider.dart';
-import '../../../shared/app_text_styles.dart';
 import '../server/service.dart';
 
 class SingInScreen extends StatefulWidget {
@@ -24,7 +21,7 @@ class _SingInScreenState extends State<SingInScreen> {
   TextEditingController email =
       TextEditingController(text: "first@example.com");
   TextEditingController password = TextEditingController(text: "password");
-  TextEditingController ip = TextEditingController(text: "localhost");
+  TextEditingController ip = TextEditingController(text: "192.168.50.143");
   TextEditingController port = TextEditingController(text: "8080");
   TextEditingController scheme = TextEditingController(text: "http");
   bool showPassword = false;
@@ -37,26 +34,26 @@ class _SingInScreenState extends State<SingInScreen> {
       decoration: BoxDecoration(
         border: Border.all(
           width: 1,
-          color: Color(0xFF225196),
+          color: const Color(0xFF225196),
         ),
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextField(
         controller: email,
         keyboardType: TextInputType.emailAddress,
-        style: TextStyle(
+        style: const TextStyle(
           color: Color(0xFF225196),
           fontSize: 16,
         ),
         decoration: InputDecoration(
           hintStyle: TextStyle(
-            color: Color(0xFF225196).withOpacity(0.5),
+            color: const Color(0xFF225196).withOpacity(0.5),
           ),
           hintText: 'Email',
           border: InputBorder.none,
-          prefixIcon: Padding(
-              padding: const EdgeInsets.only(
-                  left: 18, top: 11, right: 13, bottom: 12),
+          prefixIcon: const Padding(
+              padding:
+                  EdgeInsets.only(left: 18, top: 11, right: 13, bottom: 12),
               child: Icon(
                 Icons.email_outlined,
                 color: Color(0xFF225196),
@@ -74,25 +71,25 @@ class _SingInScreenState extends State<SingInScreen> {
       decoration: BoxDecoration(
         border: Border.all(
           width: 1,
-          color: Color(0xFF225196),
+          color: const Color(0xFF225196),
         ),
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextField(
         controller: ip,
-        style: TextStyle(
+        style: const TextStyle(
           color: Color(0xFF225196),
           fontSize: 16,
         ),
         decoration: InputDecoration(
           hintStyle: TextStyle(
-            color: Color(0xFF225196).withOpacity(0.5),
+            color: const Color(0xFF225196).withOpacity(0.5),
           ),
           hintText: 'IP adress',
           border: InputBorder.none,
-          prefixIcon: Padding(
-              padding: const EdgeInsets.only(
-                  left: 18, top: 11, right: 13, bottom: 12),
+          prefixIcon: const Padding(
+              padding:
+                  EdgeInsets.only(left: 18, top: 11, right: 13, bottom: 12),
               child: Icon(
                 Icons.settings,
                 color: Color(0xFF225196),
@@ -110,25 +107,25 @@ class _SingInScreenState extends State<SingInScreen> {
       decoration: BoxDecoration(
         border: Border.all(
           width: 1,
-          color: Color(0xFF225196),
+          color: const Color(0xFF225196),
         ),
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextField(
         controller: port,
-        style: TextStyle(
+        style: const TextStyle(
           color: Color(0xFF225196),
           fontSize: 16,
         ),
         decoration: InputDecoration(
           hintStyle: TextStyle(
-            color: Color(0xFF225196).withOpacity(0.5),
+            color: const Color(0xFF225196).withOpacity(0.5),
           ),
           hintText: 'Port number',
           border: InputBorder.none,
-          prefixIcon: Padding(
-              padding: const EdgeInsets.only(
-                  left: 18, top: 11, right: 13, bottom: 12),
+          prefixIcon: const Padding(
+              padding:
+                  EdgeInsets.only(left: 18, top: 11, right: 13, bottom: 12),
               child: Icon(
                 Icons.settings,
                 color: Color(0xFF225196),
@@ -146,25 +143,25 @@ class _SingInScreenState extends State<SingInScreen> {
       decoration: BoxDecoration(
         border: Border.all(
           width: 1,
-          color: Color(0xFF225196),
+          color: const Color(0xFF225196),
         ),
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextField(
         controller: scheme,
-        style: TextStyle(
+        style: const TextStyle(
           color: Color(0xFF225196),
           fontSize: 16,
         ),
         decoration: InputDecoration(
           hintStyle: TextStyle(
-            color: Color(0xFF225196).withOpacity(0.5),
+            color: const Color(0xFF225196).withOpacity(0.5),
           ),
           hintText: 'Port number',
           border: InputBorder.none,
-          prefixIcon: Padding(
-              padding: const EdgeInsets.only(
-                  left: 18, top: 11, right: 13, bottom: 12),
+          prefixIcon: const Padding(
+              padding:
+                  EdgeInsets.only(left: 18, top: 11, right: 13, bottom: 12),
               child: Icon(
                 Icons.settings,
                 color: Color(0xFF225196),
@@ -196,7 +193,7 @@ class _SingInScreenState extends State<SingInScreen> {
       decoration: BoxDecoration(
         border: Border.all(
           width: 1,
-          color: Color(0xFF225196),
+          color: const Color(0xFF225196),
         ),
         borderRadius: BorderRadius.circular(10),
       ),
@@ -208,13 +205,13 @@ class _SingInScreenState extends State<SingInScreen> {
               controller: password,
               obscureText: showPassword,
               obscuringCharacter: '*',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Color(0xFF225196),
                 fontSize: 16,
               ),
               decoration: InputDecoration(
                 hintStyle: TextStyle(
-                  color: Color(0xFF225196).withOpacity(0.5),
+                  color: const Color(0xFF225196).withOpacity(0.5),
                 ),
                 hintText: 'Пароль',
                 border: InputBorder.none,
@@ -232,11 +229,11 @@ class _SingInScreenState extends State<SingInScreen> {
               setState(() {});
             },
             icon: showPassword
-                ? Icon(
+                ? const Icon(
                     Icons.remove_red_eye_outlined,
                     color: Color(0xFF225196),
                   )
-                : Icon(
+                : const Icon(
                     Icons.remove_red_eye_rounded,
                     color: Color(0xFF225196),
                   ),
@@ -253,7 +250,7 @@ class _SingInScreenState extends State<SingInScreen> {
         child: Center(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 85,
               ),
               Image.asset(
@@ -261,7 +258,7 @@ class _SingInScreenState extends State<SingInScreen> {
                 width: 148,
                 height: 148,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 34,
               ),
               /*Text(
@@ -318,26 +315,29 @@ class _SingInScreenState extends State<SingInScreen> {
                   ),
                 ],
               ),*/
-              SizedBox(
+              const SizedBox(
                 height: 23,
               ),
               phoneField(),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               passwordField(),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               ipField(),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               portField(),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               schemeField(),
+              const SizedBox(
+                height: 20,
+              ),
               InkWell(
                 onTap: () async {
                   AuthClient.ip = ip.text;
@@ -357,7 +357,7 @@ class _SingInScreenState extends State<SingInScreen> {
                     Provider.of<SelectCatProvider>(context, listen: false)
                         .setEmail(email.text);
                     Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => Home()));
+                        MaterialPageRoute(builder: (_) => const Home()));
                   } else if (ans == 'password') {
                     circular = false;
                     setState(() {});
@@ -372,12 +372,12 @@ class _SingInScreenState extends State<SingInScreen> {
                   width: 163,
                   height: 45,
                   decoration: BoxDecoration(
-                      color: Color(0xFF225196),
+                      color: const Color(0xFF225196),
                       borderRadius: BorderRadius.circular(30)),
                   child: Center(
                       child: circular
-                          ? CircularProgressIndicator()
-                          : Text(
+                          ? const CircularProgressIndicator()
+                          : const Text(
                               'Войти',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 16),
@@ -386,24 +386,24 @@ class _SingInScreenState extends State<SingInScreen> {
               ),
               const SizedBox(height: 15),
               SizedBox(height: 80.h),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               GestureDetector(
                   onTap: () {},
-                  child: Text(
+                  child: const Text(
                     'Не можете войти?',
                     style: TextStyle(color: Color(0xFF225196), fontSize: 12),
                   )),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => SingUpScreen()));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (_) => const SingUpScreen()));
                   },
-                  child: Text(
+                  child: const Text(
                     'Зарегистрироваться',
                     style: TextStyle(color: Color(0xFF225196), fontSize: 16),
                   )),

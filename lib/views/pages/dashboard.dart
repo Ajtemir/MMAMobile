@@ -379,7 +379,7 @@ class _DashboardState extends State<Dashboard> {
                   var path = snapshot.data!;
                   return Container(
                     padding: const EdgeInsets.only(left: 14),
-                    height: 110,
+                    height: 130,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       separatorBuilder: (context, _) =>
@@ -584,7 +584,7 @@ class _DashboardState extends State<Dashboard> {
                                         ? snapshot.data!.data![i].images![0]
                                         : null,
                                     3,
-                                    snapshot.data!.data![i].description!,
+                                    snapshot.data!.data![i].description ?? '',
                                     snapshot.data!.data![i].price.toString(),
                                     ((snapshot.data!.data![i].id!).toString()),
                                     emailGet,
@@ -827,12 +827,16 @@ class _DashboardState extends State<Dashboard> {
       name.split('name').last
     ];
     return InkWell(
-      onTap: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => AboutMagaz(
+      onTap: ()
+      {Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>
+              AboutMagaz(
                 productId: productId,
                 email: email,
                 checkUserPage: false,
-              ))),
+              )));
+      print(Constants.addPartToBaseUrl(image!));
+      },
       child: Ink(
         width: 170,
         child: Column(

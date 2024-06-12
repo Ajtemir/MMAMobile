@@ -23,7 +23,7 @@ class _SplashPageState extends State<SplashPage> {
           Provider.of<SelectCatProvider>(context, listen: false)
               .setEmail(email);
           Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => Home()));
+              MaterialPageRoute(builder: (_) => SingInScreen()));
         }
         else {
           Navigator.of(context)

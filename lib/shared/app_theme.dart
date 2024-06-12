@@ -9,13 +9,17 @@ class AppTheme {
     primaryColor: AppColors.mainColor,
     scaffoldBackgroundColor: AppColors.white,
     appBarTheme: AppBarTheme(
+      // color: Colors.white,
+      // shadowColor: Colors.white,
+      // foregroundColor: Colors.white,
+      surfaceTintColor: Colors.white,
+      // backgroundColor: Colors.white,
       centerTitle: true,
       // elevation: 2,
       titleTextStyle: AppTextStyles.black18Semibold.copyWith(fontSize: 16.sp),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        primary: AppColors.mainColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         // maximumSize: Size(345, 50),
         padding: const EdgeInsets.symmetric(
@@ -43,10 +47,10 @@ class AppTheme {
       ),
     ),
     textTheme: TextTheme(
-      headline1: AppTextStyles.black20Bold,
-      headline2:
+      displayLarge: AppTextStyles.black20Bold,
+      displayMedium:
           AppTextStyles.black20Bold.copyWith(fontWeight: FontWeight.w600),
-      headline6: AppTextStyles.black16Medium,
+      titleLarge: AppTextStyles.black16Medium,
     ),
   );
 }
