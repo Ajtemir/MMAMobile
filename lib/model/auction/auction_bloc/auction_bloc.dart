@@ -103,7 +103,8 @@ class AuctionBloc extends Bloc<BaseAuctionEvent, BaseAuctionState> {
         await AuctionApi.submitAuction(_productId, _email);
         emit(SellerProductNotAuctionedState());
       }
-      catch (e){
+      catch (e, stackTrace){
+        print(stackTrace);
         emit(AuctionErrorState(e.toString()));
       }
 

@@ -383,7 +383,7 @@ class _ProfileState extends State<Profile> {
               leading: Image.asset('assets/img/prof/catIcon5.png',
                   width: 16, height: 16),
               title: Text(
-                'Поделиться приложением',
+                'Подать заявление на место',
                 style: TextStyle(
                     color: Color(0xFF313131),
                     fontSize: 16,

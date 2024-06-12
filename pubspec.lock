@@ -424,6 +424,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0-pre"
+  multi_dropdown:
+    dependency: "direct main"
+    description:
+      name: multi_dropdown
+      sha256: "65b8f505b251c5173e8eff64c09cd37460d8f8be906c2069a03815ad2641dcd1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.9"
   nested:
     dependency: transitive
     description:

@@ -246,6 +246,8 @@ class _SingUpScreenState extends State<SingUpScreen> {
                           msg: "Регистрация прошла!",
                           fontSize: 18,
                           gravity: ToastGravity.BOTTOM); // todo not work toast
+                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                          const SingInScreen()), (Route<dynamic> route) => false);
                     } else {
                       cancelToast("Введите правильно email или пароль");
                     }
