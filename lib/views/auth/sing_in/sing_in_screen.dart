@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,8 +8,6 @@ import 'package:upai_app/views/auth/sing_up/sing_up_screen.dart';
 import 'package:upai_app/views/home/home_screen.dart';
 
 import '../../../provider/selectCatProvider.dart';
-import '../../../provider/selectTabProvider.dart';
-import '../../../shared/app_text_styles.dart';
 import '../server/service.dart';
 
 class SingInScreen extends StatefulWidget {
@@ -24,7 +21,7 @@ class _SingInScreenState extends State<SingInScreen> {
   TextEditingController email =
       TextEditingController(text: "first@example.com");
   TextEditingController password = TextEditingController(text: "password");
-  TextEditingController ip = TextEditingController(text: "192.168.50.24");
+  TextEditingController ip = TextEditingController(text: "192.168.50.143");
   TextEditingController port = TextEditingController(text: "8080");
   TextEditingController scheme = TextEditingController(text: "http");
   bool showPassword = false;
@@ -55,8 +52,8 @@ class _SingInScreenState extends State<SingInScreen> {
           hintText: 'Email',
           border: InputBorder.none,
           prefixIcon: const Padding(
-              padding: EdgeInsets.only(
-                  left: 18, top: 11, right: 13, bottom: 12),
+              padding:
+                  EdgeInsets.only(left: 18, top: 11, right: 13, bottom: 12),
               child: Icon(
                 Icons.email_outlined,
                 color: Color(0xFF225196),
@@ -91,8 +88,8 @@ class _SingInScreenState extends State<SingInScreen> {
           hintText: 'IP adress',
           border: InputBorder.none,
           prefixIcon: const Padding(
-              padding: EdgeInsets.only(
-                  left: 18, top: 11, right: 13, bottom: 12),
+              padding:
+                  EdgeInsets.only(left: 18, top: 11, right: 13, bottom: 12),
               child: Icon(
                 Icons.settings,
                 color: Color(0xFF225196),
@@ -127,8 +124,8 @@ class _SingInScreenState extends State<SingInScreen> {
           hintText: 'Port number',
           border: InputBorder.none,
           prefixIcon: const Padding(
-              padding: EdgeInsets.only(
-                  left: 18, top: 11, right: 13, bottom: 12),
+              padding:
+                  EdgeInsets.only(left: 18, top: 11, right: 13, bottom: 12),
               child: Icon(
                 Icons.settings,
                 color: Color(0xFF225196),
@@ -163,8 +160,8 @@ class _SingInScreenState extends State<SingInScreen> {
           hintText: 'Port number',
           border: InputBorder.none,
           prefixIcon: const Padding(
-              padding: EdgeInsets.only(
-                  left: 18, top: 11, right: 13, bottom: 12),
+              padding:
+                  EdgeInsets.only(left: 18, top: 11, right: 13, bottom: 12),
               child: Icon(
                 Icons.settings,
                 color: Color(0xFF225196),
@@ -403,8 +400,8 @@ class _SingInScreenState extends State<SingInScreen> {
               ),
               GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => const SingUpScreen()));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (_) => const SingUpScreen()));
                   },
                   child: const Text(
                     'Зарегистрироваться',

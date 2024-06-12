@@ -47,10 +47,10 @@ class AppTheme {
       ),
     ),
     textTheme: TextTheme(
-      headline1: AppTextStyles.black20Bold,
-      headline2:
+      displayLarge: AppTextStyles.black20Bold,
+      displayMedium:
           AppTextStyles.black20Bold.copyWith(fontWeight: FontWeight.w600),
-      headline6: AppTextStyles.black16Medium,
+      titleLarge: AppTextStyles.black16Medium,
     ),
   );
 }

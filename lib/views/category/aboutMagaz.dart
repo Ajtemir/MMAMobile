@@ -1,13 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:upai_app/DTOs/make_collective_post.dart';
+import 'package:upai_app/DTOs/seller_email_and_product_id.dart';
 import 'package:upai_app/DTOs/submit_collective_argument.dart';
 import 'package:upai_app/bloc/create_product_bloc/states/CategoryChosenState.dart';
 import 'package:upai_app/bloc/reduction_bloc/reduction_bloc.dart';
@@ -29,11 +29,10 @@ import '../../shared/app_colors.dart';
 import '../../widgets/date_format.dart';
 import '../auth/server/service.dart';
 import '../drawer/hotKeshAddEdit.dart';
+import '../pages/filters_screen.dart';
 import '../pages/profileUsers/profileUsers.dart';
 import 'custom_navigation.dart';
 import 'full_screen_album.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:upai_app/DTOs/seller_email_and_product_id.dart';
 
 class AboutMagaz extends StatefulWidget {
   final String productId;
@@ -109,14 +108,14 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
           future: fetchProductData(widget.productId, widget.email),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-
+              UserData.price = snapshot.data!.price!;
               List<String> nameAndDescription = [
                 snapshot.data!.description!.split('name').first,
                 snapshot.data!.description!.split('name').last
               ];
               AboutProductModel path = snapshot.data!;
               productInfo = path;
-              UserData.userEmail=path.sellerEmail!;
+              UserData.userEmail = path.sellerEmail!;
               isFavorite = path.isFavorite!;
               isSetCollective = path.isSetCollective;
               isSeller = path.isSeller;
@@ -272,33 +271,33 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                       ],
                     ),
                     const SizedBox(height: 17),
-                    if(path.sellerEmail==emailGet)
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => HotKeshAddEdit(
-                                  email: path.sellerEmail ?? '',
-                                  productId: path.id.toString(),
-                                  currentCategoryId: path.categoryId,
-                                )
-                            /*AboutMagaz(
+                    if (path.sellerEmail == emailGet)
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => HotKeshAddEdit(
+                                    email: path.sellerEmail ?? '',
+                                    productId: path.id.toString(),
+                                    currentCategoryId: path.categoryId,
+                                  )
+                              /*AboutMagaz(
                                     productId: productId,
                                     email: email,
                                     checkUserPage: false,
                                   )*/
-                            ));
-                      },
-                      child: const Text(
-                        'Редактировать',
-                        style: TextStyle(color: Colors.white),
+                              ));
+                        },
+                        child: const Text(
+                          'Редактировать',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(AppColors.red1),
+                          padding: const MaterialStatePropertyAll(
+                              EdgeInsets.symmetric(vertical: 10)),
+                        ),
                       ),
-                      style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStatePropertyAll(AppColors.red1),
-                padding: const MaterialStatePropertyAll(
-                    EdgeInsets.symmetric(vertical: 10)),
-              ),
-                    ),
                     const SizedBox(height: 48),
                     const Text(
                       'Описание',
@@ -722,7 +721,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                     builder: (context) => SingleChildScrollView(
                       controller: ModalScrollController.of(context),
                       child: Container(
-                        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom),
                         child: FormBottomModal(
                           dto: SellerEmailAndProductId(productInfo.id!,
                               productInfo.sellerEmail!, _productParentSetState),
@@ -1170,112 +1170,208 @@ class _FormBottomModalState extends State<FormBottomModal> {
   }
 }
 
-class MakeAuctionedForm extends StatefulWidget {
-
-  @override
-  State<MakeAuctionedForm> createState() => _MakeAuctionedFormState();
-}
-
-class _MakeAuctionedFormState extends State<MakeAuctionedForm> {
-  @override
-  Widget build(BuildContext context) {
+class MakeAuctionedForm {
+  RangeValues _values = RangeValues(UserData.price!, 10000);
+  Widget getWidget(BuildContext context) {
     final _formKey = GlobalKey<FormBuilderState>();
-    return Scaffold(
-      appBar: AllAppBar2(),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: FormBuilder(
-          key: _formKey,
-          child: Column(
-            children: [
-              const Text(
-                'Выставить обьявление на аукцион',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: FormBuilder(
+        key: _formKey,
+        child: Column(
+          children: [
+            const Text(
+              'Выставить обьявление на аукцион',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            FormBuilderDateTimePicker(
+              validator: (value) {
+                if (value == null) {
+                  return 'Please enter start Date';
+                }
+                return null;
+              },
+              currentDate: DateTime.now(),
+              inputType: InputType.both,
+              format: DateFormat("yyyy-MM-dd hh:mm"),
+              initialDate: DateTime.now(),
+              decoration: const InputDecoration(
+                labelText: "Дата начала",
+                border: OutlineInputBorder(),
               ),
-              const SizedBox(
-                height: 10,
+              name: 'startDate',
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            FormBuilderDateTimePicker(
+              validator: (value) {
+                if (value == null) {
+                  return 'Please enter end Date';
+                }
+                return null;
+              },
+              inputType: InputType.both,
+              format: DateFormat("yyyy-MM-dd hh:mm"),
+              initialDate: DateTime.now(),
+              decoration: const InputDecoration(
+                labelText: "Дата конца",
+                border: OutlineInputBorder(),
               ),
-              FormBuilderDateTimePicker(
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please enter start Date';
-                  }
-                  return null;
-                },
-                currentDate: DateTime.now(),
-                inputType: InputType.both,
-                format: DateFormat("yyyy-MM-dd hh:mm"),
-                initialDate: DateTime.now(),
-                decoration: const InputDecoration(
-                  labelText: "Дата начала",
-                  border: OutlineInputBorder(),
-                ),
-                name: 'startDate',
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              FormBuilderDateTimePicker(
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please enter end Date';
-                  }
-                  return null;
-                },
-                inputType: InputType.both,
-                format: DateFormat("yyyy-MM-dd hh:mm"),
-                initialDate: DateTime.now(),
-                decoration: const InputDecoration(
-                  labelText: "Дата конца",
-                  border: OutlineInputBorder(),
-                ),
-                name: 'endDate',
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              FormBuilderTextField(
-                name: 'startPrice',
-                onChanged: (val){},
-                enabled: true,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                    labelText: 'Стартовая цена', border: OutlineInputBorder()),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              MaterialButton(
-                color: AppColors.red1,
-                onPressed: () async {
-                  if (_formKey.currentState!.saveAndValidate()) {
-                    Map<String, dynamic> keyValuePairs =
-                        _formKey.currentState!.value;
-                    BlocProvider.of<AuctionBloc>(context)
-                        .add(AuctionMadeEvent(AuctionDetailModel(
-                      keyValuePairs['startDate'],
-                      keyValuePairs['endDate'],
-                      keyValuePairs['startPrice'],
-                    )));
-                    Navigator.pop(context);
-                  }
-                },
-                child: const Text(
-                  'Опубликовать аукцион',
-                  style: TextStyle(
-                    color: AppColors.white,
-                    fontSize: 16,
-                  ),
+              name: 'endDate',
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            RangeSliderView(
+              type: 'auction',
+              values: _values,
+              onChangeRangeValues: (RangeValues values) {
+                _values = values;
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            MaterialButton(
+              color: AppColors.red1,
+              onPressed: () async {
+                if (_formKey.currentState!.saveAndValidate()) {
+                  Map<String, dynamic> keyValuePairs =
+                      _formKey.currentState!.value;
+                  BlocProvider.of<AuctionBloc>(context)
+                      .add(AuctionMadeEvent(AuctionDetailModel(
+                    keyValuePairs['startDate'],
+                    keyValuePairs['endDate'],
+                    _values.end,
+                  )));
+                  Navigator.pop(context);
+                }
+              },
+              child: const Text(
+                'Опубликовать аукцион',
+                style: TextStyle(
+                  color: AppColors.white,
+                  fontSize: 16,
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
+/*class MakeAuctionedForm extends StatefulWidget {
+  @override
+  State<MakeAuctionedForm> createState() => _MakeAuctionedFormState();
+}
+
+class _MakeAuctionedFormState extends State<MakeAuctionedForm> {
+  RangeValues _values = RangeValues(UserData.price!, 10000);
+  @override
+  Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormBuilderState>();
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: FormBuilder(
+        key: _formKey,
+        child: Column(
+          children: [
+            const Text(
+              'Выставить обьявление на аукцион',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            FormBuilderDateTimePicker(
+              validator: (value) {
+                if (value == null) {
+                  return 'Please enter start Date';
+                }
+                return null;
+              },
+              currentDate: DateTime.now(),
+              inputType: InputType.both,
+              format: DateFormat("yyyy-MM-dd hh:mm"),
+              initialDate: DateTime.now(),
+              decoration: const InputDecoration(
+                labelText: "Дата начала",
+                border: OutlineInputBorder(),
+              ),
+              name: 'startDate',
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            FormBuilderDateTimePicker(
+              validator: (value) {
+                if (value == null) {
+                  return 'Please enter end Date';
+                }
+                return null;
+              },
+              inputType: InputType.both,
+              format: DateFormat("yyyy-MM-dd hh:mm"),
+              initialDate: DateTime.now(),
+              decoration: const InputDecoration(
+                labelText: "Дата конца",
+                border: OutlineInputBorder(),
+              ),
+              name: 'endDate',
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            RangeSliderView(
+              type: 'auction',
+              values: _values,
+              onChangeRangeValues: (RangeValues values) {
+                _values = values;
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            MaterialButton(
+              color: AppColors.red1,
+              onPressed: () async {
+                if (_formKey.currentState!.saveAndValidate()) {
+                  Map<String, dynamic> keyValuePairs =
+                      _formKey.currentState!.value;
+                  BlocProvider.of<AuctionBloc>(context)
+                      .add(AuctionMadeEvent(AuctionDetailModel(
+                    keyValuePairs['startDate'],
+                    keyValuePairs['endDate'],
+                    _values.end,
+                  )));
+                  Navigator.pop(context);
+                }
+              },
+              child: const Text(
+                'Опубликовать аукцион',
+                style: TextStyle(
+                  color: AppColors.white,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}*/

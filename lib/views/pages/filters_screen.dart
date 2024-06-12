@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../user/userData.dart';
+
 class FiltersScreen extends StatefulWidget {
   @override
   _FiltersScreenState createState() => _FiltersScreenState();
@@ -12,13 +14,13 @@ class _FiltersScreenState extends State<FiltersScreen> {
   List<PopularFilterListData> accomodationListData =
       PopularFilterListData.accomodationList;
 
-  RangeValues _values = const RangeValues(100, 600);
+  RangeValues _values = const RangeValues(0, 600);
   double distValue = 50.0;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: HotelAppTheme.buildLightTheme().backgroundColor,
+      color: Colors.white,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Column(
@@ -347,6 +349,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
           ),
         ),
         RangeSliderView(
+          type: '',
           values: _values,
           onChangeRangeValues: (RangeValues values) {
             _values = values;
@@ -362,7 +365,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
   Widget getAppBarUI() {
     return Container(
       decoration: BoxDecoration(
-        color: HotelAppTheme.buildLightTheme().backgroundColor,
+        color: Colors.white,
         boxShadow: <BoxShadow>[
           BoxShadow(
               color: Colors.grey.withOpacity(0.2),
@@ -416,7 +419,6 @@ class _FiltersScreenState extends State<FiltersScreen> {
     );
   }
 }
-
 
 class PopularFilterListData {
   PopularFilterListData({
@@ -482,19 +484,19 @@ class HotelAppTheme {
   static TextTheme _buildTextTheme(TextTheme base) {
     const String fontName = 'WorkSans';
     return base.copyWith(
-      headline1: base.headline1?.copyWith(fontFamily: fontName),
-      headline2: base.headline2?.copyWith(fontFamily: fontName),
-      headline3: base.headline3?.copyWith(fontFamily: fontName),
-      headline4: base.headline4?.copyWith(fontFamily: fontName),
-      headline5: base.headline5?.copyWith(fontFamily: fontName),
-      headline6: base.headline6?.copyWith(fontFamily: fontName),
-      button: base.button?.copyWith(fontFamily: fontName),
-      caption: base.caption?.copyWith(fontFamily: fontName),
-      bodyText1: base.bodyText1?.copyWith(fontFamily: fontName),
-      bodyText2: base.bodyText2?.copyWith(fontFamily: fontName),
-      subtitle1: base.subtitle1?.copyWith(fontFamily: fontName),
-      subtitle2: base.subtitle2?.copyWith(fontFamily: fontName),
-      overline: base.overline?.copyWith(fontFamily: fontName),
+      displayLarge: base.displayLarge?.copyWith(fontFamily: fontName),
+      displayMedium: base.displayMedium?.copyWith(fontFamily: fontName),
+      displaySmall: base.displaySmall?.copyWith(fontFamily: fontName),
+      headlineMedium: base.headlineMedium?.copyWith(fontFamily: fontName),
+      headlineSmall: base.headlineSmall?.copyWith(fontFamily: fontName),
+      titleLarge: base.titleLarge?.copyWith(fontFamily: fontName),
+      labelLarge: base.labelLarge?.copyWith(fontFamily: fontName),
+      bodySmall: base.bodySmall?.copyWith(fontFamily: fontName),
+      bodyLarge: base.bodyLarge?.copyWith(fontFamily: fontName),
+      bodyMedium: base.bodyMedium?.copyWith(fontFamily: fontName),
+      titleMedium: base.titleMedium?.copyWith(fontFamily: fontName),
+      titleSmall: base.titleSmall?.copyWith(fontFamily: fontName),
+      labelSmall: base.labelSmall?.copyWith(fontFamily: fontName),
     );
   }
 
@@ -513,9 +515,7 @@ class HotelAppTheme {
       splashColor: Colors.white24,
       splashFactory: InkRipple.splashFactory,
       canvasColor: Colors.white,
-      backgroundColor: Colors.white, // Very light lavender
       scaffoldBackgroundColor: const Color(0xFFF2F2F2),
-      errorColor: const Color(0xFFB00020),
       buttonTheme: ButtonThemeData(
         colorScheme: colorScheme,
         textTheme: ButtonTextTheme.primary,
@@ -539,13 +539,14 @@ class HexColor extends Color {
   }
 }
 
-
 class RangeSliderView extends StatefulWidget {
-  const RangeSliderView({Key? key, this.values, this.onChangeRangeValues})
+  RangeSliderView(
+      {Key? key, this.values, this.onChangeRangeValues, required this.type})
       : super(key: key);
 
   final Function(RangeValues)? onChangeRangeValues;
   final RangeValues? values;
+  final String? type;
 
   @override
   _RangeSliderViewState createState() => _RangeSliderViewState();
@@ -553,10 +554,12 @@ class RangeSliderView extends StatefulWidget {
 
 class _RangeSliderViewState extends State<RangeSliderView> {
   RangeValues? _values;
+  String? _type;
 
   @override
   void initState() {
     _values = widget.values;
+    _type = widget.type!;
     super.initState();
   }
 
@@ -581,7 +584,9 @@ class _RangeSliderViewState extends State<RangeSliderView> {
                     ),
                   ),
                   Expanded(
-                    flex: 1000 - _values!.start.round(),
+                    flex: _type == 'tender'
+                        ? (UserData.price!.round() - _values!.start.round())
+                        : (1000 - _values!.start.round()),
                     child: const SizedBox(),
                   ),
                 ],
@@ -600,7 +605,9 @@ class _RangeSliderViewState extends State<RangeSliderView> {
                     ),
                   ),
                   Expanded(
-                    flex: 1000 - _values!.end.round(),
+                    flex: _type == 'tender'
+                        ? UserData.price!.round() - _values!.end.round()
+                        : 1000 - _values!.end.round(),
                     child: const SizedBox(),
                   ),
                 ],
@@ -613,8 +620,8 @@ class _RangeSliderViewState extends State<RangeSliderView> {
             ),
             child: RangeSlider(
               values: _values!,
-              min: 0.0,
-              max: 1000.0,
+              min: _type == 'tender' ? 0.0 : UserData.price!,
+              max: _type == 'tender' ? UserData.price ?? 10000 : 10000.0,
               activeColor: HotelAppTheme.buildLightTheme().primaryColor,
               inactiveColor: Colors.grey.withOpacity(0.4),
               divisions: 1000,
@@ -652,18 +659,18 @@ class CustomRangeThumbShape extends RangeSliderThumbShape {
 
   @override
   void paint(
-      PaintingContext context,
-      Offset center, {
-        required Animation<double> activationAnimation,
-        required Animation<double> enableAnimation,
-        bool isDiscrete = false,
-        bool isEnabled = false,
-        bool? isOnTop,
-        bool? isPressed,
-        required SliderThemeData sliderTheme,
-        TextDirection textDirection = TextDirection.ltr,
-        Thumb thumb = Thumb.start,
-      }) {
+    PaintingContext context,
+    Offset center, {
+    required Animation<double> activationAnimation,
+    required Animation<double> enableAnimation,
+    bool isDiscrete = false,
+    bool isEnabled = false,
+    bool? isOnTop,
+    bool? isPressed,
+    required SliderThemeData sliderTheme,
+    TextDirection textDirection = TextDirection.ltr,
+    Thumb thumb = Thumb.start,
+  }) {
     final Canvas canvas = context.canvas;
     final ColorTween colorTween = ColorTween(
       begin: sliderTheme.disabledThumbColor,
@@ -703,7 +710,7 @@ class CustomRangeThumbShape extends RangeSliderThumbShape {
         Paint()
           ..color = Colors.black.withOpacity(0.5)
           ..maskFilter =
-          MaskFilter.blur(BlurStyle.normal, convertRadiusToSigma(8)));
+              MaskFilter.blur(BlurStyle.normal, convertRadiusToSigma(8)));
 
     final Paint cPaint = Paint();
     cPaint..color = Colors.white;
@@ -732,7 +739,6 @@ class CustomRangeThumbShape extends RangeSliderThumbShape {
       _rightTriangle(size, thumbCenter, invert: true);
 }
 
-
 class SliderView extends StatefulWidget {
   const SliderView({Key? key, this.onChangedistValue, this.distValue})
       : super(key: key);
@@ -745,7 +751,7 @@ class SliderView extends StatefulWidget {
 }
 
 class _SliderViewState extends State<SliderView> {
-  double distValue = 50.0;
+  double distValue = 50;
 
   @override
   void initState() {
@@ -767,7 +773,7 @@ class _SliderViewState extends State<SliderView> {
               Container(
                 width: 170,
                 child: Text(
-                  'Less than ${(distValue / 10).toStringAsFixed(1)} Km',
+                  '${(distValue)} \$',
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -822,19 +828,19 @@ class CustomThumbShape extends SliderComponentShape {
 
   @override
   void paint(
-      PaintingContext context,
-      Offset thumbCenter, {
-        Animation<double>? activationAnimation,
-        Animation<double>? enableAnimation,
-        bool? isDiscrete,
-        TextPainter? labelPainter,
-        RenderBox? parentBox,
-        Size? sizeWithOverflow,
-        SliderThemeData? sliderTheme,
-        TextDirection textDirection = TextDirection.ltr,
-        double? textScaleFactor,
-        double? value,
-      }) {
+    PaintingContext context,
+    Offset thumbCenter, {
+    Animation<double>? activationAnimation,
+    Animation<double>? enableAnimation,
+    bool? isDiscrete,
+    TextPainter? labelPainter,
+    RenderBox? parentBox,
+    Size? sizeWithOverflow,
+    SliderThemeData? sliderTheme,
+    TextDirection textDirection = TextDirection.ltr,
+    double? textScaleFactor,
+    double? value,
+  }) {
     final Canvas canvas = context.canvas;
     final ColorTween colorTween = ColorTween(
       begin: sliderTheme?.disabledThumbColor,
@@ -849,7 +855,7 @@ class CustomThumbShape extends SliderComponentShape {
         Paint()
           ..color = Colors.black.withOpacity(0.5)
           ..maskFilter =
-          MaskFilter.blur(BlurStyle.normal, convertRadiusToSigma(8)));
+              MaskFilter.blur(BlurStyle.normal, convertRadiusToSigma(8)));
 
     final Paint cPaint = Paint();
     cPaint..color = Colors.white;

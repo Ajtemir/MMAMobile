@@ -16,12 +16,11 @@ abstract class BaseBuildState extends Equatable {
   List<Object?> get props => [];
   Widget build(BuildContext context);
 }
-abstract class BaseAuctionState extends BaseBuildState{
-}
 
-abstract class BaseDetailAuctionState extends BaseAuctionState{
+abstract class BaseAuctionState extends BaseBuildState {}
+
+abstract class BaseDetailAuctionState extends BaseAuctionState {
   final AuctionDetailModel detail;
-
 
   BaseDetailAuctionState(this.detail);
   @override
@@ -34,13 +33,11 @@ class AuctionInitialState extends BaseDetailAuctionState {
 
   @override
   Widget build(BuildContext context) {
-      // TODO: implement build
-      throw UnimplementedError();
+    // TODO: implement build
+    throw UnimplementedError();
   }
-
-
-
 }
+
 class SellerProductNotAuctionedState extends BaseAuctionState {
   @override
   Widget build(context) {
@@ -59,31 +56,28 @@ class SellerProductNotAuctionedState extends BaseAuctionState {
           width: double.infinity,
           child: ElevatedButton(
             style: ButtonStyle(
-              backgroundColor:
-              MaterialStatePropertyAll(AppColors.red1),
+              backgroundColor: MaterialStatePropertyAll(AppColors.red1),
               padding: const MaterialStatePropertyAll(
                   EdgeInsets.symmetric(vertical: 10)),
             ),
             onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => MakeAuctionedForm()));
-              /*showModalBottomSheet(
-                isScrollControlled: true,
-                context: context,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20)),
-                ),
-                builder: (context) =>
-                    SingleChildScrollView(
-                      controller: ModalScrollController.of(
-                          context),
-                      child: MakeAuctionedForm(),
-                    ),*/
-
+              /*Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => MakeAuctionedForm()));*/
+              showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(20)),
+                  ),
+                  builder: (contextt) => SingleChildScrollView(
+                        controller: ModalScrollController.of(contextt),
+                        child: MakeAuctionedForm().getWidget(context),
+                      ));
             },
             child: Text(
-              "Запустить аукцион",style: TextStyle(color: Colors.white),
+              "Запустить аукцион",
+              style: TextStyle(color: Colors.white),
             ),
           ),
         ),
@@ -97,48 +91,51 @@ class SellerProductAuctionedState extends BaseDetailAuctionState {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      detail.widget,
-      detail.currentMaxPrice == null
-          ? const SizedBox()
-          : SizedBox(
-        width: double.infinity,
-        child: ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor:
-            MaterialStatePropertyAll(AppColors.red1),
-            padding: const MaterialStatePropertyAll(
-                EdgeInsets.symmetric(vertical: 10)),
-          ),
-          onPressed: () {
-            BlocProvider.of<AuctionBloc>(context).add(AuctionSubmitEvent());
-          },
-          child: Text(
-            "Подтвердить аукцион",
+    return Column(
+      children: [
+        detail.widget,
+        detail.currentMaxPrice == null
+            ? const SizedBox()
+            : SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(AppColors.red1),
+                    padding: const MaterialStatePropertyAll(
+                        EdgeInsets.symmetric(vertical: 10)),
+                  ),
+                  onPressed: () {
+                    BlocProvider.of<AuctionBloc>(context)
+                        .add(AuctionSubmitEvent());
+                  },
+                  child: Text(
+                    "Подтвердить аукцион",
+                  ),
+                ),
+              ),
+        SizedBox(
+          height: 20,
+        ),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll(
+                  true ? AppColors.red1 : AppColors.grey),
+              padding: const MaterialStatePropertyAll(
+                  EdgeInsets.symmetric(vertical: 10)),
+            ),
+            onPressed: () {
+              BlocProvider.of<AuctionBloc>(context).add(AuctionUnmadeEvent());
+            },
+            child: Text(
+              "Отменить аукцион",
+            ),
           ),
         ),
-      ),
-      SizedBox(height: 20,),
-      SizedBox(
-        width: double.infinity,
-        child: ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(
-                true ? AppColors.red1 : AppColors.grey),
-            padding: const MaterialStatePropertyAll(
-                EdgeInsets.symmetric(vertical: 10)),
-          ),
-          onPressed: (){
-            BlocProvider.of<AuctionBloc>(context).add(AuctionUnmadeEvent());
-          },
-          child: Text(
-            "Отменить аукцион",
-          ),
-        ),
-      ),
-    ],);
+      ],
+    );
   }
-
 }
 
 class BuyerAuctionAppliedState extends BaseDetailAuctionState {
@@ -163,10 +160,12 @@ class BuyerAuctionAppliedState extends BaseDetailAuctionState {
               if (valueCandidate?.isEmpty ?? true) {
                 return 'This field is required.';
               }
-              if(state.detail.currentMaxPrice != null && state.detail.currentMaxPrice! > double.parse(valueCandidate!)){
+              if (state.detail.currentMaxPrice != null &&
+                  state.detail.currentMaxPrice! >
+                      double.parse(valueCandidate!)) {
                 return 'Suggested price must be more than current max price ${state.detail.currentMaxPrice}';
-              }
-              else if(double.parse(valueCandidate!) < state.detail.startPrice){
+              } else if (double.parse(valueCandidate!) <
+                  state.detail.startPrice) {
                 return 'Suggested price must be more than start price ${state.detail.startPrice}';
               }
               return null;
@@ -189,11 +188,12 @@ class BuyerAuctionAppliedState extends BaseDetailAuctionState {
               ),
               onPressed: () {
                 if (_formKey.currentState!.saveAndValidate()) {
-                  Map<String, dynamic> keyValuePairs = _formKey.currentState!.value;
-                  var suggestedPrice = double.parse(keyValuePairs['suggestedPrice']);
+                  Map<String, dynamic> keyValuePairs =
+                      _formKey.currentState!.value;
+                  var suggestedPrice =
+                      double.parse(keyValuePairs['suggestedPrice']);
                   _bloc.add(AuctionAppliedEvent(suggestedPrice));
                 }
-
               },
               child: Text(
                 "Повысить заявку на аукцион",
@@ -228,7 +228,7 @@ class BuyerAuctionNotAppliedState extends BaseDetailAuctionState {
               if (valueCandidate?.isEmpty ?? true) {
                 return 'This field is required.';
               }
-              if(double.parse(valueCandidate!) < state.detail.startPrice){
+              if (double.parse(valueCandidate!) < state.detail.startPrice) {
                 return 'Suggested price must be more than start price';
               }
               return null;
@@ -251,11 +251,12 @@ class BuyerAuctionNotAppliedState extends BaseDetailAuctionState {
               ),
               onPressed: () {
                 if (_formKey.currentState!.saveAndValidate()) {
-                  Map<String, dynamic> keyValuePairs = _formKey.currentState!.value;
-                  var suggestedPrice = double.parse(keyValuePairs['suggestedPrice']);
+                  Map<String, dynamic> keyValuePairs =
+                      _formKey.currentState!.value;
+                  var suggestedPrice =
+                      double.parse(keyValuePairs['suggestedPrice']);
                   _bloc.add(AuctionAppliedEvent(suggestedPrice));
                 }
-
               },
               child: Text(
                 "Подать заявку на аукцион",
@@ -278,7 +279,10 @@ class BuyerProductNotAuctionedState extends BaseAuctionState {
 class AuctionLoadingState extends BaseAuctionState {
   @override
   Widget build(BuildContext context) {
-    return const Center(child: CircularProgressIndicator(color: Colors.orange,));
+    return const Center(
+        child: CircularProgressIndicator(
+      color: Colors.orange,
+    ));
   }
 }
 

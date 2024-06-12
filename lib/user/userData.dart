@@ -1,3 +1,4 @@
-class UserData{
-  static String userEmail='';
+class UserData {
+  static String userEmail = '';
+  static double? price;
 }
