@@ -1,23 +1,22 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:upai_app/bloc/create_product_bloc/create_product_bloc.dart';
 import 'package:upai_app/provider/selectCatProvider.dart';
 import 'package:upai_app/views/auth/server/service.dart';
-import 'package:upai_app/views/category/selectCategoty.dart';
 import 'package:upai_app/views/drawer/selectCategoryField.dart';
 import 'package:upai_app/widgets/appBar.dart';
-import 'package:upai_app/widgets/appBar2.dart';
+
 import '../../bloc/create_product_bloc/create_product_events.dart';
 import '../../provider/selectTabProvider.dart';
 import '../../shared/app_colors.dart';
-import 'package:image_picker/image_picker.dart';
 import '../pages/dashboard.dart';
-import 'utils.dart';
 
 class HotKeshAdd extends StatefulWidget {
   late int? currentCategoryId;
@@ -56,7 +55,6 @@ class _HotKeshAddState extends State<HotKeshAdd> {
 
   Widget bottomSheet() {
     return Container(
-
       height: 120,
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.symmetric(
@@ -65,7 +63,6 @@ class _HotKeshAddState extends State<HotKeshAdd> {
       ),
       child: Column(
         children: <Widget>[
-
           const Text(
             "Выберите фото",
             style: TextStyle(
@@ -173,13 +170,13 @@ class _HotKeshAddState extends State<HotKeshAdd> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AllAppBar(),
+      appBar: kIsWeb ? null : AllAppBar(),
       body: ListView(
         children: [
           SizedBox(height: 30),
           Padding(
             padding: const EdgeInsets.only(left: 20.0),
-            child: Text('Подать объявление',
+            child: Text('Добавить продукт',
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 24,
@@ -187,7 +184,7 @@ class _HotKeshAddState extends State<HotKeshAdd> {
           ),
           SizedBox(height: 30),
           ListTile(
-            contentPadding: EdgeInsets.only(left: 35,right: 20,bottom: 0),
+            contentPadding: EdgeInsets.only(left: 35, right: 20, bottom: 0),
             leading: Text(
               'Загрузите фото',
               style: TextStyle(
@@ -196,16 +193,14 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                   fontWeight: FontWeight.w400),
             ),
             trailing: IconButton(
-              onPressed: (){
-                imageFile=[];
-                setState(() {
-
-                });
-              },
+                onPressed: () {
+                  imageFile = [];
+                  setState(() {});
+                },
                 icon: Icon(
-              Icons.delete_outline,
-              color: Colors.orange,
-            )),
+                  Icons.delete_outline,
+                  color: Colors.orange,
+                )),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -241,10 +236,14 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: ((builder) => bottomSheet()),
-                    );
+                    if (kIsWeb) {
+                      takePhotoGalery();
+                    } else {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: ((builder) => bottomSheet()),
+                      );
+                    }
                   },
                   child: Container(
                     width: 80,
@@ -261,7 +260,7 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                   ),
                 ),
                 SizedBox(height: 20),
-               SelectCategoryField(),
+                SelectCategoryField(),
                 SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.only(left: 19.0),
@@ -356,7 +355,6 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                         )),
                   ),
                 ),
-
                 SizedBox(height: 30),
                 /*Padding(
                   padding: const EdgeInsets.only(left: 19.0),
@@ -473,7 +471,8 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                         var json = {
                           "description": descriptionText,
                           "price": price.text,
-                          "categoryId": Provider.of<SelectCatProvider>(context,listen: false)
+                          "categoryId": Provider.of<SelectCatProvider>(context,
+                                  listen: false)
                               .categoryId,
                           "userEmail": emailGet
                         };
@@ -483,7 +482,13 @@ class _HotKeshAddState extends State<HotKeshAdd> {
                           bool ans2 = await AuthClient()
                               .postProductPhotoAdd(imageFile, ans);
                           if (ans2) {
-                            BlocProvider.of<CreateProductBloc>(context).add(ChooseCategoryEvent(int.parse(Provider.of<SelectCatProvider>(context,listen: false).categoryId),ans));
+                            BlocProvider.of<CreateProductBloc>(context).add(
+                                ChooseCategoryEvent(
+                                    int.parse(Provider.of<SelectCatProvider>(
+                                            context,
+                                            listen: false)
+                                        .categoryId),
+                                    ans));
                             return;
                             Fluttertoast.showToast(
                                 msg: 'Успешно добавлено!',

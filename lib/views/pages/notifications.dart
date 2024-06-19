@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:upai_app/widgets/appBar.dart';
 
@@ -14,7 +15,7 @@ class _NotificationsState extends State<Notifications> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AllAppBar(),
+      appBar: kIsWeb ? null : AllAppBar(),
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -862,765 +863,765 @@ class _NotificationsState extends State<Notifications> {
                             )
                           ],
                         ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: Divider(
-            height: 1,
-            color: Color(0xFFEBEBEB),
-          ),
-        ),
-        Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(15),
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      width: 0.5,
-                      color:
-                      Color(0xFF929292).withOpacity(0.37)),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 4,
-                      color: Color(0x1A000000),
-                      offset: Offset(0, 4),
-                    )
-                  ]),
-              child: Image.asset(
-                  'assets/img/notif/greenDollarIcon.png'),
-            ),
-            SizedBox(width: 19),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    width: 230,
-                    child: Text(
-                      'Кешбек  в размере 123 сом поступило',
-                      style: TextStyle(
-                          color: Color(0xFF313131),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400),
-                    )),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Text('LC waikiki',
-                        style: TextStyle(
-                            color: Color(0xFF313131),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 70),
-                    Text('13:11',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 19),
-                    Text('14.10.2020',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: Divider(
-            height: 1,
-            color: Color(0xFFEBEBEB),
-          ),
-        ),
-        Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(15),
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      width: 0.5,
-                      color:
-                      Color(0xFF929292).withOpacity(0.37)),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 4,
-                      color: Color(0x1A000000),
-                      offset: Offset(0, 4),
-                    )
-                  ]),
-              child: Image.asset(
-                  'assets/img/notif/greenDollarIcon.png'),
-            ),
-            SizedBox(width: 19),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    width: 230,
-                    child: Text(
-                      'Кешбек  в размере 123 сом поступило',
-                      style: TextStyle(
-                          color: Color(0xFF313131),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400),
-                    )),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Text('LC waikiki',
-                        style: TextStyle(
-                            color: Color(0xFF313131),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 70),
-                    Text('13:11',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 19),
-                    Text('14.10.2020',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: Divider(
-            height: 1,
-            color: Color(0xFFEBEBEB),
-          ),
-        ),
-        Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(15),
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      width: 0.5,
-                      color:
-                      Color(0xFF929292).withOpacity(0.37)),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 4,
-                      color: Color(0x1A000000),
-                      offset: Offset(0, 4),
-                    )
-                  ]),
-              child: Image.asset(
-                  'assets/img/notif/greenDollarIcon.png'),
-            ),
-            SizedBox(width: 19),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    width: 230,
-                    child: Text(
-                      'Кешбек  в размере 123 сом поступило',
-                      style: TextStyle(
-                          color: Color(0xFF313131),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400),
-                    )),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Text('LC waikiki',
-                        style: TextStyle(
-                            color: Color(0xFF313131),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 70),
-                    Text('13:11',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 19),
-                    Text('14.10.2020',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: Divider(
-            height: 1,
-            color: Color(0xFFEBEBEB),
-          ),
-        ),
-        Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(15),
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      width: 0.5,
-                      color:
-                      Color(0xFF929292).withOpacity(0.37)),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 4,
-                      color: Color(0x1A000000),
-                      offset: Offset(0, 4),
-                    )
-                  ]),
-              child: Image.asset(
-                  'assets/img/notif/greenDollarIcon.png'),
-            ),
-            SizedBox(width: 19),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    width: 230,
-                    child: Text(
-                      'Кешбек  в размере 123 сом поступило',
-                      style: TextStyle(
-                          color: Color(0xFF313131),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400),
-                    )),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Text('LC waikiki',
-                        style: TextStyle(
-                            color: Color(0xFF313131),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 70),
-                    Text('13:11',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 19),
-                    Text('14.10.2020',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: Divider(
-            height: 1,
-            color: Color(0xFFEBEBEB),
-          ),
-        ),
-        Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(15),
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      width: 0.5,
-                      color:
-                      Color(0xFF929292).withOpacity(0.37)),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 4,
-                      color: Color(0x1A000000),
-                      offset: Offset(0, 4),
-                    )
-                  ]),
-              child: Image.asset(
-                  'assets/img/notif/greenDollarIcon.png'),
-            ),
-            SizedBox(width: 19),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    width: 230,
-                    child: Text(
-                      'Кешбек  в размере 123 сом поступило',
-                      style: TextStyle(
-                          color: Color(0xFF313131),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400),
-                    )),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Text('LC waikiki',
-                        style: TextStyle(
-                            color: Color(0xFF313131),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 70),
-                    Text('13:11',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 19),
-                    Text('14.10.2020',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: Divider(
-            height: 1,
-            color: Color(0xFFEBEBEB),
-          ),
-        ),
-        Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(15),
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      width: 0.5,
-                      color:
-                      Color(0xFF929292).withOpacity(0.37)),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 4,
-                      color: Color(0x1A000000),
-                      offset: Offset(0, 4),
-                    )
-                  ]),
-              child: Image.asset(
-                  'assets/img/notif/greenDollarIcon.png'),
-            ),
-            SizedBox(width: 19),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    width: 230,
-                    child: Text(
-                      'Кешбек  в размере 123 сом поступило',
-                      style: TextStyle(
-                          color: Color(0xFF313131),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400),
-                    )),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Text('LC waikiki',
-                        style: TextStyle(
-                            color: Color(0xFF313131),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 70),
-                    Text('13:11',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 19),
-                    Text('14.10.2020',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: Divider(
-            height: 1,
-            color: Color(0xFFEBEBEB),
-          ),
-        ),
-        Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(15),
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      width: 0.5,
-                      color:
-                      Color(0xFF929292).withOpacity(0.37)),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 4,
-                      color: Color(0x1A000000),
-                      offset: Offset(0, 4),
-                    )
-                  ]),
-              child: Image.asset(
-                  'assets/img/notif/greenDollarIcon.png'),
-            ),
-            SizedBox(width: 19),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    width: 230,
-                    child: Text(
-                      'Кешбек  в размере 123 сом поступило',
-                      style: TextStyle(
-                          color: Color(0xFF313131),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400),
-                    )),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Text('LC waikiki',
-                        style: TextStyle(
-                            color: Color(0xFF313131),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 70),
-                    Text('13:11',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 19),
-                    Text('14.10.2020',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: Divider(
-            height: 1,
-            color: Color(0xFFEBEBEB),
-          ),
-        ),
-        Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(15),
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      width: 0.5,
-                      color:
-                      Color(0xFF929292).withOpacity(0.37)),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 4,
-                      color: Color(0x1A000000),
-                      offset: Offset(0, 4),
-                    )
-                  ]),
-              child: Image.asset(
-                  'assets/img/notif/greenDollarIcon.png'),
-            ),
-            SizedBox(width: 19),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    width: 230,
-                    child: Text(
-                      'Кешбек  в размере 123 сом поступило',
-                      style: TextStyle(
-                          color: Color(0xFF313131),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400),
-                    )),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Text('LC waikiki',
-                        style: TextStyle(
-                            color: Color(0xFF313131),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 70),
-                    Text('13:11',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 19),
-                    Text('14.10.2020',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: Divider(
-            height: 1,
-            color: Color(0xFFEBEBEB),
-          ),
-        ),
-        Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(15),
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      width: 0.5,
-                      color:
-                      Color(0xFF929292).withOpacity(0.37)),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 4,
-                      color: Color(0x1A000000),
-                      offset: Offset(0, 4),
-                    )
-                  ]),
-              child: Image.asset(
-                  'assets/img/notif/greenDollarIcon.png'),
-            ),
-            SizedBox(width: 19),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    width: 230,
-                    child: Text(
-                      'Кешбек  в размере 123 сом поступило',
-                      style: TextStyle(
-                          color: Color(0xFF313131),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400),
-                    )),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Text('LC waikiki',
-                        style: TextStyle(
-                            color: Color(0xFF313131),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 70),
-                    Text('13:11',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 19),
-                    Text('14.10.2020',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: Divider(
-            height: 1,
-            color: Color(0xFFEBEBEB),
-          ),
-        ),
-        Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(15),
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      width: 0.5,
-                      color:
-                      Color(0xFF929292).withOpacity(0.37)),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 4,
-                      color: Color(0x1A000000),
-                      offset: Offset(0, 4),
-                    )
-                  ]),
-              child: Image.asset(
-                  'assets/img/notif/greenDollarIcon.png'),
-            ),
-            SizedBox(width: 19),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    width: 230,
-                    child: Text(
-                      'Кешбек  в размере 123 сом поступило',
-                      style: TextStyle(
-                          color: Color(0xFF313131),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400),
-                    )),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Text('LC waikiki',
-                        style: TextStyle(
-                            color: Color(0xFF313131),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 70),
-                    Text('13:11',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 19),
-                    Text('14.10.2020',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: Divider(
-            height: 1,
-            color: Color(0xFFEBEBEB),
-          ),
-        ),
-        Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(15),
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      width: 0.5,
-                      color:
-                      Color(0xFF929292).withOpacity(0.37)),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 4,
-                      color: Color(0x1A000000),
-                      offset: Offset(0, 4),
-                    )
-                  ]),
-              child: Image.asset(
-                  'assets/img/notif/greenDollarIcon.png'),
-            ),
-            SizedBox(width: 19),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    width: 230,
-                    child: Text(
-                      'Кешбек  в размере 123 сом поступило',
-                      style: TextStyle(
-                          color: Color(0xFF313131),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400),
-                    )),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Text('LC waikiki',
-                        style: TextStyle(
-                            color: Color(0xFF313131),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 70),
-                    Text('13:11',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                    SizedBox(width: 19),
-                    Text('14.10.2020',
-                        style: TextStyle(
-                            color: Color(0xFF6B6B6B),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w300)),
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Divider(
+                            height: 1,
+                            color: Color(0xFFEBEBEB),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(15),
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      width: 0.5,
+                                      color:
+                                          Color(0xFF929292).withOpacity(0.37)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 4,
+                                      color: Color(0x1A000000),
+                                      offset: Offset(0, 4),
+                                    )
+                                  ]),
+                              child: Image.asset(
+                                  'assets/img/notif/greenDollarIcon.png'),
+                            ),
+                            SizedBox(width: 19),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    width: 230,
+                                    child: Text(
+                                      'Кешбек  в размере 123 сом поступило',
+                                      style: TextStyle(
+                                          color: Color(0xFF313131),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400),
+                                    )),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Text('LC waikiki',
+                                        style: TextStyle(
+                                            color: Color(0xFF313131),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 70),
+                                    Text('13:11',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 19),
+                                    Text('14.10.2020',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Divider(
+                            height: 1,
+                            color: Color(0xFFEBEBEB),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(15),
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      width: 0.5,
+                                      color:
+                                          Color(0xFF929292).withOpacity(0.37)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 4,
+                                      color: Color(0x1A000000),
+                                      offset: Offset(0, 4),
+                                    )
+                                  ]),
+                              child: Image.asset(
+                                  'assets/img/notif/greenDollarIcon.png'),
+                            ),
+                            SizedBox(width: 19),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    width: 230,
+                                    child: Text(
+                                      'Кешбек  в размере 123 сом поступило',
+                                      style: TextStyle(
+                                          color: Color(0xFF313131),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400),
+                                    )),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Text('LC waikiki',
+                                        style: TextStyle(
+                                            color: Color(0xFF313131),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 70),
+                                    Text('13:11',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 19),
+                                    Text('14.10.2020',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Divider(
+                            height: 1,
+                            color: Color(0xFFEBEBEB),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(15),
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      width: 0.5,
+                                      color:
+                                          Color(0xFF929292).withOpacity(0.37)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 4,
+                                      color: Color(0x1A000000),
+                                      offset: Offset(0, 4),
+                                    )
+                                  ]),
+                              child: Image.asset(
+                                  'assets/img/notif/greenDollarIcon.png'),
+                            ),
+                            SizedBox(width: 19),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    width: 230,
+                                    child: Text(
+                                      'Кешбек  в размере 123 сом поступило',
+                                      style: TextStyle(
+                                          color: Color(0xFF313131),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400),
+                                    )),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Text('LC waikiki',
+                                        style: TextStyle(
+                                            color: Color(0xFF313131),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 70),
+                                    Text('13:11',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 19),
+                                    Text('14.10.2020',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Divider(
+                            height: 1,
+                            color: Color(0xFFEBEBEB),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(15),
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      width: 0.5,
+                                      color:
+                                          Color(0xFF929292).withOpacity(0.37)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 4,
+                                      color: Color(0x1A000000),
+                                      offset: Offset(0, 4),
+                                    )
+                                  ]),
+                              child: Image.asset(
+                                  'assets/img/notif/greenDollarIcon.png'),
+                            ),
+                            SizedBox(width: 19),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    width: 230,
+                                    child: Text(
+                                      'Кешбек  в размере 123 сом поступило',
+                                      style: TextStyle(
+                                          color: Color(0xFF313131),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400),
+                                    )),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Text('LC waikiki',
+                                        style: TextStyle(
+                                            color: Color(0xFF313131),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 70),
+                                    Text('13:11',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 19),
+                                    Text('14.10.2020',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Divider(
+                            height: 1,
+                            color: Color(0xFFEBEBEB),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(15),
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      width: 0.5,
+                                      color:
+                                          Color(0xFF929292).withOpacity(0.37)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 4,
+                                      color: Color(0x1A000000),
+                                      offset: Offset(0, 4),
+                                    )
+                                  ]),
+                              child: Image.asset(
+                                  'assets/img/notif/greenDollarIcon.png'),
+                            ),
+                            SizedBox(width: 19),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    width: 230,
+                                    child: Text(
+                                      'Кешбек  в размере 123 сом поступило',
+                                      style: TextStyle(
+                                          color: Color(0xFF313131),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400),
+                                    )),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Text('LC waikiki',
+                                        style: TextStyle(
+                                            color: Color(0xFF313131),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 70),
+                                    Text('13:11',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 19),
+                                    Text('14.10.2020',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Divider(
+                            height: 1,
+                            color: Color(0xFFEBEBEB),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(15),
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      width: 0.5,
+                                      color:
+                                          Color(0xFF929292).withOpacity(0.37)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 4,
+                                      color: Color(0x1A000000),
+                                      offset: Offset(0, 4),
+                                    )
+                                  ]),
+                              child: Image.asset(
+                                  'assets/img/notif/greenDollarIcon.png'),
+                            ),
+                            SizedBox(width: 19),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    width: 230,
+                                    child: Text(
+                                      'Кешбек  в размере 123 сом поступило',
+                                      style: TextStyle(
+                                          color: Color(0xFF313131),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400),
+                                    )),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Text('LC waikiki',
+                                        style: TextStyle(
+                                            color: Color(0xFF313131),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 70),
+                                    Text('13:11',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 19),
+                                    Text('14.10.2020',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Divider(
+                            height: 1,
+                            color: Color(0xFFEBEBEB),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(15),
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      width: 0.5,
+                                      color:
+                                          Color(0xFF929292).withOpacity(0.37)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 4,
+                                      color: Color(0x1A000000),
+                                      offset: Offset(0, 4),
+                                    )
+                                  ]),
+                              child: Image.asset(
+                                  'assets/img/notif/greenDollarIcon.png'),
+                            ),
+                            SizedBox(width: 19),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    width: 230,
+                                    child: Text(
+                                      'Кешбек  в размере 123 сом поступило',
+                                      style: TextStyle(
+                                          color: Color(0xFF313131),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400),
+                                    )),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Text('LC waikiki',
+                                        style: TextStyle(
+                                            color: Color(0xFF313131),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 70),
+                                    Text('13:11',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 19),
+                                    Text('14.10.2020',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Divider(
+                            height: 1,
+                            color: Color(0xFFEBEBEB),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(15),
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      width: 0.5,
+                                      color:
+                                          Color(0xFF929292).withOpacity(0.37)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 4,
+                                      color: Color(0x1A000000),
+                                      offset: Offset(0, 4),
+                                    )
+                                  ]),
+                              child: Image.asset(
+                                  'assets/img/notif/greenDollarIcon.png'),
+                            ),
+                            SizedBox(width: 19),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    width: 230,
+                                    child: Text(
+                                      'Кешбек  в размере 123 сом поступило',
+                                      style: TextStyle(
+                                          color: Color(0xFF313131),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400),
+                                    )),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Text('LC waikiki',
+                                        style: TextStyle(
+                                            color: Color(0xFF313131),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 70),
+                                    Text('13:11',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 19),
+                                    Text('14.10.2020',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Divider(
+                            height: 1,
+                            color: Color(0xFFEBEBEB),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(15),
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      width: 0.5,
+                                      color:
+                                          Color(0xFF929292).withOpacity(0.37)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 4,
+                                      color: Color(0x1A000000),
+                                      offset: Offset(0, 4),
+                                    )
+                                  ]),
+                              child: Image.asset(
+                                  'assets/img/notif/greenDollarIcon.png'),
+                            ),
+                            SizedBox(width: 19),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    width: 230,
+                                    child: Text(
+                                      'Кешбек  в размере 123 сом поступило',
+                                      style: TextStyle(
+                                          color: Color(0xFF313131),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400),
+                                    )),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Text('LC waikiki',
+                                        style: TextStyle(
+                                            color: Color(0xFF313131),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 70),
+                                    Text('13:11',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 19),
+                                    Text('14.10.2020',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Divider(
+                            height: 1,
+                            color: Color(0xFFEBEBEB),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(15),
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      width: 0.5,
+                                      color:
+                                          Color(0xFF929292).withOpacity(0.37)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 4,
+                                      color: Color(0x1A000000),
+                                      offset: Offset(0, 4),
+                                    )
+                                  ]),
+                              child: Image.asset(
+                                  'assets/img/notif/greenDollarIcon.png'),
+                            ),
+                            SizedBox(width: 19),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    width: 230,
+                                    child: Text(
+                                      'Кешбек  в размере 123 сом поступило',
+                                      style: TextStyle(
+                                          color: Color(0xFF313131),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400),
+                                    )),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Text('LC waikiki',
+                                        style: TextStyle(
+                                            color: Color(0xFF313131),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 70),
+                                    Text('13:11',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 19),
+                                    Text('14.10.2020',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Divider(
+                            height: 1,
+                            color: Color(0xFFEBEBEB),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(15),
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      width: 0.5,
+                                      color:
+                                          Color(0xFF929292).withOpacity(0.37)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 4,
+                                      color: Color(0x1A000000),
+                                      offset: Offset(0, 4),
+                                    )
+                                  ]),
+                              child: Image.asset(
+                                  'assets/img/notif/greenDollarIcon.png'),
+                            ),
+                            SizedBox(width: 19),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    width: 230,
+                                    child: Text(
+                                      'Кешбек  в размере 123 сом поступило',
+                                      style: TextStyle(
+                                          color: Color(0xFF313131),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400),
+                                    )),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Text('LC waikiki',
+                                        style: TextStyle(
+                                            color: Color(0xFF313131),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 70),
+                                    Text('13:11',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                    SizedBox(width: 19),
+                                    Text('14.10.2020',
+                                        style: TextStyle(
+                                            color: Color(0xFF6B6B6B),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300)),
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        ),
                       ],
               ),
             )

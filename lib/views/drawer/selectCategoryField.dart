@@ -1,21 +1,12 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:upai_app/bloc/create_product_bloc/create_product_page.dart';
-import 'package:upai_app/bloc/create_product_bloc/create_product_bloc.dart';
-import 'package:upai_app/bloc/create_product_bloc/create_product_events.dart';
 
 import '../../constants/constants.dart';
 import '../../model/auction/auction_bloc/api/execute_result.dart';
-import '../../model/categoriesModel.dart';
 import '../../provider/selectCatProvider.dart';
 import '../../shared/app_colors.dart';
 import '../../utilities/app_http_client.dart';
 import '../../widgets/appBar2.dart';
-import '../category/selectCategoty.dart';
-import 'hotKeshAdd.dart';
 
 class SelectCategoryField extends StatefulWidget {
   const SelectCategoryField({Key? key}) : super(key: key);
@@ -69,47 +60,45 @@ class _SelectCategoryFieldState extends State<SelectCategoryField> {
         const SizedBox(height: 7),
         GestureDetector(
           onTap: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => CategoriesList(currentCategoryId: 1,))),
+              builder: (context) => CategoriesList(
+                    currentCategoryId: 1,
+                  ))),
           child: Container(
-              padding: const EdgeInsets.only(left: 19,top: 13),
-              width: double.infinity,
+              padding: const EdgeInsets.only(left: 19, top: 13),
               height: 45,
               decoration: BoxDecoration(
                 border: Border.all(width: 1, color: AppColors.blue),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child:
-              currentCategory == null
+              child: currentCategory == null
                   ? Text('Выберите категорию',
-                  style: TextStyle(
-                    color: Color(0xFFA6A6A6),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ))
-                  : Text(
-                  currentCategory!.name,
-                  style: TextStyle(
-                    color: AppColors.blue,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ))),
+                      style: TextStyle(
+                        color: Color(0xFFA6A6A6),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ))
+                  : Text(currentCategory!.name,
+                      style: TextStyle(
+                        color: AppColors.blue,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ))),
         )
       ],
     );
   }
 
-  Widget CategoriesList({int currentCategoryId = 1}){
+  Widget CategoriesList({int currentCategoryId = 1}) {
     return Scaffold(
       appBar: AllAppBar2(),
-      body:
-      FutureBuilder<ExecuteResult<Category>>(
-          future: AppHttpClient.execute(
-              HttpMethod.get,
-              '/Categories/GetCategoryById',
-              {
-                'categoryId': currentCategoryId.toString(),
-              },
-              dataConstructor: Category.fromJson),
+      body: FutureBuilder<ExecuteResult<Category>>(
+        future: AppHttpClient.execute(
+            HttpMethod.get,
+            '/Categories/GetCategoryById',
+            {
+              'categoryId': currentCategoryId.toString(),
+            },
+            dataConstructor: Category.fromJson),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             var category = snapshot.data!.single!;
@@ -130,27 +119,28 @@ class _SelectCategoryFieldState extends State<SelectCategoryField> {
           }
 
           // By default, show a loading spinner.
-          return Center(child:  CircularProgressIndicator());
-        },),
-
-
+          return Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
-
 
   Widget CategoryWidget(String name, String image, int catId, bool hasSubs) {
     print(hasSubs);
     return GestureDetector(
-      onTap: (){
-        if(hasSubs){
+      onTap: () {
+        if (hasSubs) {
           _popCount++;
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CategoriesList(currentCategoryId: catId,)));
-        }
-        else{
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => CategoriesList(
+                    currentCategoryId: catId,
+                  )));
+        } else {
           currentCategory = Category(catId, name, [], image);
-          Provider.of<SelectCatProvider>(context,listen: false).toggleSelect(name,catId.toString());
-          for(int i=0;i<=_popCount;i++) Navigator.of(context).pop();
-          setState(() { });
+          Provider.of<SelectCatProvider>(context, listen: false)
+              .toggleSelect(name, catId.toString());
+          for (int i = 0; i <= _popCount; i++) Navigator.of(context).pop();
+          setState(() {});
           // BlocProvider.of<CreateProductBloc>(context).add(ChooseCategoryEvent(catId));
         }
       },
@@ -191,6 +181,4 @@ class _SelectCategoryFieldState extends State<SelectCategoryField> {
       ),
     );
   }
-
-
 }

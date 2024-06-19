@@ -53,4 +53,52 @@ class AppTheme {
       titleLarge: AppTextStyles.black16Medium,
     ),
   );
+
+  static ThemeData themeDataWeb = ThemeData(
+    primaryColor: Colors.purple.shade100,
+    scaffoldBackgroundColor: Colors.purple.shade100,
+    appBarTheme: AppBarTheme(
+      surfaceTintColor: Colors.purple.shade100,
+      centerTitle: true,
+      titleTextStyle: AppTextStyles.black18Semibold.copyWith(
+        fontSize: 16.sp,
+        color: Colors.purple.shade100,
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 140,
+          vertical: 15,
+        ),
+        elevation: 0,
+        backgroundColor: Colors.purple.shade100,
+      ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: Colors.purple.shade100,
+      border: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+      ),
+      contentPadding: EdgeInsets.symmetric(
+        vertical: 16,
+        horizontal: 20,
+      ),
+    ),
+    textTheme: TextTheme(
+      displayLarge: AppTextStyles.black20Bold.copyWith(
+        color: Colors.purple.shade100,
+      ),
+      displayMedium: AppTextStyles.black20Bold.copyWith(
+        fontWeight: FontWeight.w600,
+        color: Colors.purple.shade100,
+      ),
+      titleLarge: AppTextStyles.black16Medium.copyWith(
+        color: Colors.purple.shade100,
+      ),
+    ),
+  );
 }

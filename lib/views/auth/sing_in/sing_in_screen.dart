@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,6 +9,7 @@ import 'package:upai_app/views/auth/sing_up/sing_up_screen.dart';
 import 'package:upai_app/views/home/home_screen.dart';
 
 import '../../../provider/selectCatProvider.dart';
+import '../../pages/homeWeb/homeWeb.dart';
 import '../server/service.dart';
 
 class SingInScreen extends StatefulWidget {
@@ -356,8 +358,13 @@ class _SingInScreenState extends State<SingInScreen> {
                     prefs.setString('email', email.text);
                     Provider.of<SelectCatProvider>(context, listen: false)
                         .setEmail(email.text);
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => const Home()));
+                    if (kIsWeb) {
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (_) => HomeWebPage()));
+                    } else {
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (_) => Home()));
+                    }
                   } else if (ans == 'password') {
                     circular = false;
                     setState(() {});

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:upai_app/widgets/UserAvatar.dart';
 import 'package:upai_app/widgets/appBar.dart';
@@ -15,14 +16,15 @@ class _QR_PageState extends State<QR_Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AllAppBar(),
+      appBar: kIsWeb ? null : AllAppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14.0),
         child: Column(
           children: [
             ListTile(
               dense: true,
-              contentPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
               trailing: GestureDetector(
                 onTap: () {},
                 child: Container(
@@ -54,30 +56,35 @@ class _QR_PageState extends State<QR_Page> {
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
-                    color: Color(0x26000000),
-                    blurRadius: 11,
-                    offset: Offset(0,4)
-                  )
+                      color: Color(0x26000000),
+                      blurRadius: 11,
+                      offset: Offset(0, 4))
                 ],
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Сканировать QR',style: TextStyle(color: Colors.black,fontSize: 20),),
+                  Text(
+                    'Сканировать QR',
+                    style: TextStyle(color: Colors.black, fontSize: 20),
+                  ),
                   SizedBox(height: 51),
                   Container(
                     width: 123,
                     height: 123,
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/img/qr.png'),
-                      )
-                    ),
+                        image: DecorationImage(
+                      image: AssetImage('assets/img/qr.png'),
+                    )),
                   ),
                   SizedBox(height: 37),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                    child: Text('Предъявите QR код сотрудницу магаизна на кассе для начисления бонусных баллов',textAlign: TextAlign.center,style: TextStyle(color: Color(0xFF515151),fontSize: 16),),
+                    child: Text(
+                      'Предъявите QR код сотрудницу магаизна на кассе для начисления бонусных баллов',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Color(0xFF515151), fontSize: 16),
+                    ),
                   )
                 ],
               ),

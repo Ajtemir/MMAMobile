@@ -1,7 +1,5 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:upai_app/shared/app_colors.dart';
 import 'package:upai_app/widgets/appBar.dart';
 
@@ -11,7 +9,7 @@ class Messej extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AllAppBar(),
+      appBar: kIsWeb ? null : AllAppBar(),
       body: Center(
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 20),

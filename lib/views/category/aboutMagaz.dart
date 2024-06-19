@@ -108,7 +108,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
           future: fetchProductData(widget.productId, widget.email),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              UserData.price = snapshot.data!.price!;
+              UserData.price = snapshot.data!.price ?? 10000;
               List<String> nameAndDescription = [
                 snapshot.data!.description!.split('name').first,
                 snapshot.data!.description!.split('name').last

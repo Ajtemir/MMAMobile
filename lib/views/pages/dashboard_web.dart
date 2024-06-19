@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
@@ -13,12 +12,12 @@ import '../../provider/selectCatProvider.dart';
 import '../../shared/app_colors.dart';
 import '../category/aboutMagaz.dart';
 
-class Dashboard extends StatefulWidget {
+class DashboardWeb extends StatefulWidget {
   @override
-  _DashboardState createState() => _DashboardState();
+  _DashboardWebState createState() => _DashboardWebState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardWebState extends State<DashboardWeb> {
   late Future<ListProductsModel> futureProducts;
   Future<CategoriesModel>? futureCategories;
   late String emailGet;
@@ -248,379 +247,313 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: kIsWeb
-          ? null
-          : AppBar(
-              title: Container(
-                width: 60,
-                height: 60,
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/img/logo.png'))),
-              ),
-              // elevation: 0,
-              backgroundColor: Colors.white,
-
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    /*Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const SearchProducts()));*/
-                  },
-                  icon: const Icon(
-                    Icons.menu,
-                    color: AppColors.blue1,
-                  ),
-                ),
-              ],
-            ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          setState(() {});
-        },
-        child: ListView(
-          children: [
-            const SizedBox(
-              height: 30,
-            ),
-            /*Padding(
-                padding: EdgeInsets.only(left: 14),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Container(
-                      width: 330,
-                      height: 55,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1,
-                          color: Color(0xFF225196),
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                            hintText: "Я ищу...",
-                            hintStyle: TextStyle(color: Color(0xFF225196)),
-                            prefixIcon: Icon(Icons.search,color: AppColors.blue1,),
-                            border: InputBorder.none),
-                      ),
-                    ),
-                    SizedBox(
-                        child: IconButton(
-                      icon: Icon(Icons.filter_alt_outlined,
-                          color: AppColors.blue1, size: 28),
-                      onPressed: () {
-                        */ /*Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => const Filtr()));*/ /*
-                      },
-                    ))
-                  ],
-                ),
-              ),*/
-            const SizedBox(height: 26),
-            // CarouselSlider(
-            //   items: listN,
-            //   options: CarouselOptions(
-            //     pageSnapping: true,
-            //     onPageChanged: (index, reason) {
-            //       setState(() {
-            //         slideIndex = index;
-            //       });
-            //     },
-            //     height: 160,
-            //     viewportFraction: 1,
-            //     autoPlay: true,
-            //     autoPlayInterval: const Duration(seconds: 5),
-            //   ),
-            // ),
-            // const SizedBox(height: 8),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     Container(
-            //       width: 14,
-            //       height: 1,
-            //       color: slideIndex == 0
-            //           ? AppColors.red1
-            //           : const Color(0xFFC4C4C4),
-            //     ),
-            //     const SizedBox(width: 9),
-            //     Container(
-            //       width: 14,
-            //       height: 1,
-            //       color: slideIndex == 1
-            //           ? AppColors.red1
-            //           : const Color(0xFFC4C4C4),
-            //     ),
-            //     const SizedBox(width: 9),
-            //     Container(
-            //       width: 14,
-            //       height: 1,
-            //       color: slideIndex == 2
-            //           ? AppColors.red1
-            //           : const Color(0xFFC4C4C4),
-            //     ),
-            //   ],
-            // ),
-            const ListTile(
-              leading: Text(
-                'Категории',
-                style: TextStyle(color: Color(0xFF313131), fontSize: 16),
-              ),
-              // trailing: Text(
-              //   'Всё',
-              //   style: TextStyle(color: Color(0xFF8D8D8D), fontSize: 12),
-              // ),
-            ),
-            FutureBuilder<CategoriesModel>(
-              future: fetchCategories(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  var items = snapshot.data!.data!.length;
-                  var path = snapshot.data!;
-                  return Container(
-                    padding: const EdgeInsets.only(left: 14),
-                    height: 130,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      separatorBuilder: (context, _) =>
-                          const SizedBox(width: 0),
-                      itemCount: items,
-                      itemBuilder: (context, index) => Category(
-                          path.data![index].id.toString(),
-                          path.data![index].name!,
-                          path.data![index].path ?? 'images/default.jpg'),
-                    ),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                  ;
-                }
-
-                // By default, show a loading spinner.
-                return const Center(child: CircularProgressIndicator());
-              },
-            ),
-
-            // ListTile(
-            //   leading: Text(
-            //     'Рекомендуемые',
-            //     style: TextStyle(color: Color(0xFF313131), fontSize: 16),
-            //   ),
-            //   title: Image.asset(
-            //     'assets/img/hotKeshIcon.png',
-            //     width: 20,
-            //     height: 20,
-            //     alignment: Alignment.topLeft,
-            //   ),
-            //   trailing: Text(
-            //     'Всё',
-            //     style: TextStyle(color: Color(0xFF313131), fontSize: 12),
-            //   ),
-            // ),
-            // // Padding(
-            // //   padding: const EdgeInsets.only(left: 14.0),
-            // //   child: Container(
-            // //     height: 150,
-            // //     child: ListView(
-            // //       scrollDirection: Axis.horizontal,
-            // //       children: [
-            // //         HotKesh(0, 5, 193, 'Бир Эки бургер', 'Fast food', 25),
-            // //         SizedBox(width: 10),
-            // //         HotKesh(1, 3, 27, 'Enter kg', 'Электро техника', 16)
-            // //       ],
-            // //     ),
-            // //   ),
-            // // ),
-            // ListTile(
-            //   leading: Text(
-            //     'Новинки',
-            //     style: TextStyle(color: Color(0xFF313131), fontSize: 16),
-            //   ),
-            //   title: Image.asset(
-            //     'assets/img/newIcon.png',
-            //     width: 20,
-            //     height: 20,
-            //     alignment: Alignment.topLeft,
-            //   ),
-            //   trailing: Text(
-            //     'Всё',
-            //     style: TextStyle(color: Color(0xFF8D8D8D), fontSize: 12),
-            //   ),
-            // ),
-            // // Padding(
-            // //   padding: const EdgeInsets.only(left: 14.0),
-            // //   child: Container(
-            // //     height: 150,
-            // //     child: ListView(
-            // //       scrollDirection: Axis.horizontal,
-            // //       children: [
-            // //         HotKesh(2, 4, 193, 'Baby Store', 'Для детей', 14),
-            // //         SizedBox(width: 10),
-            // //         HotKesh(3, 5, 27, 'Cinematika', 'Кино и театр', 24)
-            // //       ],
-            // //     ),
-            // //   ),
-            // // ),
-            // ListTile(
-            //   leading: Text(
-            //     'Товары',
-            //     style: TextStyle(color: Color(0xFF313131), fontSize: 16),
-            //   ),
-            //   trailing: Text(
-            //     'Всё',
-            //     style: TextStyle(color: Color(0xFF8D8D8D), fontSize: 12),
-            //   ),
-            // ),
-            // // Padding(
-            // //   padding: const EdgeInsets.only(left: 14.0),
-            // //   child: Container(
-            // //     height: 115,
-            // //     child: ListView(
-            // //       scrollDirection: Axis.horizontal,
-            // //       children: [
-            // //         Magazine(0, 4.5, 'Эльдорадо', 'электро техника'),
-            // //         SizedBox(width: 10),
-            // //         Magazine(1, 4, 'LC waikiki', 'Одежда и обувь'),
-            // //         SizedBox(width: 10),
-            // //         Magazine(2, 5, 'Derimod', 'Одежда и обувь'),
-            // //       ],
-            // //     ),
-            // //   ),
-            // // ),
-            const SizedBox(
-              height: 47,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Container(
-                height: 35,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFEBEBEB),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Row(
-                  children: [
-                    Flexible(
-                      flex: 2,
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            leftRight = true;
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: leftRight ? AppColors.red1 : null),
-                          child: Center(
-                            child: Text(
-                              'Рекомендуемые',
-                              style: TextStyle(
-                                  color:
-                                      leftRight ? Colors.white : Colors.black,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 2,
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            leftRight = false;
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: leftRight ? null : AppColors.red1),
-                          child: Center(
-                            child: Text(
-                              'Новые',
-                              style: TextStyle(
-                                  color:
-                                      leftRight ? Colors.black : Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            FutureBuilder<ListProductsModel>(
-              future: futureProducts,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  var items = snapshot.data!.data!.length;
-                  return Center(
-                    child: Wrap(
-                      runSpacing: 20,
-                      spacing: 20,
-                      // scrollDirection: Axis.horizontal,
-                      children: leftRight
-                          ? [
-                              /*HotKesh(0, 5, 193, 'Бир Эки бургер', 'Fast food', 25),
-                          SizedBox(width: 10),
-                          HotKesh(1, 3, 27, 'Enter kg', 'Электро техника', 16),
-                          SizedBox(width: 10),
-                          HotKeshSecond('/images/1025f602-1814-422a-9b05-be25b5377389.png', 5, 193, 'Сатылат', 'Fast food', 25),
-                          SizedBox(width: 10),
-                          HotKeshSecond('/images/9492e584-e0bc-4d98-a06b-b55d60afd380.jpg', 3, 27, 'Телефон', 'Электро техника', 16),
-                          SizedBox(width: 10),
-                          HotKeshSecond('/images/3949ff22-45a3-4251-95d4-1dc2d43f289e.jpg', 2, 42, 'Продается', 'Электро техника', 16),*/
-                              for (var i = 0; i < items; i++)
-                                HotKeshSecond(
-                                    snapshot.data!.data![i].images!.length > 0
-                                        ? snapshot.data!.data![i].images![0]
-                                        : null,
-                                    3,
-                                    snapshot.data!.data![i].description ?? '',
-                                    snapshot.data!.data![i].price.toString(),
-                                    ((snapshot.data!.data![i].id!).toString()),
-                                    emailGet,
-                                    snapshot.data!.data![i].collectiveInfo),
-                            ]
-                          : [
-                              for (var i = items - 1; i >= 0; i--)
-                                HotKeshSecond(
-                                    snapshot.data!.data![i].images!.length > 0
-                                        ? snapshot.data!.data![i].images![0]
-                                        : null,
-                                    3,
-                                    snapshot.data!.data![i].description!,
-                                    snapshot.data!.data![i].price.toString(),
-                                    ((snapshot.data!.data![i].id!).toString()),
-                                    emailGet,
-                                    snapshot.data!.data![i].collectiveInfo),
-                              /*HotKesh(2, 4, 193, 'Baby Store', 'Для детей', 14),
-                          SizedBox(width: 10),
-                          HotKesh(3, 5, 27, 'Cinematika', 'Кино и театр', 24)*/
-                            ],
-                    ),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                }
-
-                // By default, show a loading spinner.
-                return const Center(child: CircularProgressIndicator());
-              },
-            ),
-            const SizedBox(height: 40),
-          ],
+      /*appBar: AppBar(
+        title: Container(
+          width: 60,
+          height: 60,
+          decoration: const BoxDecoration(
+              image: DecorationImage(image: AssetImage('assets/img/logo.png'))),
         ),
+        // elevation: 0,
+        backgroundColor: Colors.white,
+
+        actions: [
+          IconButton(
+            onPressed: () {
+              */ /*Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const SearchProducts()));*/ /*
+            },
+            icon: const Icon(
+              Icons.menu,
+              color: AppColors.blue1,
+            ),
+          ),
+        ],
+      ),*/
+      body: ListView(
+        children: [
+          const SizedBox(
+            height: 30,
+          ),
+          /*Padding(
+              padding: EdgeInsets.only(left: 14),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
+                    width: 330,
+                    height: 55,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 1,
+                        color: Color(0xFF225196),
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          hintText: "Я ищу...",
+                          hintStyle: TextStyle(color: Color(0xFF225196)),
+                          prefixIcon: Icon(Icons.search,color: AppColors.blue1,),
+                          border: InputBorder.none),
+                    ),
+                  ),
+                  SizedBox(
+                      child: IconButton(
+                    icon: Icon(Icons.filter_alt_outlined,
+                        color: AppColors.blue1, size: 28),
+                    onPressed: () {
+                      */ /*Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => const Filtr()));*/ /*
+                    },
+                  ))
+                ],
+              ),
+            ),*/
+          const SizedBox(height: 26),
+          // CarouselSlider(
+          //   items: listN,
+          //   options: CarouselOptions(
+          //     pageSnapping: true,
+          //     onPageChanged: (index, reason) {
+          //       setState(() {
+          //         slideIndex = index;
+          //       });
+          //     },
+          //     height: 160,
+          //     viewportFraction: 1,
+          //     autoPlay: true,
+          //     autoPlayInterval: const Duration(seconds: 5),
+          //   ),
+          // ),
+          // const SizedBox(height: 8),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     Container(
+          //       width: 14,
+          //       height: 1,
+          //       color: slideIndex == 0
+          //           ? AppColors.red1
+          //           : const Color(0xFFC4C4C4),
+          //     ),
+          //     const SizedBox(width: 9),
+          //     Container(
+          //       width: 14,
+          //       height: 1,
+          //       color: slideIndex == 1
+          //           ? AppColors.red1
+          //           : const Color(0xFFC4C4C4),
+          //     ),
+          //     const SizedBox(width: 9),
+          //     Container(
+          //       width: 14,
+          //       height: 1,
+          //       color: slideIndex == 2
+          //           ? AppColors.red1
+          //           : const Color(0xFFC4C4C4),
+          //     ),
+          //   ],
+          // ),
+          const ListTile(
+            leading: Text(
+              'Категории',
+              style: TextStyle(color: Color(0xFF313131), fontSize: 16),
+            ),
+            // trailing: Text(
+            //   'Всё',
+            //   style: TextStyle(color: Color(0xFF8D8D8D), fontSize: 12),
+            // ),
+          ),
+          FutureBuilder<CategoriesModel>(
+            future: fetchCategories(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                var items = snapshot.data!.data!.length;
+                var path = snapshot.data!;
+                return Container(
+                  padding: const EdgeInsets.only(left: 14),
+                  height: 130,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    separatorBuilder: (context, _) => const SizedBox(width: 0),
+                    itemCount: items,
+                    itemBuilder: (context, index) => Category(
+                        path.data![index].id.toString(),
+                        path.data![index].name!,
+                        path.data![index].path ?? 'images/default.jpg'),
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+                ;
+              }
+
+              // By default, show a loading spinner.
+              return const Center(child: CircularProgressIndicator());
+            },
+          ),
+
+          // ListTile(
+          //   leading: Text(
+          //     'Рекомендуемые',
+          //     style: TextStyle(color: Color(0xFF313131), fontSize: 16),
+          //   ),
+          //   title: Image.asset(
+          //     'assets/img/hotKeshIcon.png',
+          //     width: 20,
+          //     height: 20,
+          //     alignment: Alignment.topLeft,
+          //   ),
+          //   trailing: Text(
+          //     'Всё',
+          //     style: TextStyle(color: Color(0xFF313131), fontSize: 12),
+          //   ),
+          // ),
+          // // Padding(
+          // //   padding: const EdgeInsets.only(left: 14.0),
+          // //   child: Container(
+          // //     height: 150,
+          // //     child: ListView(
+          // //       scrollDirection: Axis.horizontal,
+          // //       children: [
+          // //         HotKesh(0, 5, 193, 'Бир Эки бургер', 'Fast food', 25),
+          // //         SizedBox(width: 10),
+          // //         HotKesh(1, 3, 27, 'Enter kg', 'Электро техника', 16)
+          // //       ],
+          // //     ),
+          // //   ),
+          // // ),
+          // ListTile(
+          //   leading: Text(
+          //     'Новинки',
+          //     style: TextStyle(color: Color(0xFF313131), fontSize: 16),
+          //   ),
+          //   title: Image.asset(
+          //     'assets/img/newIcon.png',
+          //     width: 20,
+          //     height: 20,
+          //     alignment: Alignment.topLeft,
+          //   ),
+          //   trailing: Text(
+          //     'Всё',
+          //     style: TextStyle(color: Color(0xFF8D8D8D), fontSize: 12),
+          //   ),
+          // ),
+          // // Padding(
+          // //   padding: const EdgeInsets.only(left: 14.0),
+          // //   child: Container(
+          // //     height: 150,
+          // //     child: ListView(
+          // //       scrollDirection: Axis.horizontal,
+          // //       children: [
+          // //         HotKesh(2, 4, 193, 'Baby Store', 'Для детей', 14),
+          // //         SizedBox(width: 10),
+          // //         HotKesh(3, 5, 27, 'Cinematika', 'Кино и театр', 24)
+          // //       ],
+          // //     ),
+          // //   ),
+          // // ),
+          // ListTile(
+          //   leading: Text(
+          //     'Товары',
+          //     style: TextStyle(color: Color(0xFF313131), fontSize: 16),
+          //   ),
+          //   trailing: Text(
+          //     'Всё',
+          //     style: TextStyle(color: Color(0xFF8D8D8D), fontSize: 12),
+          //   ),
+          // ),
+          // // Padding(
+          // //   padding: const EdgeInsets.only(left: 14.0),
+          // //   child: Container(
+          // //     height: 115,
+          // //     child: ListView(
+          // //       scrollDirection: Axis.horizontal,
+          // //       children: [
+          // //         Magazine(0, 4.5, 'Эльдорадо', 'электро техника'),
+          // //         SizedBox(width: 10),
+          // //         Magazine(1, 4, 'LC waikiki', 'Одежда и обувь'),
+          // //         SizedBox(width: 10),
+          // //         Magazine(2, 5, 'Derimod', 'Одежда и обувь'),
+          // //       ],
+          // //     ),
+          // //   ),
+          // // ),
+          const SizedBox(
+            height: 47,
+          ),
+          const ListTile(
+            leading: Text(
+              'Продукты',
+              style: TextStyle(color: Color(0xFF313131), fontSize: 16),
+            ),
+            // trailing: Text(
+            //   'Всё',
+            //   style: TextStyle(color: Color(0xFF8D8D8D), fontSize: 12),
+            // ),
+          ),
+          FutureBuilder<ListProductsModel>(
+            future: futureProducts,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                var items = snapshot.data!.data!.length;
+                return Center(
+                  child: Wrap(
+                    runSpacing: 20,
+                    spacing: 20,
+                    // scrollDirection: Axis.horizontal,
+                    children: leftRight
+                        ? [
+                            /*HotKesh(0, 5, 193, 'Бир Эки бургер', 'Fast food', 25),
+                        SizedBox(width: 10),
+                        HotKesh(1, 3, 27, 'Enter kg', 'Электро техника', 16),
+                        SizedBox(width: 10),
+                        HotKeshSecond('/images/1025f602-1814-422a-9b05-be25b5377389.png', 5, 193, 'Сатылат', 'Fast food', 25),
+                        SizedBox(width: 10),
+                        HotKeshSecond('/images/9492e584-e0bc-4d98-a06b-b55d60afd380.jpg', 3, 27, 'Телефон', 'Электро техника', 16),
+                        SizedBox(width: 10),
+                        HotKeshSecond('/images/3949ff22-45a3-4251-95d4-1dc2d43f289e.jpg', 2, 42, 'Продается', 'Электро техника', 16),*/
+                            for (var i = 0; i < items; i++)
+                              HotKeshSecond(
+                                  snapshot.data!.data![i].images!.length > 0
+                                      ? snapshot.data!.data![i].images![0]
+                                      : null,
+                                  3,
+                                  snapshot.data!.data![i].description ?? '',
+                                  snapshot.data!.data![i].price.toString(),
+                                  ((snapshot.data!.data![i].id!).toString()),
+                                  emailGet,
+                                  snapshot.data!.data![i].collectiveInfo),
+                          ]
+                        : [
+                            for (var i = items - 1; i >= 0; i--)
+                              HotKeshSecond(
+                                  snapshot.data!.data![i].images!.length > 0
+                                      ? snapshot.data!.data![i].images![0]
+                                      : null,
+                                  3,
+                                  snapshot.data!.data![i].description!,
+                                  snapshot.data!.data![i].price.toString(),
+                                  ((snapshot.data!.data![i].id!).toString()),
+                                  emailGet,
+                                  snapshot.data!.data![i].collectiveInfo),
+                            /*HotKesh(2, 4, 193, 'Baby Store', 'Для детей', 14),
+                        SizedBox(width: 10),
+                        HotKesh(3, 5, 27, 'Cinematika', 'Кино и театр', 24)*/
+                          ],
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+
+              // By default, show a loading spinner.
+              return const Center(child: CircularProgressIndicator());
+            },
+          ),
+          const SizedBox(height: 40),
+        ],
       ),
     );
   }

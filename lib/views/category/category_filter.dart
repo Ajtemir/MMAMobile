@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
@@ -18,13 +18,16 @@ class _CategoryFilterState extends State<CategoryFilter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AllAppBar(),
+      appBar: kIsWeb ? null : AllAppBar(),
       backgroundColor: Colors.white,
       body: ListView(
-        padding: EdgeInsets.only(left: 14, top: 5),
+        padding: EdgeInsets.only(left: 14, top: kIsWeb ? 50 : 5),
         children: [
           ListTile(
-            onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder:(context)=>Filter(category: '',))),
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => Filter(
+                      category: '',
+                    ))),
             leading: Text('Категории',
                 style: TextStyle(
                     color: Colors.black,
@@ -49,17 +52,17 @@ class _CategoryFilterState extends State<CategoryFilter> {
               spacing: 10,
               children: [
                 SlideContainer(0, 5, 193, 'Ресторан Дияр', 25),
-                SlideContainer(1, 4, 148, 'Ресторан Кайн',  16),
-                SlideContainer(2, 4, 95, 'Ресторан Кайнар',  16),
-                SlideContainer(3, 4.3, 371, 'Cinematica',  25),
-                SlideContainer(4, 4, 93, 'Brodway cinema',  16),
-                SlideContainer(5, 5, 109, 'Manas cinema',  16),
-                SlideContainer(6, 5, 193, 'LC waikiki',  25),
-                SlideContainer(7, 4.8, 148, 'Hugo BOSS',  16),
-                SlideContainer(8, 5, 180, 'Lion',  16),
-                SlideContainer(9, 4.6, 371, 'Иллюзион',  25),
-                SlideContainer(10, 3.9, 93, 'Brodway cinema',  16),
-                SlideContainer(11, 5, 293, 'Manas cinema',  16)
+                SlideContainer(1, 4, 148, 'Ресторан Кайн', 16),
+                SlideContainer(2, 4, 95, 'Ресторан Кайнар', 16),
+                SlideContainer(3, 4.3, 371, 'Cinematica', 25),
+                SlideContainer(4, 4, 93, 'Brodway cinema', 16),
+                SlideContainer(5, 5, 109, 'Manas cinema', 16),
+                SlideContainer(6, 5, 193, 'LC waikiki', 25),
+                SlideContainer(7, 4.8, 148, 'Hugo BOSS', 16),
+                SlideContainer(8, 5, 180, 'Lion', 16),
+                SlideContainer(9, 4.6, 371, 'Иллюзион', 25),
+                SlideContainer(10, 3.9, 93, 'Brodway cinema', 16),
+                SlideContainer(11, 5, 293, 'Manas cinema', 16)
               ],
             ),
           ),
@@ -69,7 +72,7 @@ class _CategoryFilterState extends State<CategoryFilter> {
   }
 
   Widget SlideContainer(
-      int image, double rat, int otzyv, String name,int kesh) {
+      int image, double rat, int otzyv, String name, int kesh) {
     return Container(
       width: 150,
       child: Column(
@@ -90,7 +93,8 @@ class _CategoryFilterState extends State<CategoryFilter> {
                   ],
                   image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: AssetImage('assets/img/category_page/$image.jpg'))),
+                      image:
+                          AssetImage('assets/img/category_page/$image.jpg'))),
             ),
             Positioned(
               right: 5,
@@ -100,15 +104,16 @@ class _CategoryFilterState extends State<CategoryFilter> {
                 height: 45,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/img/category_page/procentContIcon.png')
-                  ),
+                      image: AssetImage(
+                          'assets/img/category_page/procentContIcon.png')),
                   shape: BoxShape.circle,
                 ),
                 child: Center(
-                  child: Text('15%',style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                  )),
+                  child: Text('15%',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                      )),
                 ),
               ),
             ),
@@ -123,7 +128,8 @@ class _CategoryFilterState extends State<CategoryFilter> {
                   color: AppColors.green,
                   shape: BoxShape.circle,
                 ),
-                child: Image.asset('assets/img/category_page/procentIcon.png',width: 10,height: 10),
+                child: Image.asset('assets/img/category_page/procentIcon.png',
+                    width: 10, height: 10),
               ),
             )
           ]),
@@ -144,9 +150,9 @@ class _CategoryFilterState extends State<CategoryFilter> {
                           initialRating: rat,
                           itemSize: 10,
                           itemBuilder: (context, _) => Icon(
-                            Icons.star,
-                            color: AppColors.mainRed,
-                          ),
+                                Icons.star,
+                                color: AppColors.mainRed,
+                              ),
                           onRatingUpdate: (rating) {
                             setState(() {
                               rat = rating;
@@ -156,13 +162,13 @@ class _CategoryFilterState extends State<CategoryFilter> {
                       Text(
                         '$rat',
                         style:
-                        TextStyle(color: AppColors.mainRed, fontSize: 10),
+                            TextStyle(color: AppColors.mainRed, fontSize: 10),
                       ),
                       SizedBox(width: 2),
                       Text(
                         '($otzyv отзыва)',
                         style:
-                        TextStyle(color: Color(0xFF313131), fontSize: 10),
+                            TextStyle(color: Color(0xFF313131), fontSize: 10),
                       )
                     ],
                   ),
@@ -197,7 +203,8 @@ class _CategoryFilterState extends State<CategoryFilter> {
                   ],
                   image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: AssetImage('assets/img/category_page/$image.jpg'))),
+                      image:
+                          AssetImage('assets/img/category_page/$image.jpg'))),
             ),
             Positioned(
               right: 5,
@@ -207,15 +214,16 @@ class _CategoryFilterState extends State<CategoryFilter> {
                 height: 45,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/img/category_page/procentContIcon.png')
-                  ),
+                      image: AssetImage(
+                          'assets/img/category_page/procentContIcon.png')),
                   shape: BoxShape.circle,
                 ),
                 child: Center(
-                  child: Text('15%',style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                  )),
+                  child: Text('15%',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                      )),
                 ),
               ),
             ),
@@ -230,7 +238,8 @@ class _CategoryFilterState extends State<CategoryFilter> {
                   color: AppColors.green,
                   shape: BoxShape.circle,
                 ),
-                child: Image.asset('assets/img/category_page/procentIcon.png',width: 10,height: 10),
+                child: Image.asset('assets/img/category_page/procentIcon.png',
+                    width: 10, height: 10),
               ),
             )
           ]),
@@ -251,9 +260,9 @@ class _CategoryFilterState extends State<CategoryFilter> {
                           initialRating: rat,
                           itemSize: 10,
                           itemBuilder: (context, _) => Icon(
-                            Icons.star,
-                            color: AppColors.mainRed,
-                          ),
+                                Icons.star,
+                                color: AppColors.mainRed,
+                              ),
                           onRatingUpdate: (rating) {
                             setState(() {
                               rat = rating;
@@ -263,13 +272,13 @@ class _CategoryFilterState extends State<CategoryFilter> {
                       Text(
                         '$rat',
                         style:
-                        TextStyle(color: AppColors.mainRed, fontSize: 10),
+                            TextStyle(color: AppColors.mainRed, fontSize: 10),
                       ),
                       SizedBox(width: 2),
                       Text(
                         '($otzyv отзыва)',
                         style:
-                        TextStyle(color: Color(0xFF313131), fontSize: 10),
+                            TextStyle(color: Color(0xFF313131), fontSize: 10),
                       )
                     ],
                   ),

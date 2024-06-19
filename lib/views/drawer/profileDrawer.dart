@@ -1,29 +1,25 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:upai_app/constants/constants.dart';
 import 'package:upai_app/model/userDataModel.dart';
-import 'package:upai_app/views/pages/profile/allMagazine.dart';
-import 'package:upai_app/views/pages/profile/bussinessProf.dart';
 import 'package:upai_app/views/pages/profile/profileEditing.dart';
-import 'package:upai_app/views/pages/profile/referal.dart';
-import 'package:upai_app/widgets/appBar.dart';
 
 import '../../../fetches/newProducts_fetch.dart';
 import '../../../fetches/userData_fetch.dart';
 import '../../../model/productModel.dart';
 import '../../../provider/selectCatProvider.dart';
 import '../../../shared/app_colors.dart';
-import '../../auth/sing_in/sing_in_screen.dart';
-import '../../category/aboutMagaz.dart';
-import 'faq.dart';
+import '../../model/controller.dart';
+import '../auth/sing_in/sing_in_screen.dart';
+import '../category/aboutMagaz.dart';
+import 'drawerProductList.dart';
 
-class Profile extends StatefulWidget {
+class ProfileDrawer extends StatefulWidget {
   @override
-  _ProfileState createState() => _ProfileState();
+  _ProfileDrawerState createState() => _ProfileDrawerState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfileDrawerState extends State<ProfileDrawer> {
   late Future<ListProductsModel> futureProducts;
   late Future<UserDataModel> futureUserData;
   late String emailGet;
@@ -43,13 +39,12 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: kIsWeb ? null : AllAppBar(),
       body: RefreshIndicator(
         onRefresh: () async {
           setState(() {});
         },
         child: ListView(
-          padding: EdgeInsets.only(left: 14, right: 14, top: 5),
+          padding: EdgeInsets.only(left: 14, right: 14, top: 50),
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -166,7 +161,6 @@ class _ProfileState extends State<Profile> {
               ],
             ),
             SizedBox(height: 4),
-
             FutureBuilder<UserDataModel>(
               future: fetchUserData(emailGet),
               builder: (context, snapshot) {
@@ -185,7 +179,6 @@ class _ProfileState extends State<Profile> {
                 return Center(child: const CircularProgressIndicator());
               },
             ),
-
             SizedBox(height: 15),
             Container(
               height: 100,
@@ -321,7 +314,7 @@ class _ProfileState extends State<Profile> {
                 ],
               ),
             ),
-            ListTile(
+            /*ListTile(
               onTap: () => Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => AllMagazine())),
               // dense: true,
@@ -335,7 +328,6 @@ class _ProfileState extends State<Profile> {
                 style: TextStyle(color: Color(0xFF8D8D8D), fontSize: 12),
               ),
             ),
-
             FutureBuilder<ListProductsModel>(
               future: fetchProfileProducts(emailGet),
               builder: (context, snapshot) {
@@ -368,7 +360,7 @@ class _ProfileState extends State<Profile> {
                 // By default, show a loading spinner.
                 return Center(child: const CircularProgressIndicator());
               },
-            ),
+            ),*/
 
             /*PokupkiContainer(0, '15.10.20', 'Эльдорадо', '1 200', '649'),
             SizedBox(height: 10),
@@ -392,13 +384,37 @@ class _ProfileState extends State<Profile> {
               ),
             ),*/
             Divider(height: 1, color: Color(0xFFEBEBEB)),
-            CatFun(1, 'Пригласить друга', Referal()),
-            // Divider(height: 1,color: Color(0xFFEBEBEB)),
-            // CatFun(2, 'Настройки кошелька',PurseSetting()),
+            CatFun(2, 'Мои обьявления', DrawerProductList()),
             Divider(height: 1, color: Color(0xFFEBEBEB)),
-            CatFun(3, 'FAQ', FAQ()),
+            CatFun(
+              1,
+              'Главная страница',
+              () {
+                controller.animateToPage(0,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeIn);
+              },
+            ),
             Divider(height: 1, color: Color(0xFFEBEBEB)),
-            CatFun(4, 'Бизнес профиль', BussinesProf()),
+            CatFun(
+              3,
+              'Добавить продукт',
+              () {
+                controller.animateToPage(1,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeIn);
+              },
+            ),
+            Divider(height: 1, color: Color(0xFFEBEBEB)),
+            CatFun(
+              4,
+              'Избранное',
+              () {
+                controller.animateToPage(2,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeIn);
+              },
+            ),
             Divider(height: 1, color: Color(0xFFEBEBEB)),
             ListTile(
               leading: Image.asset('assets/img/prof/catIcon5.png',
@@ -433,10 +449,11 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget CatFun(int imageIndex, String funName, Widget widgetForCat) {
+  Widget CatFun(int imageIndex, String funName, void onTap) {
     return ListTile(
-      onTap: () => Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => widgetForCat)),
+      onTap: () {
+        onTap;
+      },
       leading: Image.asset('assets/img/prof/catIcon$imageIndex.png',
           width: 16, height: 16),
       title: Text(

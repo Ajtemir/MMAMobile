@@ -1,13 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-import '../../../constants/constants.dart';
-import '../../auth/server/service.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../constants/constants.dart';
 import '../profileUsers/profileUsers.dart';
 
 class MarketMap extends StatefulWidget {
@@ -23,7 +22,8 @@ class MarketMap extends StatefulWidget {
 class _MarketMapState extends State<MarketMap> {
   Future<List<MarketShopDto>> _fetch(int marketId) async {
     Map<String, dynamic> queryParams = {'marketId': marketId.toString()};
-    var uri = Constants.addPathToBaseUrl('Market/GetShopsByMarketId', queryParameters: queryParams);
+    var uri = Constants.addPathToBaseUrl('Market/GetShopsByMarketId',
+        queryParameters: queryParams);
 
     var response = await http.Client().get(uri);
     var data = jsonDecode(response.body)['data'];
@@ -64,7 +64,7 @@ class _MarketMapState extends State<MarketMap> {
           } else if (snapshot.hasData) {
             print("Asan ///////////////");
             return Scaffold(
-              appBar: AppBar(),
+              appBar: kIsWeb ? null : AppBar(),
               bottomNavigationBar: BottomAppBar(
                 child: Row(
                   children: [
