@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:upai_app/constants/constants.dart';
 import 'package:upai_app/model/userDataModel.dart';
+import 'package:upai_app/views/drawer/addPlace.dart';
 import 'package:upai_app/views/pages/profile/allMagazine.dart';
-import 'package:upai_app/views/pages/profile/bussinessProf.dart';
 import 'package:upai_app/views/pages/profile/profileEditing.dart';
-import 'package:upai_app/views/pages/profile/referal.dart';
 import 'package:upai_app/widgets/appBar.dart';
 
 import '../../../fetches/newProducts_fetch.dart';
@@ -14,6 +13,7 @@ import '../../../fetches/userData_fetch.dart';
 import '../../../model/productModel.dart';
 import '../../../provider/selectCatProvider.dart';
 import '../../../shared/app_colors.dart';
+import '../../../widgets/alertDialog.dart';
 import '../../auth/sing_in/sing_in_screen.dart';
 import '../../category/aboutMagaz.dart';
 import 'faq.dart';
@@ -391,20 +391,53 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
             ),*/
-            Divider(height: 1, color: Color(0xFFEBEBEB)),
-            CatFun(1, 'Пригласить друга', Referal()),
+            /*Divider(height: 1, color: Color(0xFFEBEBEB)),
+            CatFun(1, 'Пригласить друга', Referal()),*/
             // Divider(height: 1,color: Color(0xFFEBEBEB)),
             // CatFun(2, 'Настройки кошелька',PurseSetting()),
             Divider(height: 1, color: Color(0xFFEBEBEB)),
             CatFun(3, 'FAQ', FAQ()),
             Divider(height: 1, color: Color(0xFFEBEBEB)),
-            CatFun(4, 'Бизнес профиль', BussinesProf()),
-            Divider(height: 1, color: Color(0xFFEBEBEB)),
             ListTile(
+              onTap: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => AddPlace())),
               leading: Image.asset('assets/img/prof/catIcon5.png',
                   width: 16, height: 16),
               title: Text(
                 'Подать заявление на место',
+                style: TextStyle(
+                    color: Color(0xFF313131),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                var dialog = CustomAlertDialog(
+                    title: 'Удалить профиль?',
+                    message: 'Вы действительно хотите удалить профиль?',
+                    onPostivePressed: () async {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => SingInScreen()),
+                          (Route<dynamic> route) => false);
+                    },
+                    positiveBtnText: 'Да',
+                    negativeBtnText: 'Нет',
+                    onNegativePressed: () {});
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) => dialog);
+              },
+              leading: Icon(
+                Icons.delete,
+                size: 18,
+                color: Colors.red,
+              ) /*Image.asset('assets/img/prof/catIcon5.png',
+                  width: 16, height: 16)*/
+              ,
+              title: Text(
+                'Удалить профиль',
                 style: TextStyle(
                     color: Color(0xFF313131),
                     fontSize: 16,

@@ -6,6 +6,7 @@ import 'package:upai_app/constants/constants.dart';
 import 'package:upai_app/fetches/categories_fetch.dart';
 import 'package:upai_app/model/categoriesModel.dart';
 import 'package:upai_app/views/pages/categoryProducts.dart';
+import 'package:upai_app/views/pages/search_page.dart';
 
 import '../../fetches/products_fetch.dart';
 import '../../model/productModel.dart';
@@ -264,11 +265,11 @@ class _DashboardState extends State<Dashboard> {
               actions: [
                 IconButton(
                   onPressed: () {
-                    /*Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const SearchProducts()));*/
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const SearchProducts()));
                   },
                   icon: const Icon(
-                    Icons.menu,
+                    Icons.search,
                     color: AppColors.blue1,
                   ),
                 ),

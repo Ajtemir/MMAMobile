@@ -8,7 +8,6 @@ import '../../fetches/search_products_fetch.dart';
 import '../../model/productModel.dart';
 import '../../provider/selectCatProvider.dart';
 import '../category/aboutMagaz.dart';
-import 'filters_screen.dart';
 
 class SearchProducts extends StatefulWidget {
   const SearchProducts({Key? key}) : super(key: key);
@@ -164,7 +163,7 @@ class _SearchProductsState extends State<SearchProducts> {
                 ),
                 elevation: 0,
                 backgroundColor: Colors.white,
-                actions: [
+                /*actions: [
                   Padding(
                     padding: const EdgeInsets.only(right: 10, top: 30),
                     child: IconButton(
@@ -179,7 +178,7 @@ class _SearchProductsState extends State<SearchProducts> {
                           color: const Color(0xFF225196),
                         )),
                   )
-                ],
+                ],*/
               ),
         backgroundColor: Colors.white,
         body: RefreshIndicator(

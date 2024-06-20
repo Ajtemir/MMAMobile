@@ -8,7 +8,6 @@ import 'package:upai_app/bloc/reduction_bloc/reduction_event.dart';
 
 import '../../../shared/app_colors.dart';
 import '../../../user/userData.dart';
-import '../../../views/pages/filters_screen.dart';
 import '../reduction_detail_model.dart';
 import 'base_reduction_state.dart';
 
@@ -113,13 +112,20 @@ class SellerNotReductionedState extends BaseReductionState {
             SizedBox(
               height: 10,
             ),
-            RangeSliderView(
+            FormBuilderTextField(
+              name: 'startPrice',
+              enabled: true,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                  labelText: 'Стартовая цена', border: OutlineInputBorder()),
+            ),
+            /*RangeSliderView(
               type: 'tender',
               values: _values,
               onChangeRangeValues: (RangeValues values) {
                 _values = values;
               },
-            ),
+            ),*/
             SizedBox(
               height: 10,
             ),
@@ -133,7 +139,7 @@ class SellerNotReductionedState extends BaseReductionState {
                       .add(ReductionMakeEvent(ReductionDetailModel(
                     keyValuePairs['startDate'],
                     keyValuePairs['endDate'],
-                    _values.end,
+                    double.parse(keyValuePairs['startPrice']),
                   )));
                   Navigator.pop(context);
                 }

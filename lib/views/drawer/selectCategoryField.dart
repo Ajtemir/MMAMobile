@@ -65,6 +65,7 @@ class _SelectCategoryFieldState extends State<SelectCategoryField> {
                   ))),
           child: Container(
               padding: const EdgeInsets.only(left: 19, top: 13),
+              width: double.infinity,
               height: 45,
               decoration: BoxDecoration(
                 border: Border.all(width: 1, color: AppColors.blue),

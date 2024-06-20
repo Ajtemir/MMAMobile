@@ -29,7 +29,6 @@ import '../../shared/app_colors.dart';
 import '../../widgets/date_format.dart';
 import '../auth/server/service.dart';
 import '../drawer/hotKeshAddEdit.dart';
-import '../pages/filters_screen.dart';
 import '../pages/profileUsers/profileUsers.dart';
 import 'custom_navigation.dart';
 import 'full_screen_album.dart';
@@ -56,6 +55,7 @@ class _AboutMagazState extends State<AboutMagaz> {
   late bool isSeller;
   late bool? isMadeCollectiveOrDefaultNotSeller;
   late AboutProductModel productInfo;
+  bool isPaymentLoad = false;
 
   TextStyle styleTitleInCard =
       const TextStyle(color: AppColors.black, fontSize: 16);
@@ -298,6 +298,58 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                               EdgeInsets.symmetric(vertical: 10)),
                         ),
                       ),
+                    /*if (!(widget.email == path.sellerEmail))
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 60),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            setState(() {
+                              isPaymentLoad = true;
+                            });
+                            var ans;
+                            var json = {
+                              'type': '0',
+                              'test_id': '0',
+                              'phone': '996990551552',
+                              'email': widget.email,
+                              'company_director': 'Amantur',
+                              'sum': path?.price ?? 10000,
+                              'company_name': 'Dordoi',
+                              'company_area': '2',
+                              'region': 'Bishkek'
+                            };
+
+                            ans = await AuthClient().postFreedomPay(json);
+                            if (ans != 'false') {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (contexts) =>
+                                      PaymentScreen(urlPay: ans)));
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: 'Вышла ошибка!',
+                                  fontSize: 18,
+                                  gravity: ToastGravity.BOTTOM,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white);
+                            }
+                            setState(() {
+                              isPaymentLoad = false;
+                            });
+                          },
+                          child: isPaymentLoad
+                              ? Center(child: CircularProgressIndicator())
+                              : const Text(
+                                  'Купить',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStatePropertyAll(AppColors.red1),
+                            padding: const MaterialStatePropertyAll(
+                                EdgeInsets.symmetric(vertical: 10)),
+                          ),
+                        ),
+                      ),*/
                     const SizedBox(height: 48),
                     const Text(
                       'Описание',
@@ -1227,13 +1279,20 @@ class MakeAuctionedForm {
             const SizedBox(
               height: 10,
             ),
-            RangeSliderView(
+            FormBuilderTextField(
+              name: 'startPrice',
+              enabled: true,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                  labelText: 'Стартовая цена', border: OutlineInputBorder()),
+            ),
+            /*RangeSliderView(
               type: 'auction',
               values: _values,
               onChangeRangeValues: (RangeValues values) {
                 _values = values;
               },
-            ),
+            ),*/
             const SizedBox(
               height: 10,
             ),
@@ -1247,7 +1306,7 @@ class MakeAuctionedForm {
                       .add(AuctionMadeEvent(AuctionDetailModel(
                     keyValuePairs['startDate'],
                     keyValuePairs['endDate'],
-                    _values.end,
+                    double.parse(keyValuePairs['startPrice']),
                   )));
                   Navigator.pop(context);
                 }
