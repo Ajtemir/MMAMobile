@@ -62,7 +62,6 @@ class _MarketMapState extends State<MarketMap> {
           if (snapshot.hasError) {
             return Text(snapshot.error.toString());
           } else if (snapshot.hasData) {
-            print("Asan ///////////////");
             return Scaffold(
               appBar: AppBar(),
               bottomNavigationBar: BottomAppBar(
