@@ -33,5 +33,5 @@ jobs:
           publish_dir: ./build/web
           force_orphan: true
           user_name: 'ajtemir'
-          user_email: 'aytush2001@gmail.com'
+          user_email: 'ajtemirulanbekuulu@gmail.com'
           commit_message: 'Publish to gh-pages'
