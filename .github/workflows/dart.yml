@@ -24,6 +24,9 @@ jobs:
       - name: Download Dependencies
         run: flutter pub get
 
+      - name: Download Dependencies
+        run: flutter upgrade
+
       - name: Build
         run: flutter build web
 
