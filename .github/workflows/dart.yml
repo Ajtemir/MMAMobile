@@ -24,7 +24,7 @@ jobs:
         run: flutter pub get
 
       - name: Build
-        run: flutter build web --base-href '${{ secrets.BASEHREF }}'
+        run: flutter build web -v --base-href '${{ secrets.BASEHREF }}'
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
