@@ -15,7 +15,7 @@ import 'views/auth/sing_in/sing_in_screen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main(){
-runApp(const MyApp());
+runApp(Upai());
 }
 
 class Upai extends StatelessWidget {
