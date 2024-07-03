@@ -10,17 +10,21 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.12.0'
-          channel: 'beta'
+          flutter-version: '3.13.8' 
+          channel: 'stable' # Required for web
 
-      - run: flutter config --enable-web
-      - run: flutter clean
-      - run: flutter pub get
-      - run: flutter build web --release --web-renderer html --base-href /MMAMobile/
+      - name: Enable Flutter Web
+        run: flutter config --enable-web
+
+      - name: Download Dependencies
+        run: flutter pub get
+
+      - name: Build
+        run: flutter build web --base-href '${{ secrets.BASEHREF }}'
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
